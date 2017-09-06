@@ -7,6 +7,9 @@
 #include <vector>
 #include "Tablero.h"
 #include "Jugador.h"
+#include "Casilla.h"
+#include "Casa.h"
+#include "Hotel.h"
 using namespace std;
 
 class Tablero {
