@@ -9,7 +9,8 @@ using namespace std;
 
 int main() {
 	Tablero* tablero = new Tablero();
-	int num = tablero -> play();
+	tablero -> init("Casillas.txt");
+	//int num = tablero -> play();
 	delete tablero;
-	return num;
+	return 0;
 }

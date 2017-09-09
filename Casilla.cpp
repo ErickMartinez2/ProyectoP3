@@ -11,6 +11,24 @@ Casilla::Casilla(string pnombre, int palquiler, int pprecio_casa, int pprecio) {
 	precio = pprecio;
 }
 
+Casilla::Casilla(string pnombre, int palquiler, int palquiler2, int palquiler3, int palquiler4, int pprecio) {
+	nombre = pnombre;
+	alquiler = palquiler;
+	alquiler2 = palquiler2;
+	alquiler3 = palquiler3;
+	alquiler4 = palquiler4;
+	precio = pprecio;
+}
+
+Casilla::Casilla(string pnombre) {
+	nombre = pnombre;
+}
+
+Casilla::Casilla(string pnombre, int palquiler) {
+	nombre = pnombre;
+	alquiler = palquiler;
+}
+
 string Casilla::getNombre() {
 	return nombre;
 }
@@ -27,11 +45,33 @@ void Casilla::setAlquiler(int palquiler) {
 	alquiler = palquiler;
 }
 
-vector<Casa> Casilla::getCasas() {
+int Casilla::getAlquiler2() {
+	return alquiler2;
+}
+
+void Casilla::setAlquiler2(int palquiler2) {
+	alquiler2 = palquiler2;
+}
+int Casilla::getAlquiler3() {
+	return alquiler3;
+}
+
+void Casilla::setAlquiler3(int palquiler3) {
+	alquiler3 = palquiler3;
+}
+int Casilla::getAlquiler4() {
+	return alquiler4;
+}
+
+void Casilla::setAlquiler4(int palquiler4) {
+	alquiler4 = palquiler4;
+}
+
+vector<Casa*> Casilla::getCasas() {
 	return casas;
 }
 
-void Casilla::setCasas(vector<Casa> pcasas) {
+void Casilla::setCasas(vector<Casa*> pcasas) {
 	casas = pcasas;
 }
 

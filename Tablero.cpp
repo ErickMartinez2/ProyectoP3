@@ -99,7 +99,6 @@ void Tablero::nuevo_juego(WINDOW* win) {
 	bool salir = true;
 	wattron(win, COLOR_PAIR(1));
 	string menu[3] = {"    2 Jugadores    ", "    3 Jugadores    ", "    4 Jugadores    "};
-	vector <Jugador> jugadores;
 	while (salir) {
 		for (int i = 0; i < 3; i++) {
 			if (i == seleccion) {
@@ -188,7 +187,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							case 0:{
 									   int contador = 0;
 									   for (int i = 0; i < jugadores.size(); i++) {
-										   if (jugadores.at(i).getFicha() != '*') {
+										   if (jugadores.at(i) -> getFicha() != '*') {
 											   contador++;
 										   }
 									   }
@@ -202,7 +201,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							case 1:{
 									   int contador = 0;
 									   for (int i = 0; i < jugadores.size(); i++) {
-										   if (jugadores.at(i).getFicha() != '+') {
+										   if (jugadores.at(i) -> getFicha() != '+') {
 											   contador++;
 										   }
 									   }
@@ -217,7 +216,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							case 2:{
 									   int contador = 0;
 									   for (int i = 0; i < jugadores.size(); i++) {
-										   if (jugadores.at(i).getFicha() != '!') {
+										   if (jugadores.at(i) -> getFicha() != '!') {
 											   contador++;
 										   }
 									   }
@@ -232,7 +231,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							case 3:{
 									   int contador = 0;
 									   for (int i = 0; i < jugadores.size(); i++) {
-										   if (jugadores.at(i).getFicha() != '#') {
+										   if (jugadores.at(i) -> getFicha() != '#') {
 											   contador++;
 										   }
 									   }
@@ -247,23 +246,320 @@ void Tablero::nuevo_juego(WINDOW* win) {
 						}
 					}
 				}
-				Jugador jugador(nombre, ficha, 0);
+				Jugador* jugador = new Jugador(nombre, ficha, 0);
 				jugadores.push_back(jugador);
 			}
 			salir = false;
 		}
 	}
+	for (int i = 0; i < 40; i++) {
+		char posicion[] = "    ";
+		posiciones.push_back(posicion);
+	}
+
 	/*werase(win);
-	box(win, 0 , 0);
-	refresh();
-	bool ganador = false;
-	int turno = 0;
-	do {
-			
-	} while (!ganador);
-	*/
+	  box(win, 0 , 0);
+	  refresh();
+	  bool ganador = false;
+	  int turno = 0;
+	  do {
+
+	  } while (!ganador);
+	  */
+	for (int i = 0; i < jugadores.size(); i++) {
+		delete jugadores[i];
+	}
+	for (int i = 0; i < casillas.size(); i++) {
+		if ((typeid(casillas[i]) == typeid(Casilla_Morada)) || (typeid(casillas[i]) == typeid(Casilla_Celeste)) || (typeid(casillas[i]) == typeid(Casilla_Rosada)) || (typeid(casillas[i]) == typeid(Casilla_Naranja)) || (typeid(casillas[i]) == typeid(Casilla_Roja)) || (typeid(casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(casillas[i]) == typeid(Casilla_Verde)) || (typeid(casillas[i]) == typeid(Casilla_Azul)))  {
+			for (int j = 0; j < casillas[i] -> getCasas().size(); j++) {
+				delete casillas[i] -> getCasas()[j];
+			}
+		}
+		delete casillas[i];
+	}
 }
 
+void Tablero::init(string file) {
+	ifstream inputFile(file);
+	if (inputFile.is_open()) {
+		string nombre;
+		int alquiler;
+		int alquiler2;
+		int alquiler3;
+		int alquiler4;
+		int precio_casa;
+		int precio;
+		int casa1;
+		int casa2;
+		int casa3;
+		int casa4;
+		int hotel;
+		int contador = 0;
+		string o;
+		while (!inputFile.eof()) {
+			if ((contador == 0) || (contador == 10) || (contador == 20) || (contador == 30)) {
+				inputFile >> nombre;
+				Casilla* casilla = new Casilla_Especial(nombre);
+				casillas.push_back(casilla);
+				cout << "ENTRO" << endl;
+			} else {
+				if ((contador == 1) || (contador == 3)) {
+					inputFile >> nombre;
+					inputFile >> alquiler;
+					inputFile >> casa1;
+					inputFile >> casa2;
+					inputFile >> casa3;
+					inputFile >> casa4;
+					inputFile >> hotel;
+					inputFile >> precio_casa;
+					inputFile >> precio;
+					Casilla* casilla = new Casilla_Morada(nombre, alquiler, precio_casa, precio);
+					vector<Casa*> casas;
+					Casa* casas1 = new Casa(casa1, false);
+					Casa* casas2 = new Casa(casa2, false);
+					Casa* casas3 = new Casa(casa3, false);
+					Casa* casas4 = new Casa(casa4, false);
+					casas.push_back(casas1);
+					casas.push_back(casas1);
+					casas.push_back(casas1);
+					casas.push_back(casas1);
+					casilla -> setCasas(casas);
+					casillas.push_back(casilla);
+
+					cout << "ENTRO" << endl;
+				} else {
+					if ((contador == 2) || (contador == 7) || (contador == 17) || (contador == 22) || (contador == 33) || (contador == 36)) {
+						inputFile >> nombre;
+						Casilla* casilla = new Casilla_Comodin(nombre);
+						casillas.push_back(casilla);
+
+						cout << "ENTRO" << endl;
+					} else {
+						if ((contador == 4) || (contador == 38)) {
+							inputFile >> nombre;
+							inputFile >> alquiler;
+							Casilla* casilla = new Casilla_Impuesto(nombre, alquiler);
+							casillas.push_back(casilla);
+
+							cout << "ENTRO" << endl;
+						} else {
+							if ((contador == 5) || (contador == 15) || (contador == 25) || (contador == 35)) {
+								inputFile >> nombre;
+								inputFile >> alquiler;
+								inputFile >> alquiler2;
+								inputFile >> alquiler3;
+								inputFile >> alquiler4;
+								inputFile >> precio;
+								Casilla* casilla = new Casilla_Ferrocarril(nombre, alquiler, alquiler2, alquiler3, alquiler4, precio);
+								casillas.push_back(casilla);
+								cout << "ENTRO" << endl;
+							} else {
+								if ((contador == 6) || (contador == 8) || (contador == 9)) {
+									inputFile >> nombre;
+									inputFile >> alquiler;
+									inputFile >> casa1;
+									inputFile >> casa2;
+									inputFile >> casa3;
+									inputFile >> casa4;
+									inputFile >> hotel;
+									inputFile >> precio_casa;
+									inputFile >> precio;
+									Casilla* casilla = new Casilla_Celeste(nombre, alquiler, precio_casa, precio);
+									vector<Casa*> casas;
+									Casa* casas1 = new Casa(casa1, false);
+									Casa* casas2 = new Casa(casa2, false);
+									Casa* casas3 = new Casa(casa3, false);
+									Casa* casas4 = new Casa(casa4, false);
+									casas.push_back(casas1);
+									casas.push_back(casas1);
+									casas.push_back(casas1);
+									casas.push_back(casas1);
+									casilla -> setCasas(casas);
+									casillas.push_back(casilla);
+									cout << "ENTRO" << endl;
+								} else {
+									if ((contador == 12) || (contador == 28)) {
+										inputFile >> nombre;
+										inputFile >> precio;
+										Casilla* casilla = new Casilla_Utilidad(nombre, precio);
+										casillas.push_back(casilla);
+										cout << "ENTRO" << endl;
+									} else {
+										if ((contador == 11) || (contador == 13) || (contador == 14)) {
+											inputFile >> nombre;
+											inputFile >> alquiler;
+											inputFile >> casa1;
+											inputFile >> casa2;
+											inputFile >> casa3;
+											inputFile >> casa4;
+											inputFile >> hotel;
+											inputFile >> precio_casa;
+											inputFile >> precio;
+											Casilla* casilla = new Casilla_Rosada(nombre, alquiler, precio_casa, precio);
+											vector<Casa*> casas;
+											Casa* casas1 = new Casa(casa1, false);
+											Casa* casas2 = new Casa(casa2, false);
+											Casa* casas3 = new Casa(casa3, false);
+											Casa* casas4 = new Casa(casa4, false);
+											casas.push_back(casas1);
+											casas.push_back(casas1);
+											casas.push_back(casas1);
+											casas.push_back(casas1);
+											casilla -> setCasas(casas);
+											casillas.push_back(casilla);
+											cout << "ENTRO" << endl;
+										} else {
+											if ((contador == 16) || (contador == 18) || (contador == 19)) {
+												inputFile >> nombre;
+												inputFile >> alquiler;
+												inputFile >> casa1;
+												inputFile >> casa2;
+												inputFile >> casa3;
+												inputFile >> casa4;
+												inputFile >> hotel;
+												inputFile >> precio_casa;
+												inputFile >> precio;
+												Casilla* casilla = new Casilla_Naranja(nombre, alquiler, precio_casa, precio);
+												vector<Casa*> casas;
+												Casa* casas1 = new Casa(casa1, false);
+												Casa* casas2 = new Casa(casa2, false);
+												Casa* casas3 = new Casa(casa3, false);
+												Casa* casas4 = new Casa(casa4, false);
+												casas.push_back(casas1);
+												casas.push_back(casas1);
+												casas.push_back(casas1);
+												casas.push_back(casas1);
+												casilla -> setCasas(casas);
+												casillas.push_back(casilla);
+												cout << "ENTRO" << endl;
+											} else {
+												if ((contador == 21) || (contador == 23) || (contador == 24)) {
+													inputFile >> nombre;
+													inputFile >> alquiler;
+													inputFile >> casa1;
+													inputFile >> casa2;
+													inputFile >> casa3;
+													inputFile >> casa4;
+													inputFile >> hotel;
+													inputFile >> precio_casa;
+													inputFile >> precio;
+													Casilla* casilla = new Casilla_Roja(nombre, alquiler, precio_casa, precio);
+													vector<Casa*> casas;
+													Casa* casas1 = new Casa(casa1, false);
+													Casa* casas2 = new Casa(casa2, false);
+													Casa* casas3 = new Casa(casa3, false);
+													Casa* casas4 = new Casa(casa4, false);
+													casas.push_back(casas1);
+													casas.push_back(casas1);
+													casas.push_back(casas1);
+													casas.push_back(casas1);
+													casilla -> setCasas(casas);
+													casillas.push_back(casilla);
+													cout << "ENTRO" << endl;
+												} else {
+													if ((contador == 26) || (contador == 27) || (contador == 29)) {
+														inputFile >> nombre;
+														inputFile >> alquiler;
+														inputFile >> casa1;
+														inputFile >> casa2;
+														inputFile >> casa3;
+														inputFile >> casa4;
+														inputFile >> hotel;
+														inputFile >> precio_casa;
+														inputFile >> precio;
+														Casilla* casilla = new Casilla_Amarilla(nombre, alquiler, precio_casa, precio);
+														vector<Casa*> casas;
+														Casa* casas1 = new Casa(casa1, false);
+														Casa* casas2 = new Casa(casa2, false);
+														Casa* casas3 = new Casa(casa3, false);
+														Casa* casas4 = new Casa(casa4, false);
+														casas.push_back(casas1);
+														casas.push_back(casas1);
+														casas.push_back(casas1);
+														casas.push_back(casas1);
+														casilla -> setCasas(casas);
+														casillas.push_back(casilla);
+														cout << "ENTRO" << endl;
+													} else {
+														if ((contador == 31) || (contador == 32) || (contador == 34)) {
+															inputFile >> nombre;
+															inputFile >> alquiler;
+															inputFile >> casa1;
+															inputFile >> casa2;
+															inputFile >> casa3;
+															inputFile >> casa4;
+															inputFile >> hotel;
+															inputFile >> precio_casa;
+															inputFile >> precio;
+															Casilla* casilla = new Casilla_Verde(nombre, alquiler, precio_casa, precio);
+															vector<Casa*> casas;
+															Casa* casas1 = new Casa(casa1, false);
+															Casa* casas2 = new Casa(casa2, false);
+															Casa* casas3 = new Casa(casa3, false);
+															Casa* casas4 = new Casa(casa4, false);
+															casas.push_back(casas1);
+															casas.push_back(casas1);
+															casas.push_back(casas1);
+															casas.push_back(casas1);
+															casilla -> setCasas(casas);
+															casillas.push_back(casilla);
+															cout << "ENTRO" << endl;
+														} else {
+															if ((contador == 37) || (contador == 39)) {
+																inputFile >> nombre;
+																inputFile >> alquiler;
+																inputFile >> casa1;
+																inputFile >> casa2;
+																inputFile >> casa3;
+																inputFile >> casa4;
+																inputFile >> hotel;
+																inputFile >> precio_casa;
+																inputFile >> precio;
+																Casilla* casilla = new Casilla_Azul(nombre, alquiler, precio_casa, precio);
+																vector<Casa*> casas;
+																Casa* casas1 = new Casa(casa1, false);
+																Casa* casas2 = new Casa(casa2, false);
+																Casa* casas3 = new Casa(casa3, false);
+																Casa* casas4 = new Casa(casa4, false);
+																casas.push_back(casas1);
+																casas.push_back(casas1);
+																casas.push_back(casas1);
+																casas.push_back(casas1);
+																casilla -> setCasas(casas);
+																casillas.push_back(casilla);
+																cout << "ENTRO" << endl;
+																cout << precio << endl;
+															} else {
+																inputFile >> o;
+																cout << "NO ENTRO" << endl;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}	
+					}
+				}
+			}
+			//cout << contador << endl;
+			contador++;
+		}
+		inputFile.close();
+		for (int i = 0; i < casillas.size(); i++) {
+			if ((typeid(casillas[i]) == typeid(Casilla_Morada)) || (typeid(casillas[i]) == typeid(Casilla_Celeste)) || (typeid(casillas[i]) == typeid(Casilla_Rosada)) || (typeid(casillas[i]) == typeid(Casilla_Naranja)) || (typeid(casillas[i]) == typeid(Casilla_Roja)) || (typeid(casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(casillas[i]) == typeid(Casilla_Verde)) || (typeid(casillas[i]) == typeid(Casilla_Azul)))  {
+				for (int j = 0; j < casillas[i] -> getCasas().size(); j++) {
+					delete casillas[i] -> getCasas()[j];
+				}
+			}
+			delete casillas[i];
+		}
+
+	}
+}
 
 string Tablero::Leer() {
 	char caracter;
@@ -309,7 +605,6 @@ void Tablero::imprimirTablero() {
 	init_pair(18, COLOR_WHITE, COLOR_GREEN);
 	init_pair(19, COLOR_YELLOW, 8);
 	init_pair(20, COLOR_WHITE, COLOR_YELLOW);
-
 	attron(COLOR_PAIR(1));
 	//printw("012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\n");
 	//printw("1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0");
@@ -331,11 +626,6 @@ void Tablero::imprimirTablero() {
 	mvprintw(4, 67, " | \\  / | |     | | \\ | |     | |____| |     | |     \\/  ");
 	mvprintw(5, 67, " |  \\/  | |_____| |  \\| |_____| |      |_____| |___  /   ");
 	mvprintw(6, 67, "                                                         ");
-	vector <string> posiciones;
-	for (int i = 0; i < 40; i++) {
-		char posicion[] = "    ";
-		posiciones.push_back(posicion);
-	}
 	for (int i = 0; i < 40; i++) {
 		switch (i) {
 			case 0:{
