@@ -14,7 +14,7 @@ class Casilla {
 		int alquiler3;
 		int alquiler4;
 		vector<Casa*> casas;
-		Hotel hotel;
+		Hotel* hotel;
 		int precio_casa;
 		int precio;
 	public:
@@ -35,12 +35,13 @@ class Casilla {
 		void setAlquiler4(int);
 		vector<Casa*> getCasas();
 		void setCasas(vector<Casa*>);
-		Hotel getHotel();
-		void setHotel(Hotel);
+		Hotel* getHotel();
+		void setHotel(Hotel*);
 		int getPrecio_Casa();
 		void setPrecio_Casa(int);
 		int getPrecio();
-		void setPrecio(int);
+		virtual void setPrecio(int);
+		//virtual void printCasilla() = 0;
 };
 
 #endif

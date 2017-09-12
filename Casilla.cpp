@@ -75,11 +75,11 @@ void Casilla::setCasas(vector<Casa*> pcasas) {
 	casas = pcasas;
 }
 
-Hotel Casilla::getHotel() {
+Hotel* Casilla::getHotel() {
 	return hotel;
 }
 
-void Casilla::setHotel(Hotel photel) {
+void Casilla::setHotel(Hotel* photel) {
 	hotel = photel;
 }
 

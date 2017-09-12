@@ -6,6 +6,10 @@ using namespace std;
 int Tablero::play() {
 	initscr();
 	start_color();
+	for (int i = 0; i < 40; i++) {
+		char posicion[] = "    ";
+		posiciones.push_back(posicion);
+	}
 	imprimirTablero();
 	WINDOW * win = newwin(33, 90, 8, 50);
 	box(win, 0, 0);
@@ -246,29 +250,277 @@ void Tablero::nuevo_juego(WINDOW* win) {
 						}
 					}
 				}
-				Jugador* jugador = new Jugador(nombre, ficha, 0);
+				Jugador* jugador = new Jugador(nombre, ficha, 0, 0);
 				jugadores.push_back(jugador);
 			}
 			salir = false;
 		}
 	}
-	for (int i = 0; i < 40; i++) {
-		char posicion[] = "    ";
-		posiciones.push_back(posicion);
+	string caracteres = "";
+	for (int i = 0; i < jugadores.size(); i++) {
+		caracteres += jugadores[i] -> getFicha();
 	}
+	int num_faltante = 4 - jugadores.size();
+	for (int i = 0; i < num_faltante; i++) {
+		caracteres += " ";
+	}
+	posiciones.erase(posiciones.begin());
+	posiciones.insert(posiciones.begin(), caracteres);
+	imprimirTablero();
+	bool ganador = false;
+	int turno = 0;
+	WINDOW * win2 = newwin(15, 30, 22, 60);
+	do {
+		int opcion = 0;
+		int seleccion = 0;
+		bool salir = true;
+		string menu[3] = {"     Tirar Dados     ", " Ver Mis Propiedades ", "      Rendirse       "};
+		while (salir) {
+			wattron(win, COLOR_PAIR(1));
+			wattron(win2, COLOR_PAIR(1));
+			werase(win2);
+			box(win2, 0, 0);
+			imprimirCasilla(win2, 2);
+			werase(win);
+			box(win, 0 , 0);
+			refresh();
+			wattron(win, COLOR_PAIR(5));
+			mvwprintw(win, 2, 33, "Turno del Jugador ");
+			mvwprintw(win, 2, 51, "%d", turno + 1);
+			wattron(win, COLOR_PAIR(1));
+			mvwprintw(win, 5, 20, "Nombre: ");		
+			mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+			mvwprintw(win, 7, 20, "Ficha: ");
+			mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+			mvwprintw(win, 5, 50, "Dinero: ");
+			mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+			mvwprintw(win, 7, 50, "Posicion: ");
+			mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+			wattron(win, COLOR_PAIR(5));
+			mvwprintw(win, 12, 17, "Casilla Actual");
+			refresh();
+			wattron(win, COLOR_PAIR(5));
+			mvwprintw(win, 18, 55, "   Menu del Jugador  ");
+			wrefresh(win);
+			wrefresh(win2);
+			wattron(win, COLOR_PAIR(1));
+			for (int i = 0; i < 3; i++) {
+				if (i == seleccion) {
+					wattron(win, A_REVERSE);
+					mvwprintw(win, i + 19, 55, menu[i].c_str());
+					wattroff(win, A_REVERSE);
+				} else {
+					mvwprintw(win, i + 19, 55, menu[i].c_str());
+				}
+			}
+			wmove(win, 32, 89);
+			opcion = wgetch(win);
+			switch (opcion) {
+				case KEY_UP:	
+					seleccion--;
+					if (seleccion < 0) {
+						seleccion = 0;
+					}
+					break;
+				case KEY_DOWN:
+					seleccion++;
+					if (seleccion > 2) {
+						seleccion = 2;
+					}
+					break;
+				default:
+					break;
+			}
+			if (opcion == 10) {
+				switch (seleccion) {
+					case 0:{
+							   wattron(win, COLOR_PAIR(1));
+							   wattron(win2, COLOR_PAIR(1));
+							   werase(win2);
+							   box(win2, 0, 0);
+							   imprimirCasilla(win2, 2);
+							   werase(win);
+							   box(win, 0 , 0);
+							   refresh();
+							   int num = rand() % 6 + 1;
+							   int num2 = rand() % 6 + 1;
+							   wattron(win, COLOR_PAIR(5));
+							   mvwprintw(win, 2, 33, "Turno del Jugador ");
+							   mvwprintw(win, 2, 51, "%d", turno + 1);
+							   wattron(win, COLOR_PAIR(1));
+							   mvwprintw(win, 5, 20, "Nombre: ");		
+							   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+							   mvwprintw(win, 7, 20, "Ficha: ");
+							   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+							   mvwprintw(win, 5, 50, "Dinero: ");
+							   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+							   mvwprintw(win, 7, 50, "Posicion: ");
+							   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+							   wattron(win, COLOR_PAIR(5));
+							   mvwprintw(win, 12, 17, "Casilla Actual");
+							   wattron(win, COLOR_PAIR(5));
+							   mvwprintw(win, 18, 55, " Resultado de Los Dados ");
+							   string espacio1 = "   ";
+							   string espacio2 = " 0 ";
+							   init_pair(21, 16, COLOR_WHITE);
+							   wattron(win, COLOR_PAIR(21));
+							   switch (num) {
+								   case 1:
+									   mvwprintw(win, 20, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio1.c_str());
+									   break;
+								   case 2:
+									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+									   break;
+								   case 3:
+									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+									   break;
+								   case 4:
+									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+									   break;
+								   case 5:
+									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+									   break;
+								   case 6:
+									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 63, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+									   break;
+							   }
+							   switch (num2) {
+								   case 1:
+									   mvwprintw(win, 20, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio1.c_str());
+									   break;
+								   case 2:
+									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+									   break;
+								   case 3:
+									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+									   break;
+								   case 4:
+									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+									   break;
+								   case 5:
+									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+									   break;
+								   case 6:
+									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+									   mvwprintw(win, 21, 74, "%s", espacio2.c_str());
+									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+									   break;
+							   }
+							   refresh();
+							   wrefresh(win);
+							   wrefresh(win2);
+							   getch();
+						   }break;
+					case 1:{
 
-	/*werase(win);
-	  box(win, 0 , 0);
-	  refresh();
-	  bool ganador = false;
-	  int turno = 0;
-	  do {
-
-	  } while (!ganador);
-	  */
+						   }break;
+					case 2: {
+								salir = false;
+							}break;
+				}
+			}
+		}
+		wrefresh(win);
+		ganador = true;
+	} while (!ganador);
 	for (int i = 0; i < jugadores.size(); i++) {
 		delete jugadores[i];
 	}
+	jugadores.clear();
 	for (int i = 0; i < casillas.size(); i++) {
 		if ((typeid(casillas[i]) == typeid(Casilla_Morada)) || (typeid(casillas[i]) == typeid(Casilla_Celeste)) || (typeid(casillas[i]) == typeid(Casilla_Rosada)) || (typeid(casillas[i]) == typeid(Casilla_Naranja)) || (typeid(casillas[i]) == typeid(Casilla_Roja)) || (typeid(casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(casillas[i]) == typeid(Casilla_Verde)) || (typeid(casillas[i]) == typeid(Casilla_Azul)))  {
 			for (int j = 0; j < casillas[i] -> getCasas().size(); j++) {
@@ -277,8 +529,219 @@ void Tablero::nuevo_juego(WINDOW* win) {
 		}
 		delete casillas[i];
 	}
+	casillas.clear();
 }
 
+void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
+	if (typeid(*casillas[posicion]) == typeid(Casilla_Morada)) {
+		wattron(win2, COLOR_PAIR(9));
+		mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+		wattron(win2, COLOR_PAIR(10));
+		mvwprintw(win2, 4, 9, "Alquiler $");
+		mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+		mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+		mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+		mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+		mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+		mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+		mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+		mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+		mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+		mvwprintw(win2, 9, 7, "Con Hotel: $");
+		mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+		mvwprintw(win2, 10, 5, "Precio de Casas: $");
+		mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+		mvwprintw(win2, 12, 9, "Precio: $");
+		mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+	} else {
+		if (typeid(*casillas[posicion]) == typeid(Casilla_Celeste)) {
+			wattron(win2, COLOR_PAIR(8));
+			mvwprintw(win2, 2, 8, "%s", (casillas[posicion] -> getNombre()).c_str());
+			wattron(win2, COLOR_PAIR(10));
+			mvwprintw(win2, 4, 9, "Alquiler $");
+			mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+			mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+			mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+			mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+			mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+			mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+			mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+			mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+			mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+			mvwprintw(win2, 9, 7, "Con Hotel: $");
+			mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+			mvwprintw(win2, 10, 5, "Precio de Casas: $");
+			mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+			mvwprintw(win2, 12, 9, "Precio: $");
+			mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+		} else {
+			if (typeid(*casillas[posicion]) == typeid(Casilla_Rosada)) {
+				wattron(win2, COLOR_PAIR(7));
+				mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+				wattron(win2, COLOR_PAIR(10));
+				mvwprintw(win2, 4, 9, "Alquiler $");
+				mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+				mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+				mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+				mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+				mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+				mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+				mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+				mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+				mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+				mvwprintw(win2, 9, 7, "Con Hotel: $");
+				mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+				mvwprintw(win2, 10, 5, "Precio de Casas: $");
+				mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+				mvwprintw(win2, 12, 9, "Precio: $");
+				mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+			} else {
+				if (typeid(*casillas[posicion]) == typeid(Casilla_Naranja)) {
+					wattron(win2, COLOR_PAIR(14));
+					mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+					wattron(win2, COLOR_PAIR(10));
+					mvwprintw(win2, 4, 9, "Alquiler $");
+					mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+					mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+					mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+					mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+					mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+					mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+					mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+					mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+					mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+					mvwprintw(win2, 9, 7, "Con Hotel: $");
+					mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+					mvwprintw(win2, 10, 5, "Precio de Casas: $");
+					mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+					mvwprintw(win2, 12, 9, "Precio: $");
+					mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+				} else {
+					if (typeid(*casillas[posicion]) == typeid(Casilla_Roja)) {
+						wattron(win2, COLOR_PAIR(2));
+						mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+						wattron(win2, COLOR_PAIR(10));
+						mvwprintw(win2, 4, 9, "Alquiler $");
+						mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+						mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+						mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+						mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+						mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+						mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+						mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+						mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+						mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+						mvwprintw(win2, 9, 7, "Con Hotel: $");
+						mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+						mvwprintw(win2, 10, 5, "Precio de Casas: $");
+						mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+						mvwprintw(win2, 12, 9, "Precio: $");
+						mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+					} else {
+						if (typeid(*casillas[posicion]) == typeid(Casilla_Amarilla)) {
+							wattron(win2, COLOR_PAIR(15));
+							mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+							wattron(win2, COLOR_PAIR(10));
+							mvwprintw(win2, 4, 9, "Alquiler $");
+							mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+							mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+							mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+							mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+							mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+							mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+							mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+							mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+							mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+							mvwprintw(win2, 9, 7, "Con Hotel: $");
+							mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+							mvwprintw(win2, 10, 5, "Precio de Casas: $");
+							mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+							mvwprintw(win2, 12, 9, "Precio: $");
+							mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+						} else {
+							if (typeid(*casillas[posicion]) == typeid(Casilla_Verde)) {
+								wattron(win2, COLOR_PAIR(18));
+								mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+								wattron(win2, COLOR_PAIR(10));
+								mvwprintw(win2, 4, 9, "Alquiler $");
+								mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+								mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+								mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+								mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+								mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+								mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+								mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+								mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+								mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+								mvwprintw(win2, 9, 7, "Con Hotel: $");
+								mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+								mvwprintw(win2, 10, 5, "Precio de Casas: $");
+								mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+								mvwprintw(win2, 12, 9, "Precio: $");
+								mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+							} else {
+								if (typeid(*casillas[posicion]) == typeid(Casilla_Azul)) {
+									wattron(win2, COLOR_PAIR(5));
+									mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+									wattron(win2, COLOR_PAIR(10));
+									mvwprintw(win2, 4, 9, "Alquiler $");
+									mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+									mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
+									mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
+									mvwprintw(win2, 6, 6, "Con 2 Casas: $");
+									mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+									mvwprintw(win2, 7, 6, "Con 3 Casas: $");
+									mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
+									mvwprintw(win2, 8, 6, "Con 4 Casas: $");
+									mvwprintw(win2, 8, 20, "%d", casillas[posicion] -> getCasas()[3] -> getPrecio());
+									mvwprintw(win2, 9, 7, "Con Hotel: $");
+									mvwprintw(win2, 9, 19, "%d", casillas[posicion] -> getHotel() -> getPrecio());
+									mvwprintw(win2, 10, 5, "Precio de Casas: $");
+									mvwprintw(win2, 10, 23, "%d", casillas[posicion] -> getPrecio_Casa());
+									mvwprintw(win2, 12, 9, "Precio: $");
+									mvwprintw(win2, 12, 18, "%d", casillas[posicion] -> getPrecio());
+								} else {
+									if (typeid(*casillas[posicion]) == typeid(Casilla_Ferrocarril)) {
+										wattron(win2, COLOR_PAIR(12));
+										mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+										wattron(win2, COLOR_PAIR(10));
+										mvwprintw(win2, 4, 9, "Alquiler $");
+										mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
+										mvwprintw(win2, 6, 3, "Con 2 Ferrocarriles: $");
+										mvwprintw(win2, 6, 25, "%d", casillas[posicion] -> getAlquiler2());
+										mvwprintw(win2, 7, 3, "Con 3 Ferrocarriles: $");
+										mvwprintw(win2, 7, 25, "%d", casillas[posicion] -> getAlquiler3());
+										mvwprintw(win2, 8, 3, "Con 4 Ferrocarriles: $");
+										mvwprintw(win2, 8, 25, "%d", casillas[posicion] -> getAlquiler4());
+										mvwprintw(win2, 11, 9, "Precio: $");
+										mvwprintw(win2, 11, 18, "%d", casillas[posicion] -> getPrecio());
+
+									} else {
+										if (typeid(*casillas[posicion]) == typeid(Casilla_Comodin)) {
+											wattron(win2, COLOR_PAIR(1));
+											mvwprintw(win2, 3, 8, "%s", (casillas[posicion] -> getNombre()).c_str());
+											wattron(win2, COLOR_PAIR(4));
+											for (int i = 0; i < 6; i++) {
+												mvwprintw(win2, i + 5, 6, " ");
+												mvwprintw(win2, i + 5, 22, " ");
+											}
+											for (int i = 6; i < 23; i++) {
+												mvwprintw(win2, 5, i, " ");
+												mvwprintw(win2, 10, i, " ");
+												mvwprintw(win2, 8, i, " ");
+											}
+											mvwprintw(win2, 7, 13, "  ");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 void Tablero::init(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
@@ -299,9 +762,16 @@ void Tablero::init(string file) {
 		while (!inputFile.eof()) {
 			if ((contador == 0) || (contador == 10) || (contador == 20) || (contador == 30)) {
 				inputFile >> nombre;
-				Casilla* casilla = new Casilla_Especial(nombre);
+				string nombre1 = "";
+				for (int i = 0; i < nombre.size(); i++) {
+					if (nombre[i] != '_') {
+						nombre1 += nombre[i];
+					} else {
+						nombre1 += ' ';
+					}
+				}
+				Casilla* casilla = new Casilla_Especial(nombre1);
 				casillas.push_back(casilla);
-				cout << "ENTRO" << endl;
 			} else {
 				if ((contador == 1) || (contador == 3)) {
 					inputFile >> nombre;
@@ -313,35 +783,55 @@ void Tablero::init(string file) {
 					inputFile >> hotel;
 					inputFile >> precio_casa;
 					inputFile >> precio;
-					Casilla* casilla = new Casilla_Morada(nombre, alquiler, precio_casa, precio);
+					string nombre1 = "";
+					for (int i = 0; i < nombre.size(); i++) {
+						if (nombre[i] != '_') {
+							nombre1 += nombre[i];
+						} else {
+							nombre1 += ' ';
+						}
+					}
+					Casilla* casilla = new Casilla_Morada(nombre1, alquiler, precio_casa, precio);
 					vector<Casa*> casas;
 					Casa* casas1 = new Casa(casa1, false);
 					Casa* casas2 = new Casa(casa2, false);
 					Casa* casas3 = new Casa(casa3, false);
 					Casa* casas4 = new Casa(casa4, false);
 					casas.push_back(casas1);
-					casas.push_back(casas1);
-					casas.push_back(casas1);
-					casas.push_back(casas1);
+					casas.push_back(casas2);
+					casas.push_back(casas3);
+					casas.push_back(casas4);
 					casilla -> setCasas(casas);
+					Hotel* hotel1 = new Hotel(hotel, false);
+					casilla -> setHotel(hotel1);
 					casillas.push_back(casilla);
-
-					cout << "ENTRO" << endl;
 				} else {
 					if ((contador == 2) || (contador == 7) || (contador == 17) || (contador == 22) || (contador == 33) || (contador == 36)) {
 						inputFile >> nombre;
-						Casilla* casilla = new Casilla_Comodin(nombre);
+						string nombre1 = "";
+						for (int i = 0; i < nombre.size(); i++) {
+							if (nombre[i] != '_') {
+								nombre1 += nombre[i];
+							} else {
+								nombre1 += ' ';
+							}
+						}
+						Casilla* casilla = new Casilla_Comodin(nombre1);
 						casillas.push_back(casilla);
-
-						cout << "ENTRO" << endl;
 					} else {
 						if ((contador == 4) || (contador == 38)) {
 							inputFile >> nombre;
 							inputFile >> alquiler;
-							Casilla* casilla = new Casilla_Impuesto(nombre, alquiler);
+							string nombre1 = "";
+							for (int i = 0; i < nombre.size(); i++) {
+								if (nombre[i] != '_') {
+									nombre1 += nombre[i];
+								} else {
+									nombre1 += ' ';
+								}
+							}
+							Casilla* casilla = new Casilla_Impuesto(nombre1, alquiler);
 							casillas.push_back(casilla);
-
-							cout << "ENTRO" << endl;
 						} else {
 							if ((contador == 5) || (contador == 15) || (contador == 25) || (contador == 35)) {
 								inputFile >> nombre;
@@ -350,9 +840,16 @@ void Tablero::init(string file) {
 								inputFile >> alquiler3;
 								inputFile >> alquiler4;
 								inputFile >> precio;
-								Casilla* casilla = new Casilla_Ferrocarril(nombre, alquiler, alquiler2, alquiler3, alquiler4, precio);
+								string nombre1 = "";
+								for (int i = 0; i < nombre.size(); i++) {
+									if (nombre[i] != '_') {
+										nombre1 += nombre[i];
+									} else {
+										nombre1 += ' ';
+									}
+								}
+								Casilla* casilla = new Casilla_Ferrocarril(nombre1, alquiler, alquiler2, alquiler3, alquiler4, precio);
 								casillas.push_back(casilla);
-								cout << "ENTRO" << endl;
 							} else {
 								if ((contador == 6) || (contador == 8) || (contador == 9)) {
 									inputFile >> nombre;
@@ -364,26 +861,42 @@ void Tablero::init(string file) {
 									inputFile >> hotel;
 									inputFile >> precio_casa;
 									inputFile >> precio;
-									Casilla* casilla = new Casilla_Celeste(nombre, alquiler, precio_casa, precio);
+									string nombre1 = "";
+									for (int i = 0; i < nombre.size(); i++) {
+										if (nombre[i] != '_') {
+											nombre1 += nombre[i];
+										} else {
+											nombre1 += ' ';
+										}
+									}
+									Casilla* casilla = new Casilla_Celeste(nombre1, alquiler, precio_casa, precio);
 									vector<Casa*> casas;
 									Casa* casas1 = new Casa(casa1, false);
 									Casa* casas2 = new Casa(casa2, false);
 									Casa* casas3 = new Casa(casa3, false);
 									Casa* casas4 = new Casa(casa4, false);
 									casas.push_back(casas1);
-									casas.push_back(casas1);
-									casas.push_back(casas1);
-									casas.push_back(casas1);
+									casas.push_back(casas2);
+									casas.push_back(casas3);
+									casas.push_back(casas4);
 									casilla -> setCasas(casas);
+									Hotel* hotel1 = new Hotel(hotel, false);
+									casilla -> setHotel(hotel1);
 									casillas.push_back(casilla);
-									cout << "ENTRO" << endl;
 								} else {
 									if ((contador == 12) || (contador == 28)) {
 										inputFile >> nombre;
 										inputFile >> precio;
-										Casilla* casilla = new Casilla_Utilidad(nombre, precio);
+										string nombre1 = "";
+										for (int i = 0; i < nombre.size(); i++) {
+											if (nombre[i] != '_') {
+												nombre1 += nombre[i];
+											} else {
+												nombre1 += ' ';
+											}
+										}
+										Casilla* casilla = new Casilla_Utilidad(nombre1, precio);
 										casillas.push_back(casilla);
-										cout << "ENTRO" << endl;
 									} else {
 										if ((contador == 11) || (contador == 13) || (contador == 14)) {
 											inputFile >> nombre;
@@ -395,19 +908,28 @@ void Tablero::init(string file) {
 											inputFile >> hotel;
 											inputFile >> precio_casa;
 											inputFile >> precio;
-											Casilla* casilla = new Casilla_Rosada(nombre, alquiler, precio_casa, precio);
+											string nombre1 = "";
+											for (int i = 0; i < nombre.size(); i++) {
+												if (nombre[i] != '_') {
+													nombre1 += nombre[i];
+												} else {
+													nombre1 += ' ';
+												}
+											}
+											Casilla* casilla = new Casilla_Rosada(nombre1, alquiler, precio_casa, precio);
 											vector<Casa*> casas;
 											Casa* casas1 = new Casa(casa1, false);
 											Casa* casas2 = new Casa(casa2, false);
 											Casa* casas3 = new Casa(casa3, false);
 											Casa* casas4 = new Casa(casa4, false);
 											casas.push_back(casas1);
-											casas.push_back(casas1);
-											casas.push_back(casas1);
-											casas.push_back(casas1);
+											casas.push_back(casas2);
+											casas.push_back(casas3);
+											casas.push_back(casas4);
 											casilla -> setCasas(casas);
+											Hotel* hotel1 = new Hotel(hotel, false);
+											casilla -> setHotel(hotel1);
 											casillas.push_back(casilla);
-											cout << "ENTRO" << endl;
 										} else {
 											if ((contador == 16) || (contador == 18) || (contador == 19)) {
 												inputFile >> nombre;
@@ -419,19 +941,28 @@ void Tablero::init(string file) {
 												inputFile >> hotel;
 												inputFile >> precio_casa;
 												inputFile >> precio;
-												Casilla* casilla = new Casilla_Naranja(nombre, alquiler, precio_casa, precio);
+												string nombre1 = "";
+												for (int i = 0; i < nombre.size(); i++) {
+													if (nombre[i] != '_') {
+														nombre1 += nombre[i];
+													} else {
+														nombre1 += ' ';
+													}
+												}
+												Casilla* casilla = new Casilla_Naranja(nombre1, alquiler, precio_casa, precio);
 												vector<Casa*> casas;
 												Casa* casas1 = new Casa(casa1, false);
 												Casa* casas2 = new Casa(casa2, false);
 												Casa* casas3 = new Casa(casa3, false);
 												Casa* casas4 = new Casa(casa4, false);
 												casas.push_back(casas1);
-												casas.push_back(casas1);
-												casas.push_back(casas1);
-												casas.push_back(casas1);
+												casas.push_back(casas2);
+												casas.push_back(casas3);
+												casas.push_back(casas4);
 												casilla -> setCasas(casas);
+												Hotel* hotel1 = new Hotel(hotel, false);
+												casilla -> setHotel(hotel1);
 												casillas.push_back(casilla);
-												cout << "ENTRO" << endl;
 											} else {
 												if ((contador == 21) || (contador == 23) || (contador == 24)) {
 													inputFile >> nombre;
@@ -443,19 +974,28 @@ void Tablero::init(string file) {
 													inputFile >> hotel;
 													inputFile >> precio_casa;
 													inputFile >> precio;
-													Casilla* casilla = new Casilla_Roja(nombre, alquiler, precio_casa, precio);
+													string nombre1 = "";
+													for (int i = 0; i < nombre.size(); i++) {
+														if (nombre[i] != '_') {
+															nombre1 += nombre[i];
+														} else {
+															nombre1 += ' ';
+														}
+													}
+													Casilla* casilla = new Casilla_Roja(nombre1, alquiler, precio_casa, precio);
 													vector<Casa*> casas;
 													Casa* casas1 = new Casa(casa1, false);
 													Casa* casas2 = new Casa(casa2, false);
 													Casa* casas3 = new Casa(casa3, false);
 													Casa* casas4 = new Casa(casa4, false);
 													casas.push_back(casas1);
-													casas.push_back(casas1);
-													casas.push_back(casas1);
-													casas.push_back(casas1);
+													casas.push_back(casas2);
+													casas.push_back(casas3);
+													casas.push_back(casas4);
 													casilla -> setCasas(casas);
+													Hotel* hotel1 = new Hotel(hotel, false);
+													casilla -> setHotel(hotel1);
 													casillas.push_back(casilla);
-													cout << "ENTRO" << endl;
 												} else {
 													if ((contador == 26) || (contador == 27) || (contador == 29)) {
 														inputFile >> nombre;
@@ -467,19 +1007,28 @@ void Tablero::init(string file) {
 														inputFile >> hotel;
 														inputFile >> precio_casa;
 														inputFile >> precio;
-														Casilla* casilla = new Casilla_Amarilla(nombre, alquiler, precio_casa, precio);
+														string nombre1 = "";
+														for (int i = 0; i < nombre.size(); i++) {
+															if (nombre[i] != '_') {
+																nombre1 += nombre[i];
+															} else {
+																nombre1 += ' ';
+															}
+														}
+														Casilla* casilla = new Casilla_Amarilla(nombre1, alquiler, precio_casa, precio);
 														vector<Casa*> casas;
 														Casa* casas1 = new Casa(casa1, false);
 														Casa* casas2 = new Casa(casa2, false);
 														Casa* casas3 = new Casa(casa3, false);
 														Casa* casas4 = new Casa(casa4, false);
 														casas.push_back(casas1);
-														casas.push_back(casas1);
-														casas.push_back(casas1);
-														casas.push_back(casas1);
+														casas.push_back(casas2);
+														casas.push_back(casas3);
+														casas.push_back(casas4);
 														casilla -> setCasas(casas);
+														Hotel* hotel1 = new Hotel(hotel, false);
+														casilla -> setHotel(hotel1);
 														casillas.push_back(casilla);
-														cout << "ENTRO" << endl;
 													} else {
 														if ((contador == 31) || (contador == 32) || (contador == 34)) {
 															inputFile >> nombre;
@@ -491,19 +1040,28 @@ void Tablero::init(string file) {
 															inputFile >> hotel;
 															inputFile >> precio_casa;
 															inputFile >> precio;
-															Casilla* casilla = new Casilla_Verde(nombre, alquiler, precio_casa, precio);
+															string nombre1 = "";
+															for (int i = 0; i < nombre.size(); i++) {
+																if (nombre[i] != '_') {
+																	nombre1 += nombre[i];
+																} else {
+																	nombre1 += ' ';
+																}
+															}
+															Casilla* casilla = new Casilla_Verde(nombre1, alquiler, precio_casa, precio);
 															vector<Casa*> casas;
 															Casa* casas1 = new Casa(casa1, false);
 															Casa* casas2 = new Casa(casa2, false);
 															Casa* casas3 = new Casa(casa3, false);
 															Casa* casas4 = new Casa(casa4, false);
 															casas.push_back(casas1);
-															casas.push_back(casas1);
-															casas.push_back(casas1);
-															casas.push_back(casas1);
+															casas.push_back(casas2);
+															casas.push_back(casas3);
+															casas.push_back(casas4);
 															casilla -> setCasas(casas);
+															Hotel* hotel1 = new Hotel(hotel, false);
+															casilla -> setHotel(hotel1);
 															casillas.push_back(casilla);
-															cout << "ENTRO" << endl;
 														} else {
 															if ((contador == 37) || (contador == 39)) {
 																inputFile >> nombre;
@@ -515,23 +1073,30 @@ void Tablero::init(string file) {
 																inputFile >> hotel;
 																inputFile >> precio_casa;
 																inputFile >> precio;
-																Casilla* casilla = new Casilla_Azul(nombre, alquiler, precio_casa, precio);
+																string nombre1 = "";
+																for (int i = 0; i < nombre.size(); i++) {
+																	if (nombre[i] != '_') {
+																		nombre1 += nombre[i];
+																	} else {
+																		nombre1 += ' ';
+																	}
+																}
+																Casilla* casilla = new Casilla_Azul(nombre1, alquiler, precio_casa, precio);
 																vector<Casa*> casas;
 																Casa* casas1 = new Casa(casa1, false);
 																Casa* casas2 = new Casa(casa2, false);
 																Casa* casas3 = new Casa(casa3, false);
 																Casa* casas4 = new Casa(casa4, false);
 																casas.push_back(casas1);
-																casas.push_back(casas1);
-																casas.push_back(casas1);
-																casas.push_back(casas1);
+																casas.push_back(casas2);
+																casas.push_back(casas3);
+																casas.push_back(casas4);
 																casilla -> setCasas(casas);
+																Hotel* hotel1 = new Hotel(hotel, false);
+																casilla -> setHotel(hotel1);
 																casillas.push_back(casilla);
-																cout << "ENTRO" << endl;
-																cout << precio << endl;
 															} else {
 																inputFile >> o;
-																cout << "NO ENTRO" << endl;
 															}
 														}
 													}
@@ -545,19 +1110,9 @@ void Tablero::init(string file) {
 					}
 				}
 			}
-			//cout << contador << endl;
 			contador++;
 		}
 		inputFile.close();
-		for (int i = 0; i < casillas.size(); i++) {
-			if ((typeid(casillas[i]) == typeid(Casilla_Morada)) || (typeid(casillas[i]) == typeid(Casilla_Celeste)) || (typeid(casillas[i]) == typeid(Casilla_Rosada)) || (typeid(casillas[i]) == typeid(Casilla_Naranja)) || (typeid(casillas[i]) == typeid(Casilla_Roja)) || (typeid(casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(casillas[i]) == typeid(Casilla_Verde)) || (typeid(casillas[i]) == typeid(Casilla_Azul)))  {
-				for (int j = 0; j < casillas[i] -> getCasas().size(); j++) {
-					delete casillas[i] -> getCasas()[j];
-				}
-			}
-			delete casillas[i];
-		}
-
 	}
 }
 

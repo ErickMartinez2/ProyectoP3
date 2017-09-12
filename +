@@ -7,8 +7,6 @@
 #include <fstream>
 #include <vector>
 #include <typeinfo>
-#include <stdlib.h>
-#include <time.h>
 #include "Tablero.h"
 #include "Jugador.h"
 #include "Casilla.h"

@@ -4,10 +4,11 @@ Jugador::Jugador() {
 
 }
 
-Jugador::Jugador(string pnombre, char pficha, int pposicion) {
+Jugador::Jugador(string pnombre, char pficha, int pposicion, int pdinero) {
 	nombre = pnombre;
 	ficha = pficha;
 	posicion = pposicion;
+	dinero = pdinero;
 }
 
 string Jugador::getNombre() {
@@ -32,4 +33,12 @@ int Jugador::getPosicion() {
 
 void Jugador::setPosicion(int pposicion) {
 	posicion = pposicion;
+}
+
+int Jugador::getDinero() {
+	return dinero;
+}
+
+void Jugador::setDinero(int pdinero) {
+	dinero = pdinero;
 }

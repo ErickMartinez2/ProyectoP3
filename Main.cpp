@@ -10,7 +10,7 @@ using namespace std;
 int main() {
 	Tablero* tablero = new Tablero();
 	tablero -> init("Casillas.txt");
-	//int num = tablero -> play();
+	int num = tablero -> play();
 	delete tablero;
 	return 0;
 }
