@@ -4,29 +4,33 @@ Casilla::Casilla() {
 
 }
 
-Casilla::Casilla(string pnombre, int palquiler, int pprecio_casa, int pprecio) {
+Casilla::Casilla(string pnombre, int palquiler, int pprecio_casa, int pprecio, bool pdisponible) {
 	nombre = pnombre;
 	alquiler = palquiler;
 	precio_casa = pprecio_casa;
 	precio = pprecio;
+	disponible = pdisponible;
 }
 
-Casilla::Casilla(string pnombre, int palquiler, int palquiler2, int palquiler3, int palquiler4, int pprecio) {
+Casilla::Casilla(string pnombre, int palquiler, int palquiler2, int palquiler3, int palquiler4, int pprecio, bool pdisponible) {
 	nombre = pnombre;
 	alquiler = palquiler;
 	alquiler2 = palquiler2;
 	alquiler3 = palquiler3;
 	alquiler4 = palquiler4;
 	precio = pprecio;
+	disponible = pdisponible;
 }
 
-Casilla::Casilla(string pnombre) {
+Casilla::Casilla(string pnombre, bool pdisponible) {
 	nombre = pnombre;
+	disponible = pdisponible;
 }
 
-Casilla::Casilla(string pnombre, int palquiler) {
+Casilla::Casilla(string pnombre, int palquiler, bool pdisponible) {
 	nombre = pnombre;
 	alquiler = palquiler;
+	disponible = pdisponible;
 }
 
 string Casilla::getNombre() {
@@ -97,5 +101,13 @@ int Casilla::getPrecio() {
 
 void Casilla::setPrecio(int pprecio) {
 	precio = pprecio;
+}
+
+bool Casilla::getDisponible() {
+	return disponible;
+}
+
+void Casilla::setDisponible(bool pdisponible) {
+	disponible = pdisponible;
 }
 

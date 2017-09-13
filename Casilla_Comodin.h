@@ -8,7 +8,7 @@ using namespace std;
 class Casilla_Comodin: public Casilla {
 	public:
 		Casilla_Comodin();
-		Casilla_Comodin(string);
+		Casilla_Comodin(string, bool);
 };
 
 #endif

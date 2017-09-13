@@ -250,7 +250,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 						}
 					}
 				}
-				Jugador* jugador = new Jugador(nombre, ficha, 0, 0);
+				Jugador* jugador = new Jugador(nombre, ficha, 0, 1500);
 				jugadores.push_back(jugador);
 			}
 			salir = false;
@@ -280,7 +280,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 			wattron(win2, COLOR_PAIR(1));
 			werase(win2);
 			box(win2, 0, 0);
-			imprimirCasilla(win2, 12);
+			imprimirCasilla(win2, jugadores[turno] -> getPosicion());
 			werase(win);
 			box(win, 0 , 0);
 			refresh();
@@ -338,10 +338,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   wattron(win2, COLOR_PAIR(1));
 							   werase(win2);
 							   box(win2, 0, 0);
-							   imprimirCasilla(win2, 12);
+							   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
 							   werase(win);
 							   box(win, 0 , 0);
 							   refresh();
+							   srand(time(NULL));
 							   int num = rand() % 6 + 1;
 							   int num2 = rand() % 6 + 1;
 							   wattron(win, COLOR_PAIR(5));
@@ -504,6 +505,187 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   wrefresh(win);
 							   wrefresh(win2);
 							   getch();
+							   string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+							   string caracteres3 = "";
+							   for (int i = 0; i < caracteres2.size(); i++) {
+								   if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+									   caracteres3 += caracteres2[i];
+								   }
+							   }
+							   int num_faltante2 = 4 - caracteres3.size();
+							   for (int i = 0; i < num_faltante2; i++) {
+								   caracteres3 += " ";
+							   }
+							   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+							   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+							   int nueva_posicion = jugadores[turno] -> getPosicion() + num + num2;
+							   if (nueva_posicion > 39) {
+								   nueva_posicion = nueva_posicion - 40;
+							   }
+							   jugadores[turno] -> setPosicion(nueva_posicion);
+							   string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+							   string caracteres5 = "";
+							   for (int i = 0; i < caracteres4.size(); i++) {
+								   if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+									   caracteres5 += caracteres4[i];
+								   }
+							   }
+							   caracteres5 += jugadores[turno] -> getFicha();
+							   int num_faltante3 = 4 - caracteres5.size();
+							   for (int i = 0; i < num_faltante3; i++) {
+								   caracteres5 += " ";
+							   }
+							   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+							   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+							   imprimirTablero();
+							   wattron(win, COLOR_PAIR(1));
+							   wattron(win2, COLOR_PAIR(1));
+							   werase(win2);
+							   box(win2, 0, 0);
+							   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+							   werase(win);
+							   box(win, 0 , 0);
+							   refresh();
+							   int opcion2 = 0;
+							   int seleccion2 = 0;
+							   bool salir2 = true;
+							   wattron(win, COLOR_PAIR(1));
+							   string menu2[2] = {" Comprar Propiedad ", "     No Comprar    "};
+							   while (salir2) {
+								   wattron(win2, COLOR_PAIR(1));
+								   werase(win2);
+								   box(win2, 0, 0);
+								   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+								   werase(win);
+								   box(win, 0 , 0);
+								   refresh();
+								   wattron(win, COLOR_PAIR(5));
+								   mvwprintw(win, 2, 33, "Turno del Jugador ");
+								   mvwprintw(win, 2, 51, "%d", turno + 1);
+								   wattron(win, COLOR_PAIR(1));
+								   mvwprintw(win, 5, 20, "Nombre: ");		
+								   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+								   mvwprintw(win, 7, 20, "Ficha: ");
+								   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+								   mvwprintw(win, 5, 50, "Dinero: ");
+								   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+								   mvwprintw(win, 7, 50, "Posicion: ");
+								   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+								   wattron(win, COLOR_PAIR(5));
+								   mvwprintw(win, 12, 17, "Casilla Actual");
+								   wattron(win, COLOR_PAIR(5));
+								   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+								   refresh();
+								   wrefresh(win);
+								   wrefresh(win2);
+								   wattron(win, COLOR_PAIR(1));
+								   for (int i = 0; i < 2; i++) {
+									   if (i == seleccion2) {
+										   wattron(win, A_REVERSE);
+										   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+										   wattroff(win, A_REVERSE);
+									   } else {
+										   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+									   }
+								   }
+								   wmove(win, 32, 89);
+								   opcion2 = wgetch(win);
+								   switch (opcion2) {
+									   case KEY_UP:	
+										   seleccion2--;
+										   if (seleccion2 < 0) {
+											   seleccion2 = 0;
+										   }
+										   break;
+									   case KEY_DOWN:
+										   seleccion2++;
+										   if (seleccion2 > 1) {
+											   seleccion2 = 1;
+										   }
+										   break;
+									   default:
+										   break;
+								   }
+								   if (opcion2 == 10) {
+									   switch (seleccion2) {
+										   case 0:
+											   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio() >= 0) {
+												   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
+												   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio());
+												   jugadores[turno] -> getPropiedades().push_back(casillas[jugadores[turno] -> getPosicion()]);
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 17, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 19, 55, " Compra Realizada! ");
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+												   salir2 = false;
+											   } else {
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 17, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 19, 55, " No Tienes Dinero! ");
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+												   salir2 = false;
+											   }
+											   break;
+										   case 1:
+											   salir2 = false;
+											   break;
+									   }
+								   }
+							   }
+							   turno++;
+							   if (turno == jugadores.size()) {
+								   turno = 0;
+							   }
 						   }break;
 					case 1:{
 
@@ -522,7 +704,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 	}
 	jugadores.clear();
 	for (int i = 0; i < casillas.size(); i++) {
-		if ((typeid(casillas[i]) == typeid(Casilla_Morada)) || (typeid(casillas[i]) == typeid(Casilla_Celeste)) || (typeid(casillas[i]) == typeid(Casilla_Rosada)) || (typeid(casillas[i]) == typeid(Casilla_Naranja)) || (typeid(casillas[i]) == typeid(Casilla_Roja)) || (typeid(casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(casillas[i]) == typeid(Casilla_Verde)) || (typeid(casillas[i]) == typeid(Casilla_Azul)))  {
+		if ((typeid(*casillas[i]) == typeid(Casilla_Morada)) || (typeid(*casillas[i]) == typeid(Casilla_Celeste)) || (typeid(*casillas[i]) == typeid(Casilla_Rosada)) || (typeid(*casillas[i]) == typeid(Casilla_Naranja)) || (typeid(*casillas[i]) == typeid(Casilla_Roja)) || (typeid(*casillas[i]) == typeid(Casilla_Amarilla)) || (typeid(*casillas[i]) == typeid(Casilla_Verde)) || (typeid(*casillas[i]) == typeid(Casilla_Azul)))  {
 			for (int j = 0; j < casillas[i] -> getCasas().size(); j++) {
 				delete casillas[i] -> getCasas()[j];
 			}
@@ -542,7 +724,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 		mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 		mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 		mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-		mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+		mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 		mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 		mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 		mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -563,7 +745,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 			mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 			mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 			mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-			mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+			mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 			mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 			mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 			mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -584,7 +766,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 				mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 				mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 				mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-				mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+				mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 				mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 				mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 				mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -605,7 +787,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 					mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 					mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 					mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-					mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+					mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 					mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 					mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 					mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -626,7 +808,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 						mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 						mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 						mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-						mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+						mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 						mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 						mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 						mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -647,7 +829,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 							mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 							mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 							mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-							mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+							mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 							mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 							mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 							mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -668,7 +850,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 								mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 								mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 								mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-								mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+								mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 								mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 								mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 								mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -689,7 +871,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 									mvwprintw(win2, 5, 6, "Con 1 Casa:  $");
 									mvwprintw(win2, 5, 20, "%d", casillas[posicion] -> getCasas()[0] -> getPrecio());
 									mvwprintw(win2, 6, 6, "Con 2 Casas: $");
-									mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
+									mvwprintw(win2, 6, 20, "%d", casillas[posicion] -> getCasas()[1] -> getPrecio());
 									mvwprintw(win2, 7, 6, "Con 3 Casas: $");
 									mvwprintw(win2, 7, 20, "%d", casillas[posicion] -> getCasas()[2] -> getPrecio());
 									mvwprintw(win2, 8, 6, "Con 4 Casas: $");
@@ -703,7 +885,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 								} else {
 									if (typeid(*casillas[posicion]) == typeid(Casilla_Ferrocarril)) {
 										wattron(win2, COLOR_PAIR(12));
-										mvwprintw(win2, 2, 6, "%s", (casillas[posicion] -> getNombre()).c_str());
+										mvwprintw(win2, 2, 4, "%s", (casillas[posicion] -> getNombre()).c_str());
 										wattron(win2, COLOR_PAIR(10));
 										mvwprintw(win2, 4, 9, "Alquiler $");
 										mvwprintw(win2, 4, 19, "%d", casillas[posicion] -> getAlquiler());
@@ -904,9 +1086,9 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 
 																	mvwprintw(win2, 3, 8,  "  ,   /\\   ,  ");
 																	mvwprintw(win2, 4, 8,  " / '_'  '_' \\ ");
-																	mvwprintw(win2, 5, 8,  "|  POLICIA   | ");
+																	mvwprintw(win2, 5, 8,  "|  POLICIA   |");
 																	mvwprintw(win2, 6, 8,  "\\    .--.    /");
-																	mvwprintw(win2, 7, 8,  " |  ( P3 )  |");
+																	mvwprintw(win2, 7, 8,  " |  ( P3 )  | ");
 																	mvwprintw(win2, 8, 8,  " \\   '--'   / ");
 																	mvwprintw(win2, 9, 8, "  '--.  .--'  ");
 																	mvwprintw(win2, 10, 8, "      \\/      ");
@@ -956,9 +1138,9 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 																	if (contador == 1) {
 																		nombre1 += " ";
 																	} else {
-																	if (contador == 2) {
-																		nombre1 += " ";
-																	} 
+																		if (contador == 2) {
+																			nombre1 += " ";
+																		} 
 																	}
 																} else {
 																	if (contador == 0 || contador == 1 || contador == 2) {
@@ -979,7 +1161,6 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 															mvwprintw(win2, 7, 1, "Ambas Utilidades: Dados x 10");
 															mvwprintw(win2, 10, 9, "Precio: $");
 															mvwprintw(win2, 10, 18, "%d", casillas[posicion] -> getAlquiler());
-
 														}
 													}
 												}
@@ -994,7 +1175,9 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 			}
 		}
 	}
+	wmove(win2, 13, 28);
 }
+
 void Tablero::init(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
@@ -1023,7 +1206,7 @@ void Tablero::init(string file) {
 						nombre1 += ' ';
 					}
 				}
-				Casilla* casilla = new Casilla_Especial(nombre1);
+				Casilla* casilla = new Casilla_Especial(nombre1, true);
 				casillas.push_back(casilla);
 			} else {
 				if ((contador == 1) || (contador == 3)) {
@@ -1044,7 +1227,7 @@ void Tablero::init(string file) {
 							nombre1 += ' ';
 						}
 					}
-					Casilla* casilla = new Casilla_Morada(nombre1, alquiler, precio_casa, precio);
+					Casilla* casilla = new Casilla_Morada(nombre1, alquiler, precio_casa, precio, true);
 					vector<Casa*> casas;
 					Casa* casas1 = new Casa(casa1, false);
 					Casa* casas2 = new Casa(casa2, false);
@@ -1069,7 +1252,7 @@ void Tablero::init(string file) {
 								nombre1 += ' ';
 							}
 						}
-						Casilla* casilla = new Casilla_Comodin(nombre1);
+						Casilla* casilla = new Casilla_Comodin(nombre1, true);
 						casillas.push_back(casilla);
 					} else {
 						if ((contador == 4) || (contador == 38)) {
@@ -1083,7 +1266,7 @@ void Tablero::init(string file) {
 									nombre1 += ' ';
 								}
 							}
-							Casilla* casilla = new Casilla_Impuesto(nombre1, alquiler);
+							Casilla* casilla = new Casilla_Impuesto(nombre1, alquiler, true);
 							casillas.push_back(casilla);
 						} else {
 							if ((contador == 5) || (contador == 15) || (contador == 25) || (contador == 35)) {
@@ -1101,7 +1284,7 @@ void Tablero::init(string file) {
 										nombre1 += ' ';
 									}
 								}
-								Casilla* casilla = new Casilla_Ferrocarril(nombre1, alquiler, alquiler2, alquiler3, alquiler4, precio);
+								Casilla* casilla = new Casilla_Ferrocarril(nombre1, alquiler, alquiler2, alquiler3, alquiler4, precio, true);
 								casillas.push_back(casilla);
 							} else {
 								if ((contador == 6) || (contador == 8) || (contador == 9)) {
@@ -1122,7 +1305,7 @@ void Tablero::init(string file) {
 											nombre1 += ' ';
 										}
 									}
-									Casilla* casilla = new Casilla_Celeste(nombre1, alquiler, precio_casa, precio);
+									Casilla* casilla = new Casilla_Celeste(nombre1, alquiler, precio_casa, precio, true);
 									vector<Casa*> casas;
 									Casa* casas1 = new Casa(casa1, false);
 									Casa* casas2 = new Casa(casa2, false);
@@ -1148,7 +1331,7 @@ void Tablero::init(string file) {
 												nombre1 += ' ';
 											}
 										}
-										Casilla* casilla = new Casilla_Utilidad(nombre1, precio);
+										Casilla* casilla = new Casilla_Utilidad(nombre1, precio, true);
 										casillas.push_back(casilla);
 									} else {
 										if ((contador == 11) || (contador == 13) || (contador == 14)) {
@@ -1169,7 +1352,7 @@ void Tablero::init(string file) {
 													nombre1 += ' ';
 												}
 											}
-											Casilla* casilla = new Casilla_Rosada(nombre1, alquiler, precio_casa, precio);
+											Casilla* casilla = new Casilla_Rosada(nombre1, alquiler, precio_casa, precio, true);
 											vector<Casa*> casas;
 											Casa* casas1 = new Casa(casa1, false);
 											Casa* casas2 = new Casa(casa2, false);
@@ -1202,7 +1385,7 @@ void Tablero::init(string file) {
 														nombre1 += ' ';
 													}
 												}
-												Casilla* casilla = new Casilla_Naranja(nombre1, alquiler, precio_casa, precio);
+												Casilla* casilla = new Casilla_Naranja(nombre1, alquiler, precio_casa, precio, true);
 												vector<Casa*> casas;
 												Casa* casas1 = new Casa(casa1, false);
 												Casa* casas2 = new Casa(casa2, false);
@@ -1235,7 +1418,7 @@ void Tablero::init(string file) {
 															nombre1 += ' ';
 														}
 													}
-													Casilla* casilla = new Casilla_Roja(nombre1, alquiler, precio_casa, precio);
+													Casilla* casilla = new Casilla_Roja(nombre1, alquiler, precio_casa, precio, true);
 													vector<Casa*> casas;
 													Casa* casas1 = new Casa(casa1, false);
 													Casa* casas2 = new Casa(casa2, false);
@@ -1268,7 +1451,7 @@ void Tablero::init(string file) {
 																nombre1 += ' ';
 															}
 														}
-														Casilla* casilla = new Casilla_Amarilla(nombre1, alquiler, precio_casa, precio);
+														Casilla* casilla = new Casilla_Amarilla(nombre1, alquiler, precio_casa, precio, true);
 														vector<Casa*> casas;
 														Casa* casas1 = new Casa(casa1, false);
 														Casa* casas2 = new Casa(casa2, false);
@@ -1301,7 +1484,7 @@ void Tablero::init(string file) {
 																	nombre1 += ' ';
 																}
 															}
-															Casilla* casilla = new Casilla_Verde(nombre1, alquiler, precio_casa, precio);
+															Casilla* casilla = new Casilla_Verde(nombre1, alquiler, precio_casa, precio, true);
 															vector<Casa*> casas;
 															Casa* casas1 = new Casa(casa1, false);
 															Casa* casas2 = new Casa(casa2, false);
@@ -1334,7 +1517,7 @@ void Tablero::init(string file) {
 																		nombre1 += ' ';
 																	}
 																}
-																Casilla* casilla = new Casilla_Azul(nombre1, alquiler, precio_casa, precio);
+																Casilla* casilla = new Casilla_Azul(nombre1, alquiler, precio_casa, precio, true);
 																vector<Casa*> casas;
 																Casa* casas1 = new Casa(casa1, false);
 																Casa* casas2 = new Casa(casa2, false);

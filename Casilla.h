@@ -17,12 +17,13 @@ class Casilla {
 		Hotel* hotel;
 		int precio_casa;
 		int precio;
+		bool disponible;
 	public:
 		Casilla();
-		Casilla(string, int, int, int);
-		Casilla(string, int, int, int, int, int);
-		Casilla(string);
-		Casilla(string, int);
+		Casilla(string, int, int, int, bool);
+		Casilla(string, int, int, int, int, int, bool);
+		Casilla(string, bool);
+		Casilla(string, int, bool);
 		string getNombre();
 		void setNombre(string);
 		int getAlquiler();
@@ -41,7 +42,8 @@ class Casilla {
 		void setPrecio_Casa(int);
 		int getPrecio();
 		virtual void setPrecio(int);
-		//virtual void printCasilla() = 0;
+		bool getDisponible();
+		void setDisponible(bool);
 };
 
 #endif

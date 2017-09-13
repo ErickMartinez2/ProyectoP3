@@ -8,7 +8,7 @@ using namespace std;
 class Casilla_Rosada: public Casilla {
 	public:
 		Casilla_Rosada();
-		Casilla_Rosada(string, int, int, int);	
+		Casilla_Rosada(string, int, int, int, bool);	
 };
 
 #endif

@@ -8,7 +8,7 @@ using namespace std;
 class Casilla_Utilidad: public Casilla {
 	public:
 		Casilla_Utilidad();
-		Casilla_Utilidad(string, int);	
+		Casilla_Utilidad(string, int, bool);	
 };
 
 #endif

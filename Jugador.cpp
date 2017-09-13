@@ -42,3 +42,12 @@ int Jugador::getDinero() {
 void Jugador::setDinero(int pdinero) {
 	dinero = pdinero;
 }
+
+vector<Casilla*> Jugador::getPropiedades() {
+	return propiedades;
+}
+
+void Jugador::setPropiedades(vector<Casilla*> ppropiedades) {
+	propiedades = ppropiedades;
+}
+

@@ -2,6 +2,6 @@
 #include <iostream>
 using namespace std;
 
-Casilla_Utilidad::Casilla_Utilidad(string pnombre, int pprecio): Casilla(pnombre, pprecio) {
+Casilla_Utilidad::Casilla_Utilidad(string pnombre, int pprecio, bool pdisponible): Casilla(pnombre, pprecio, pdisponible) {
 
 }

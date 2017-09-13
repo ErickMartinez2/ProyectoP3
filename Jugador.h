@@ -1,6 +1,8 @@
 #ifndef JUGADOR_H
 #define JUGADOR_H
 #include <string>
+#include <vector>
+#include "Casilla.h"
 using namespace std;
 
 class Jugador {
@@ -9,6 +11,7 @@ class Jugador {
 		char ficha;
 		int posicion;
 		int dinero;
+		vector<Casilla*> propiedades;
 	public:
 		Jugador();
 		Jugador(string, char, int, int);
@@ -20,6 +23,8 @@ class Jugador {
 		void setPosicion(int);
 		int getDinero();
 		void setDinero(int);
+		vector<Casilla*> getPropiedades();
+		void setPropiedades(vector<Casilla*>);
 };
 
 #endif
