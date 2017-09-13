@@ -280,7 +280,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 			wattron(win2, COLOR_PAIR(1));
 			werase(win2);
 			box(win2, 0, 0);
-			imprimirCasilla(win2, 0);
+			imprimirCasilla(win2, 12);
 			werase(win);
 			box(win, 0 , 0);
 			refresh();
@@ -338,7 +338,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   wattron(win2, COLOR_PAIR(1));
 							   werase(win2);
 							   box(win2, 0, 0);
-							   imprimirCasilla(win2, 0);
+							   imprimirCasilla(win2, 12);
 							   werase(win);
 							   box(win, 0 , 0);
 							   refresh();
@@ -835,24 +835,154 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 												}
 											} else {
 												if (typeid(*casillas[posicion]) == typeid(Casilla_Especial)) {
-													wattron(win2, COLOR_PAIR(1));
-													mvwprintw(win2, 2, 8, "   COBRENSE");
-													mvwprintw(win2, 3, 8, "$200 DE SUELDO");
-													mvwprintw(win2, 4, 8, "   AL PASAR");
-													wattron(win2, COLOR_PAIR(2));
-													for (int i = 7; i < 14; i++) {
-														mvwprintw(win2, 6, i, " ");
-														mvwprintw(win2, 11, i, " ");
-														mvwprintw(win2, 6, i + 9, " ");
-														mvwprintw(win2, 11, i + 9, " ");
+													if (casillas[posicion] -> getNombre() == "GO") {
+														wattron(win2, COLOR_PAIR(1));
+														mvwprintw(win2, 2, 8, "   COBRENSE");
+														mvwprintw(win2, 3, 8, "$200 DE SUELDO");
+														mvwprintw(win2, 4, 8, "   AL PASAR");
+														wattron(win2, COLOR_PAIR(2));
+														for (int i = 7; i < 14; i++) {
+															mvwprintw(win2, 6, i, " ");
+															mvwprintw(win2, 11, i, " ");
+															mvwprintw(win2, 6, i + 9, " ");
+															mvwprintw(win2, 11, i + 9, " ");
+														}
+														for (int i = 6; i < 10; i++) {
+															mvwprintw(win2, i + 1, 7, " ");
+															mvwprintw(win2, i + 1, 16, " ");
+															mvwprintw(win2, i + 1, 22, " ");
+														}
+														mvwprintw(win2, 9, 11, "   ");
+														mvwprintw(win2, 10, 13, " ");																		} else {
+															if (casillas[posicion] -> getNombre() == "CARCEL") {
+																wattron(win2, COLOR_PAIR(14));
+																mvwprintw(win2, 2, 12, "EN LA");
+																mvwprintw(win2, 12, 11, "CARCEL");
+																wattron(win2, COLOR_PAIR(12));
+																for (int i = 6; i < 23; i++) {
+																	mvwprintw(win2, 4, i, " ");
+																	mvwprintw(win2, 10, i, " ");
+																}
+																for (int i = 6; i < 23; i += 2) {
+																	for (int j = 5; j < 10; j++) {
+																		mvwprintw(win2, j, i, " ");
+																	}
+																}
+																wattron(win2, COLOR_PAIR(3));
+																for (int i = 7; i < 23; i += 2) {
+																	for (int j = 5; j < 10; j++) {
+																		mvwprintw(win2, j, i, " ");
+																	}
+																}
+															} else {
+																if (casillas[posicion] -> getNombre() == "PARADA LIBRE") {
+																	wattron(win2, COLOR_PAIR(1));
+																	mvwprintw(win2, 2, 12, "PARADA");
+																	mvwprintw(win2, 11, 13, "LIBRE");
+																	wattron(win2, COLOR_PAIR(2));
+																	for (int i = 10; i < 20; i++) {
+																		mvwprintw(win2, 4, i, " ");
+																		mvwprintw(win2, 5, i, " ");
+																		mvwprintw(win2, 6, i, " ");
+																	}
+																	for (int i = 8; i < 22; i++) {
+																		mvwprintw(win2, 7, i, " ");
+																		mvwprintw(win2, 8, i, " ");
+																	}
+																	wattron(win2, COLOR_PAIR(3));
+																	mvwprintw(win2, 9, 10, " ");
+																	mvwprintw(win2, 9, 19, " ");		
+																	for (int i = 13; i < 17; i++) {
+																		mvwprintw(win2, 6, i, " ");
+																		mvwprintw(win2, 7, i, " ");
+																	}
+																} else {
+																	wattron(win2, COLOR_PAIR(1));
+																	mvwprintw(win2, 1, 11, "¡VAYASE");
+																	mvwprintw(win2, 12, 9, "A LA CARCEL!");
+																	wattron(win2, COLOR_PAIR(17));
+
+																	mvwprintw(win2, 3, 8,  "  ,   /\\   ,  ");
+																	mvwprintw(win2, 4, 8,  " / '_'  '_' \\ ");
+																	mvwprintw(win2, 5, 8,  "|  POLICIA   | ");
+																	mvwprintw(win2, 6, 8,  "\\    .--.    /");
+																	mvwprintw(win2, 7, 8,  " |  ( P3 )  |");
+																	mvwprintw(win2, 8, 8,  " \\   '--'   / ");
+																	mvwprintw(win2, 9, 8, "  '--.  .--'  ");
+																	mvwprintw(win2, 10, 8, "      \\/      ");
+																}
+															}
+														}
+												} else {
+													if (typeid(*casillas[posicion]) == typeid(Casilla_Utilidad)) {
+														if (casillas[posicion] -> getNombre() == "COMPANIA DE ELECTRICIDAD") {
+															string nombre = casillas[posicion] -> getNombre();
+															string nombre1 = "";
+															string nombre2 = "";
+															int contador = 0;
+															for (int i = 0; i < nombre.size(); i++) {
+																if (nombre[i] == ' ') {
+																	contador++;
+																	if (contador == 2) {
+																		nombre2 += " ";
+																	}
+																} else {
+																	if (contador == 0) {
+																		nombre1 += nombre[i];
+																	} else {
+																		if (contador == 1 || contador == 2) {
+																			nombre2 += nombre[i];
+																		} 								
+																	}
+																}
+															}
+															wattron(win2, COLOR_PAIR(13));
+															mvwprintw(win2, 2, 11, "%s", nombre1.c_str());
+															mvwprintw(win2, 3, 8, "%s", nombre2.c_str());
+															wattron(win2, COLOR_PAIR(10));
+															mvwprintw(win2, 5, 11, "Alquiler");
+															mvwprintw(win2, 6, 3, "Una Utilidad: Dados x 4");
+															mvwprintw(win2, 7, 1, "Ambas Utilidades: Dados x 10");
+															mvwprintw(win2, 10, 9, "Precio: $");
+															mvwprintw(win2, 10, 18, "%d", casillas[posicion] -> getAlquiler());
+														} else {
+															string nombre = casillas[posicion] -> getNombre();
+															string nombre1 = "";
+															string nombre2 = "";
+															int contador = 0;
+															for (int i = 0; i < nombre.size(); i++) {
+																if (nombre[i] == ' ') {
+																	contador++;
+																	if (contador == 1) {
+																		nombre1 += " ";
+																	} else {
+																	if (contador == 2) {
+																		nombre1 += " ";
+																	} 
+																	}
+																} else {
+																	if (contador == 0 || contador == 1 || contador == 2) {
+																		nombre1 += nombre[i];
+																	} else {
+																		if (contador == 3) {
+																			nombre2 += nombre[i];
+																		} 								
+																	}
+																}
+															}
+															wattron(win2, COLOR_PAIR(16));
+															mvwprintw(win2, 2, 8, "%s", nombre1.c_str());
+															mvwprintw(win2, 3, 11, "%s", nombre2.c_str());
+															wattron(win2, COLOR_PAIR(10));
+															mvwprintw(win2, 5, 11, "Alquiler");
+															mvwprintw(win2, 6, 3, "Una Utilidad: Dados x 4");
+															mvwprintw(win2, 7, 1, "Ambas Utilidades: Dados x 10");
+															mvwprintw(win2, 10, 9, "Precio: $");
+															mvwprintw(win2, 10, 18, "%d", casillas[posicion] -> getAlquiler());
+
+														}
 													}
-													for (int i = 6; i < 10; i++) {
-														mvwprintw(win2, i + 1, 7, " ");
-														mvwprintw(win2, i + 1, 16, " ");
-														mvwprintw(win2, i + 1, 22, " ");
-													}
-													mvwprintw(win2, 9, 11, "   ");
-													mvwprintw(win2, 10, 13, " ");																		}
+												}
 											}
 										}
 									}
@@ -865,7 +995,6 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 		}
 	}
 }
-
 void Tablero::init(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
