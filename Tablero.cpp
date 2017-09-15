@@ -343,8 +343,8 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   box(win, 0 , 0);
 							   refresh();
 							   srand(time(NULL));
-							   int num = rand() % 6 + 1;
-							   int num2 = rand() % 6 + 1;
+							   int num_random1 = rand() % 6 + 1;
+							   int num_random2 = rand() % 6 + 1;
 							   wattron(win, COLOR_PAIR(5));
 							   mvwprintw(win, 2, 33, "Turno del Jugador ");
 							   mvwprintw(win, 2, 51, "%d", turno + 1);
@@ -361,146 +361,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   mvwprintw(win, 12, 18, "Casilla Actual");
 							   wattron(win, COLOR_PAIR(5));
 							   mvwprintw(win, 18, 55, " Resultado de Los Dados ");
-							   string espacio1 = "   ";
-							   string espacio2 = " 0 ";
-							   init_pair(21, 16, COLOR_WHITE);
-							   wattron(win, COLOR_PAIR(21));
-							   switch (num) {
-								   case 1:
-									   mvwprintw(win, 20, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio1.c_str());
-									   break;
-								   case 2:
-									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
-									   break;
-								   case 3:
-									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
-									   break;
-								   case 4:
-									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
-									   break;
-								   case 5:
-									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
-									   break;
-								   case 6:
-									   mvwprintw(win, 20, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 57, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 60, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 63, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 63, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 63, "%s", espacio2.c_str());
-									   break;
-							   }
-							   switch (num2) {
-								   case 1:
-									   mvwprintw(win, 20, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio1.c_str());
-									   break;
-								   case 2:
-									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
-									   break;
-								   case 3:
-									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
-									   break;
-								   case 4:
-									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
-									   break;
-								   case 5:
-									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
-									   break;
-								   case 6:
-									   mvwprintw(win, 20, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 68, "%s", espacio2.c_str());
-									   mvwprintw(win, 20, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 21, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 22, 71, "%s", espacio1.c_str());
-									   mvwprintw(win, 20, 74, "%s", espacio2.c_str());
-									   mvwprintw(win, 21, 74, "%s", espacio2.c_str());
-									   mvwprintw(win, 22, 74, "%s", espacio2.c_str());
-									   break;
-							   }
+							   imprimirDados(win, num_random1, num_random2);
 							   refresh();
 							   wrefresh(win);
 							   wrefresh(win2);
@@ -518,7 +379,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   }
 							   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
 							   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
-							   int nueva_posicion = jugadores[turno] -> getPosicion() + num + num2;
+							   int nueva_posicion = jugadores[turno] -> getPosicion() + num_random1 + num_random2;
 							   if (nueva_posicion > 39) {
 								   nueva_posicion = nueva_posicion - 40;
 							   }
@@ -546,20 +407,8 @@ void Tablero::nuevo_juego(WINDOW* win) {
 							   werase(win);
 							   box(win, 0 , 0);
 							   refresh();
-							   if (casillas[jugadores[turno] -> getPosicion()] -> getDisponible()) {
-								   int opcion2 = 0;
-								   int seleccion2 = 0;
-								   bool salir2 = true;
-								   wattron(win, COLOR_PAIR(1));
-								   string menu2[2] = {" Comprar Propiedad ", "     No Comprar    "};
-								   while (salir2) {
-									   wattron(win2, COLOR_PAIR(1));
-									   werase(win2);
-									   box(win2, 0, 0);
-									   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-									   werase(win);
-									   box(win, 0 , 0);
-									   refresh();
+							   if (typeid(*casillas[jugadores[turno] -> getPosicion()]) == typeid(Casilla_Especial)) {
+								   if (casillas[jugadores[turno] -> getPosicion()] -> getNombre() == "GO") {
 									   wattron(win, COLOR_PAIR(5));
 									   mvwprintw(win, 2, 33, "Turno del Jugador ");
 									   mvwprintw(win, 2, 51, "%d", turno + 1);
@@ -575,186 +424,707 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   wattron(win, COLOR_PAIR(5));
 									   mvwprintw(win, 12, 18, "Casilla Actual");
 									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-									   refresh();
-									   wrefresh(win);
-									   wrefresh(win2);
+									   mvwprintw(win, 18, 55, "   Menu GO   ");
 									   wattron(win, COLOR_PAIR(1));
-									   for (int i = 0; i < 2; i++) {
-										   if (i == seleccion2) {
-											   wattron(win, A_REVERSE);
-											   mvwprintw(win, i + 19, 55, menu2[i].c_str());
-											   wattroff(win, A_REVERSE);
-										   } else {
-											   mvwprintw(win, i + 19, 55, menu2[i].c_str());
-										   }
-									   }
-									   wmove(win, 32, 89);
-									   opcion2 = wgetch(win);
-									   switch (opcion2) {
-										   case KEY_UP:	
-											   seleccion2--;
-											   if (seleccion2 < 0) {
-												   seleccion2 = 0;
-											   }
-											   break;
-										   case KEY_DOWN:
-											   seleccion2++;
-											   if (seleccion2 > 1) {
-												   seleccion2 = 1;
-											   }
-											   break;
-										   default:
-											   break;
-									   }
-									   if (opcion2 == 10) {
-										   switch (seleccion2) {
-											   case 0:
-												   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio() >= 0) {
-													   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
-													   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio());
-													   jugadores[turno] -> getPropiedades().push_back(casillas[jugadores[turno] -> getPosicion()]);
-													   wattron(win2, COLOR_PAIR(1));
-													   werase(win2);
-													   box(win2, 0, 0);
-													   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-													   werase(win);
-													   box(win, 0 , 0);
-													   refresh();
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 2, 33, "Turno del Jugador ");
-													   mvwprintw(win, 2, 51, "%d", turno + 1);
-													   wattron(win, COLOR_PAIR(1));
-													   mvwprintw(win, 5, 20, "Nombre: ");		
-													   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-													   mvwprintw(win, 7, 20, "Ficha: ");
-													   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-													   mvwprintw(win, 5, 50, "Dinero: ");
-													   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-													   mvwprintw(win, 7, 50, "Posicion: ");
-													   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 12, 18, "Casilla Actual");
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-													   wattron(win, COLOR_PAIR(1));
-													   mvwprintw(win, 19, 55, " Compra Realizada! ");
-													   refresh();
-													   wrefresh(win);
-													   wrefresh(win2);
-													   getch();
-													   salir2 = false;
-												   } else {
-													   wattron(win2, COLOR_PAIR(1));
-													   werase(win2);
-													   box(win2, 0, 0);
-													   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-													   werase(win);
-													   box(win, 0 , 0);
-													   refresh();
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 2, 33, "Turno del Jugador ");
-													   mvwprintw(win, 2, 51, "%d", turno + 1);
-													   wattron(win, COLOR_PAIR(1));
-													   mvwprintw(win, 5, 20, "Nombre: ");		
-													   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-													   mvwprintw(win, 7, 20, "Ficha: ");
-													   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-													   mvwprintw(win, 5, 50, "Dinero: ");
-													   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-													   mvwprintw(win, 7, 50, "Posicion: ");
-													   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 12, 18, "Casilla Actual");
-													   wattron(win, COLOR_PAIR(5));
-													   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-													   wattron(win, COLOR_PAIR(1));
-													   mvwprintw(win, 19, 55, " No Tienes Dinero! ");
-													   refresh();
-													   wrefresh(win);
-													   wrefresh(win2);
-													   getch();
-													   salir2 = false;
-												   }
-												   break;
-											   case 1:
-												   salir2 = false;
-												   break;
-										   }
-									   }
-								   }
-							   } else {
-								   wattron(win2, COLOR_PAIR(1));
-								   werase(win2);
-								   box(win2, 0, 0);
-								   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-								   werase(win);
-								   box(win, 0 , 0);
-								   refresh();
-								   wattron(win, COLOR_PAIR(5));
-								   mvwprintw(win, 2, 33, "Turno del Jugador ");
-								   mvwprintw(win, 2, 51, "%d", turno + 1);
-								   wattron(win, COLOR_PAIR(1));
-								   mvwprintw(win, 5, 20, "Nombre: ");		
-								   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-								   mvwprintw(win, 7, 20, "Ficha: ");
-								   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-								   mvwprintw(win, 5, 50, "Dinero: ");
-								   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-								   mvwprintw(win, 7, 50, "Posicion: ");
-								   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-								   wattron(win, COLOR_PAIR(5));
-								   mvwprintw(win, 12, 17, "Casilla Actual");
-								   wattron(win, COLOR_PAIR(5));
-								   mvwprintw(win, 18, 55, "     Menu Propiedad   ");
-								   wattron(win, COLOR_PAIR(1));
-								   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
-								   mvwprintw(win, 21, 55, "   Debes pagar $");
-								   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
-								   refresh();
-								   wrefresh(win);
-								   wrefresh(win2);
-								   getch();
-								   int num_jugador;
-								   for (int i = 0; i < jugadores.size(); i++) {
-									   for (int j = 0; j < jugadores[i] -> getPropiedades().size(); j++) {
-										   if (jugadores[i] -> getPropiedades()[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
-											   num_jugador = i;
-										   }
-									   }
-								   }
-								   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
-									   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-									   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-									   wattron(win2, COLOR_PAIR(1));
-									   werase(win2);
-									   box(win2, 0, 0);
-									   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-									   werase(win);
-									   box(win, 0 , 0);
-									   refresh();
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 2, 33, "Turno del Jugador ");
-									   mvwprintw(win, 2, 51, "%d", turno + 1);
-									   wattron(win, COLOR_PAIR(1));
-									   mvwprintw(win, 5, 20, "Nombre: ");		
-									   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-									   mvwprintw(win, 7, 20, "Ficha: ");
-									   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-									   mvwprintw(win, 5, 50, "Dinero: ");
-									   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-									   mvwprintw(win, 7, 50, "Posicion: ");
-									   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 12, 18, "Casilla Actual");
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-									   wattron(win, COLOR_PAIR(1));
-									   mvwprintw(win, 20, 55, "   Pago Realizado! ");
+									   mvwprintw(win, 20, 55, " Cobra $200! ");
 									   refresh();
 									   wrefresh(win);
 									   wrefresh(win2);
 									   getch();
+									   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 2, 33, "Turno del Jugador ");
+									   mvwprintw(win, 2, 51, "%d", turno + 1);
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 5, 20, "Nombre: ");		
+									   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+									   mvwprintw(win, 7, 20, "Ficha: ");
+									   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+									   mvwprintw(win, 5, 50, "Dinero: ");
+									   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+									   mvwprintw(win, 7, 50, "Posicion: ");
+									   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 12, 18, "Casilla Actual");
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 18, 55, "        Menu GO      ");
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 20, 55, " Deposito Realizado! ");
+									   refresh();
+									   wrefresh(win);
+									   wrefresh(win2);
+									   getch();
+								   } else {
+									   if (casillas[jugadores[turno] -> getPosicion()] -> getNombre() == "CARCEL") {
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 2, 33, "Turno del Jugador ");
+										   mvwprintw(win, 2, 51, "%d", turno + 1);
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 5, 20, "Nombre: ");		
+										   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+										   mvwprintw(win, 7, 20, "Ficha: ");
+										   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+										   mvwprintw(win, 5, 50, "Dinero: ");
+										   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+										   mvwprintw(win, 7, 50, "Posicion: ");
+										   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 12, 18, "Casilla Actual");
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 18, 55, "       Menu Carcel       ");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 20, 55, " Has Caido en la Carcel! ");
+										   refresh();
+										   wrefresh(win);
+										   wrefresh(win2);
+										   getch();
+									   }
+								   }
+							   } else {
+								   if (typeid(*casillas[jugadores[turno] -> getPosicion()]) == typeid(Casilla_Impuesto)) {
+									   if (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() == 200) {
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 2, 33, "Turno del Jugador ");
+										   mvwprintw(win, 2, 51, "%d", turno + 1);
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 5, 20, "Nombre: ");		
+										   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+										   mvwprintw(win, 7, 20, "Ficha: ");
+										   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+										   mvwprintw(win, 5, 50, "Dinero: ");
+										   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+										   mvwprintw(win, 7, 50, "Posicion: ");
+										   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 12, 18, "Casilla Actual");
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 18, 55, "   Menu Impuesto  ");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 20, 55, " Debes Pagar $200 ");
+										   refresh();
+										   wrefresh(win);
+										   wrefresh(win2);
+										   getch();
+										   if (jugadores[turno] -> getDinero() - 200 >= 0) {
+											   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 200);
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 2, 33, "Turno del Jugador ");
+											   mvwprintw(win, 2, 51, "%d", turno + 1);
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 5, 20, "Nombre: ");		
+											   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+											   mvwprintw(win, 7, 20, "Ficha: ");
+											   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+											   mvwprintw(win, 5, 50, "Dinero: ");
+											   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+											   mvwprintw(win, 7, 50, "Posicion: ");
+											   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 12, 18, "Casilla Actual");
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 18, 55, "   Menu Impuesto  ");
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 20, 55, "  Pago Realizado! ");
+											   refresh();
+											   wrefresh(win);
+											   wrefresh(win2);
+											   getch();
+										   }
+									   } else {
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 2, 33, "Turno del Jugador ");
+										   mvwprintw(win, 2, 51, "%d", turno + 1);
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 5, 20, "Nombre: ");		
+										   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+										   mvwprintw(win, 7, 20, "Ficha: ");
+										   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+										   mvwprintw(win, 5, 50, "Dinero: ");
+										   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+										   mvwprintw(win, 7, 50, "Posicion: ");
+										   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 12, 18, "Casilla Actual");
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 18, 55, "  Menu Impuesto  ");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 20, 55, " Debes Pagar $75 ");
+										   refresh();
+										   wrefresh(win);
+										   wrefresh(win2);
+										   getch();
+										   if (jugadores[turno] -> getDinero() - 75 >= 0) {
+											   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 75);
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 2, 33, "Turno del Jugador ");
+											   mvwprintw(win, 2, 51, "%d", turno + 1);
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 5, 20, "Nombre: ");		
+											   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+											   mvwprintw(win, 7, 20, "Ficha: ");
+											   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+											   mvwprintw(win, 5, 50, "Dinero: ");
+											   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+											   mvwprintw(win, 7, 50, "Posicion: ");
+											   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 12, 18, "Casilla Actual");
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 18, 55, "   Menu Impuesto  ");
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 20, 55, "  Pago Realizado! ");
+											   refresh();
+											   wrefresh(win);
+											   wrefresh(win2);
+											   getch();
+										   }
+									   }
+								   } else {
+									   if (typeid(*casillas[jugadores[turno] -> getPosicion()]) == typeid(Casilla_Utilidad)) {
+										   if (casillas[jugadores[turno] -> getPosicion()] -> getDisponible()) {
+											   int opcion2 = 0;
+											   int seleccion2 = 0;
+											   bool salir2 = true;
+											   wattron(win, COLOR_PAIR(1));
+											   string menu2[2] = {" Comprar Utilidad ", "    No Comprar    "};
+											   while (salir2) {
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 18, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, "   Menu Utilidad  ");
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   wattron(win, COLOR_PAIR(1));
+												   for (int i = 0; i < 2; i++) {
+													   if (i == seleccion2) {
+														   wattron(win, A_REVERSE);
+														   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+														   wattroff(win, A_REVERSE);
+													   } else {
+														   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+													   }
+												   }
+												   wmove(win, 32, 89);
+												   opcion2 = wgetch(win);
+												   switch (opcion2) {
+													   case KEY_UP:	
+														   seleccion2--;
+														   if (seleccion2 < 0) {
+															   seleccion2 = 0;
+														   }
+														   break;
+													   case KEY_DOWN:
+														   seleccion2++;
+														   if (seleccion2 > 1) {
+															   seleccion2 = 1;
+														   }
+														   break;
+													   default:
+														   break;
+												   }
+												   if (opcion2 == 10) {
+													   switch (seleccion2) {
+														   case 0:
+															   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() >= 0) {
+																   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
+																   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+																   vector<Casilla*> casillas_nuevas = jugadores[turno] -> getPropiedades();
+																   casillas_nuevas.push_back(casillas[jugadores[turno] -> getPosicion()]);
+																   jugadores[turno] -> setPropiedades(casillas_nuevas);
+																   wattron(win2, COLOR_PAIR(1));
+																   werase(win2);
+																   box(win2, 0, 0);
+																   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																   werase(win);
+																   box(win, 0 , 0);
+																   refresh();
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																   mvwprintw(win, 2, 51, "%d", turno + 1);
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 5, 20, "Nombre: ");		
+																   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																   mvwprintw(win, 7, 20, "Ficha: ");
+																   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																   mvwprintw(win, 5, 50, "Dinero: ");
+																   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																   mvwprintw(win, 7, 50, "Posicion: ");
+																   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 12, 18, "Casilla Actual");
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 18, 55, "   Menu Utilidad   ");
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 20, 55, " Compra Realizada! ");
+																   refresh();
+																   wrefresh(win);
+																   wrefresh(win2);
+																   getch();
+																   salir2 = false;
+															   } else {
+																   wattron(win2, COLOR_PAIR(1));
+																   werase(win2);
+																   box(win2, 0, 0);
+																   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																   werase(win);
+																   box(win, 0 , 0);
+																   refresh();
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																   mvwprintw(win, 2, 51, "%d", turno + 1);
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 5, 20, "Nombre: ");		
+																   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																   mvwprintw(win, 7, 20, "Ficha: ");
+																   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																   mvwprintw(win, 5, 50, "Dinero: ");
+																   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																   mvwprintw(win, 7, 50, "Posicion: ");
+																   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 12, 18, "Casilla Actual");
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 18, 55, "   Menu Utilidad   ");
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 20, 55, " No Tienes Dinero! ");
+																   refresh();
+																   wrefresh(win);
+																   wrefresh(win2);
+																   getch();
+																   salir2 = false;
+															   }
+															   break;
+														   case 1:
+															   salir2 = false;
+															   break;
+													   }
+												   }
+											   }
+										   } else {
+											   wattron(win2, COLOR_PAIR(1));
+											   werase(win2);
+											   box(win2, 0, 0);
+											   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+											   werase(win);
+											   box(win, 0 , 0);
+											   refresh();
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 2, 33, "Turno del Jugador ");
+											   mvwprintw(win, 2, 51, "%d", turno + 1);
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 5, 20, "Nombre: ");		
+											   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+											   mvwprintw(win, 7, 20, "Ficha: ");
+											   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+											   mvwprintw(win, 5, 50, "Dinero: ");
+											   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+											   mvwprintw(win, 7, 50, "Posicion: ");
+											   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 12, 17, "Casilla Actual");
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 18, 55, "     Menu Propiedad    ");
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 20, 55, "  Propiedad Con Dueño! ");
+											   int num_jugador;
+											   for (int i = 0; i < jugadores.size(); i++) {
+												   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+												   for (int j = 0; j < casillas_nuevas.size(); j++) {
+													   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+														   num_jugador = i;
+													   }
+												   }
+											   }
+											   int contador_utilidades = 0;
+											   for (int i = 0; i < jugadores[num_jugador] -> getPropiedades().size(); i++) {
+												   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+												   if (typeid(*casillas_nuevas[i]) == typeid(Casilla_Utilidad)) {
+													   contador_utilidades++;
+												   }
+											   }
+											   if (contador_utilidades == 1) {
+												   mvwprintw(win, 21, 55, " Debes pagar Dados x 4 ");
+											   } else {
+												   mvwprintw(win, 21, 55, " Debes pagar Dados x 10 ");
+											   }
+											   wattron(win, A_REVERSE);
+											   mvwprintw(win, 23, 55, "Tirar Dados");
+											   refresh();
+											   wrefresh(win);
+											   wrefresh(win2);
+											   getch();
+											   int opcion_respuesta = wgetch(win);
+											   if (opcion_respuesta == 10) {
+												   wattron(win, COLOR_PAIR(1));
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   srand(time(NULL));
+												   int num_random1 = rand() % 6 + 1;
+												   int num_random2 = rand() % 6 + 1;
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 18, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, " Resultado de Los Dados ");
+												   imprimirDados(win, num_random1, num_random2);
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+												   int acumulador_alquiler;
+												   if (contador_utilidades == 1) {
+													   acumulador_alquiler = (num_random1 + num_random2) * 4;
+												   } else {
+													   acumulador_alquiler = (num_random1 + num_random2) * 10;
+												   }
+												   mvwprintw(win, 18, 55, " Debes Pagar $");
+												   mvwprintw(win, 18, 69, "%d", acumulador_alquiler);
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+												   int num_jugador;
+												   for (int i = 0; i < jugadores.size(); i++) {
+													   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+													   for (int j = 0; j < casillas_nuevas.size(); j++) {
+														   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+															   num_jugador = i;
+														   }
+													   }
+												   }
+
+												   if (jugadores[turno] -> getDinero() - acumulador_alquiler >= 0) {
+													   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - acumulador_alquiler);
+													   jugadores[num_jugador] -> setDinero(jugadores[num_jugador] -> getDinero() + acumulador_alquiler);
+													   wattron(win2, COLOR_PAIR(1));
+													   werase(win2);
+													   box(win2, 0, 0);
+													   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+													   werase(win);
+													   box(win, 0 , 0);
+													   refresh();
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 2, 33, "Turno del Jugador ");
+													   mvwprintw(win, 2, 51, "%d", turno + 1);
+													   wattron(win, COLOR_PAIR(1));
+													   mvwprintw(win, 5, 20, "Nombre: ");		
+													   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+													   mvwprintw(win, 7, 20, "Ficha: ");
+													   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+													   mvwprintw(win, 5, 50, "Dinero: ");
+													   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+													   mvwprintw(win, 7, 50, "Posicion: ");
+													   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 12, 18, "Casilla Actual");
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 18, 55, "   Menu Utilidad  ");
+													   wattron(win, COLOR_PAIR(1));
+													   mvwprintw(win, 20, 55, "  Pago Realizado! ");
+													   refresh();
+													   wrefresh(win);
+													   wrefresh(win2);
+													   getch();
+												   }
+											   }
+										   }
+									   } else {
+										   if (casillas[jugadores[turno] -> getPosicion()] -> getDisponible()) {
+											   int opcion2 = 0;
+											   int seleccion2 = 0;
+											   bool salir2 = true;
+											   wattron(win, COLOR_PAIR(1));
+											   string menu2[2] = {" Comprar Propiedad ", "     No Comprar    "};
+											   while (salir2) {
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 18, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   wattron(win, COLOR_PAIR(1));
+												   for (int i = 0; i < 2; i++) {
+													   if (i == seleccion2) {
+														   wattron(win, A_REVERSE);
+														   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+														   wattroff(win, A_REVERSE);
+													   } else {
+														   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+													   }
+												   }
+												   wmove(win, 32, 89);
+												   opcion2 = wgetch(win);
+												   switch (opcion2) {
+													   case KEY_UP:	
+														   seleccion2--;
+														   if (seleccion2 < 0) {
+															   seleccion2 = 0;
+														   }
+														   break;
+													   case KEY_DOWN:
+														   seleccion2++;
+														   if (seleccion2 > 1) {
+															   seleccion2 = 1;
+														   }
+														   break;
+													   default:
+														   break;
+												   }
+												   if (opcion2 == 10) {
+													   switch (seleccion2) {
+														   case 0:
+															   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio() >= 0) {
+																   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
+																   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio());
+																   vector<Casilla*> casillas_nuevas = jugadores[turno] -> getPropiedades();
+																   casillas_nuevas.push_back(casillas[jugadores[turno] -> getPosicion()]);
+																   jugadores[turno] -> setPropiedades(casillas_nuevas);
+
+																   wattron(win2, COLOR_PAIR(1));
+																   werase(win2);
+																   box(win2, 0, 0);
+																   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																   werase(win);
+																   box(win, 0 , 0);
+																   refresh();
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																   mvwprintw(win, 2, 51, "%d", turno + 1);
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 5, 20, "Nombre: ");		
+																   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																   mvwprintw(win, 7, 20, "Ficha: ");
+																   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																   mvwprintw(win, 5, 50, "Dinero: ");
+																   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																   mvwprintw(win, 7, 50, "Posicion: ");
+																   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 12, 18, "Casilla Actual");
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 20, 55, " Compra Realizada! ");
+																   refresh();
+																   wrefresh(win);
+																   wrefresh(win2);
+																   getch();
+																   salir2 = false;
+															   } else {
+																   wattron(win2, COLOR_PAIR(1));
+																   werase(win2);
+																   box(win2, 0, 0);
+																   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																   werase(win);
+																   box(win, 0 , 0);
+																   refresh();
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																   mvwprintw(win, 2, 51, "%d", turno + 1);
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 5, 20, "Nombre: ");		
+																   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																   mvwprintw(win, 7, 20, "Ficha: ");
+																   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																   mvwprintw(win, 5, 50, "Dinero: ");
+																   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																   mvwprintw(win, 7, 50, "Posicion: ");
+																   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 12, 18, "Casilla Actual");
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 20, 55, " No Tienes Dinero! ");
+																   refresh();
+																   wrefresh(win);
+																   wrefresh(win2);
+																   getch();
+																   salir2 = false;
+															   }
+															   break;
+														   case 1:
+															   salir2 = false;
+															   break;
+													   }
+												   }
+											   }
+										   } else {
+											   bool dueno_casilla = false;
+											   for (int i = 0; i < jugadores.size(); i++) {
+												   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+												   for (int j = 0; j < casillas_nuevas.size(); j++) {
+													   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+														   if (jugadores[turno] -> getFicha() == jugadores[i] -> getFicha()) {
+															   dueno_casilla = true;
+														   }
+													   }
+												   }
+
+											   }
+											   if (!dueno_casilla) {
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 17, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, "     Menu Propiedad   ");
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
+												   mvwprintw(win, 21, 55, "   Debes pagar $");
+												   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+												   int num_jugador;
+												   for (int i = 0; i < jugadores.size(); i++) {
+													   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+													   for (int j = 0; j < casillas_nuevas.size(); j++) {
+														   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+															   num_jugador = i;
+														   }
+													   }
+												   }
+												   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
+													   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+													   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+													   wattron(win2, COLOR_PAIR(1));
+													   werase(win2);
+													   box(win2, 0, 0);
+													   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+													   werase(win);
+													   box(win, 0 , 0);
+													   refresh();
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 2, 33, "Turno del Jugador ");
+													   mvwprintw(win, 2, 51, "%d", turno + 1);
+													   wattron(win, COLOR_PAIR(1));
+													   mvwprintw(win, 5, 20, "Nombre: ");		
+													   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+													   mvwprintw(win, 7, 20, "Ficha: ");
+													   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+													   mvwprintw(win, 5, 50, "Dinero: ");
+													   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+													   mvwprintw(win, 7, 50, "Posicion: ");
+													   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 12, 18, "Casilla Actual");
+													   wattron(win, COLOR_PAIR(5));
+													   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+													   wattron(win, COLOR_PAIR(1));
+													   mvwprintw(win, 20, 55, "   Pago Realizado! ");
+													   refresh();
+													   wrefresh(win);
+													   wrefresh(win2);
+													   getch();
+												   }
+											   } else {
+												   wattron(win2, COLOR_PAIR(1));
+												   werase(win2);
+												   box(win2, 0, 0);
+												   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+												   werase(win);
+												   box(win, 0 , 0);
+												   refresh();
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 2, 33, "Turno del Jugador ");
+												   mvwprintw(win, 2, 51, "%d", turno + 1);
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 5, 20, "Nombre: ");		
+												   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+												   mvwprintw(win, 7, 20, "Ficha: ");
+												   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+												   mvwprintw(win, 5, 50, "Dinero: ");
+												   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+												   mvwprintw(win, 7, 50, "Posicion: ");
+												   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 12, 18, "Casilla Actual");
+												   wattron(win, COLOR_PAIR(5));
+												   mvwprintw(win, 18, 55, " Menu Propiedad ");
+												   wattron(win, COLOR_PAIR(1));
+												   mvwprintw(win, 20, 55, " Propiedad Suya ");
+												   refresh();
+												   wrefresh(win);
+												   wrefresh(win2);
+												   getch();
+											   }
+										   } 
+									   }
 								   }
 							   }
 							   turno++;
@@ -787,6 +1157,149 @@ void Tablero::nuevo_juego(WINDOW* win) {
 		delete casillas[i];
 	}
 	casillas.clear();
+}
+
+void Tablero::imprimirDados(WINDOW* win, int num_random1, int num_random2) {
+	string espacio1 = "   ";
+	string espacio2 = " 0 ";
+	init_pair(21, 16, COLOR_WHITE);
+	wattron(win, COLOR_PAIR(21));
+	switch (num_random1) {
+		case 1:
+			mvwprintw(win, 20, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio1.c_str());
+			break;
+		case 2:
+			mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+			break;
+		case 3:
+			mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+			break;
+		case 4:
+			mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+			break;
+		case 5:
+			mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+			break;
+		case 6:
+			mvwprintw(win, 20, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 57, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 60, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 63, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 63, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 63, "%s", espacio2.c_str());
+			break;
+	}
+	switch (num_random2) {
+		case 1:
+			mvwprintw(win, 20, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio1.c_str());
+			break;
+		case 2:
+			mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+			break;
+		case 3:
+			mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+			break;
+		case 4:
+			mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+			break;
+		case 5:
+			mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+			break;
+		case 6:
+			mvwprintw(win, 20, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 68, "%s", espacio2.c_str());
+			mvwprintw(win, 20, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 21, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 22, 71, "%s", espacio1.c_str());
+			mvwprintw(win, 20, 74, "%s", espacio2.c_str());
+			mvwprintw(win, 21, 74, "%s", espacio2.c_str());
+			mvwprintw(win, 22, 74, "%s", espacio2.c_str());
+			break;
+	}
 }
 
 void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {

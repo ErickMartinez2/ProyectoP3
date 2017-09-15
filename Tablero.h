@@ -42,6 +42,7 @@ class Tablero {
 		void nuevo_juego(WINDOW*);
 		void init(string);
 		void imprimirCasilla(WINDOW*, int);
+		void imprimirDados(WINDOW*, int, int);
 };
 
 #endif
