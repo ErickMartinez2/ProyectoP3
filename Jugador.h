@@ -12,9 +12,11 @@ class Jugador {
 		int posicion;
 		int dinero;
 		vector<Casilla*> propiedades;
+		bool carcel;
+		int turno_carcel;
 	public:
 		Jugador();
-		Jugador(string, char, int, int);
+		Jugador(string, char, int, int, bool, int);
 		string getNombre();
 		void setNombre(string);
 		char getFicha();
@@ -25,6 +27,10 @@ class Jugador {
 		void setDinero(int);
 		vector<Casilla*> getPropiedades();
 		void setPropiedades(vector<Casilla*>);
+		bool getCarcel();
+		void setCarcel(bool);
+		int getTurnoCarcel();
+		void setTurnoCarcel(int);
 };
 
 #endif

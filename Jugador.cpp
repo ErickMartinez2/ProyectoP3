@@ -4,11 +4,13 @@ Jugador::Jugador() {
 
 }
 
-Jugador::Jugador(string pnombre, char pficha, int pposicion, int pdinero) {
+Jugador::Jugador(string pnombre, char pficha, int pposicion, int pdinero, bool pcarcel, int pturno_carcel) {
 	nombre = pnombre;
 	ficha = pficha;
 	posicion = pposicion;
 	dinero = pdinero;
+	carcel = pcarcel;
+	turno_carcel = pturno_carcel;
 }
 
 string Jugador::getNombre() {
@@ -49,5 +51,21 @@ vector<Casilla*> Jugador::getPropiedades() {
 
 void Jugador::setPropiedades(vector<Casilla*> ppropiedades) {
 	propiedades = ppropiedades;
+}
+
+bool Jugador::getCarcel() {
+	return carcel;
+}
+
+void Jugador::setCarcel(bool pcarcel) {
+	carcel = pcarcel;
+}
+
+int Jugador::getTurnoCarcel() {
+	return turno_carcel;
+}
+
+void Jugador::setTurnoCarcel(int pturno_carcel) {
+	turno_carcel = pturno_carcel;
 }
 
