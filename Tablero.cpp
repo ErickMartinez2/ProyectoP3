@@ -2075,6 +2075,69 @@ void Tablero::nuevo_juego(WINDOW* win) {
 								   salir = false;
 							   }break;
 						case 1:{
+								   vector<Casilla*> propiedades = jugadores[turno] -> getPropiedades();
+								   WINDOW * win3 = newwin(15, 30, 22, 98);
+								   if (propiedades.size() != 0) {
+									   int opcion2 = 0;
+									   int seleccion2 = 0;
+									   bool salir2 = true;
+									   while (salir2) {
+										   werase(win2);
+										   werase(win);
+										   box(win, 0 , 0);
+										   refresh();
+										   wattron(win3, COLOR_PAIR(1));
+										   werase(win3);
+										   box(win3, 0, 0);
+										   int num_casilla;
+										   for (int i = 0; i < casillas.size(); i++) {
+											   if (casillas[i] -> getNombre() == propiedades[seleccion2] -> getNombre()) {
+												   num_casilla = i;
+												  }
+											}
+										   imprimirCasilla(win3, num_casilla);
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 2, 33, "Turno del Jugador ");
+										   mvwprintw(win, 2, 51, "%d", turno + 1);
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 5, 20, "Nombre: ");		
+										   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+										   mvwprintw(win, 7, 20, "Ficha: ");
+										   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+										   mvwprintw(win, 5, 50, "Dinero: ");
+										   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+										   mvwprintw(win, 7, 50, "Posicion: ");
+										   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 12, 55, "Mis Propiedades");
+										   mvwprintw(win, 17, 10, "Movimientos");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 19, 8, "- Presione -> o <- Para Navegar");
+										   mvwprintw(win, 20, 8, "- Presione ENTER Para Salir");
+										   wrefresh(win);
+										   wrefresh(win3);
+										   opcion2 = wgetch(win);
+										   switch (opcion2) {
+											   case KEY_LEFT:	
+												   seleccion2--;
+												   if (seleccion2 < 0) {
+													   seleccion2 = 0;
+												   }
+												   break;
+											   case KEY_RIGHT:
+												   seleccion2++;
+												   if (seleccion2 >= propiedades.size()) {
+													   seleccion2 = propiedades.size() - 1;
+												   }
+												   break;
+											   default:
+												   break;
+										   }
+										   if (opcion2 == 10) {
+											   salir2 = false;
+										   }
+									   }
+								   }
 								   salir = false;
 							   }break;
 						case 2: {
@@ -2100,6 +2163,34 @@ void Tablero::nuevo_juego(WINDOW* win) {
 		delete casillas[i];
 	}
 	casillas.clear();
+	for (int i = 0; i < tarjetas.size(); i++) {
+		delete tarjetas[i];
+	}
+	tarjetas.clear();
+}
+
+void Tablero::init2(string file) {
+	ifstream inputFile(file);
+	if (inputFile.is_open()) {
+		int numero;
+		string contenido;
+		bool casualidad = true;
+		while (!inputFile.eof()) {
+			inputFile >> numero;
+			inputFile >> contenido;
+			Tarjeta* tarjeta;
+			if (casualidad) {
+				tarjeta = new Casualidad(numero, contenido);
+				if (numero == 15) {
+					casualidad = false;
+				}
+			} else {
+				tarjeta = new ArcaComunal(numero, contenido);
+			}
+			tarjetas.push_back(tarjeta);
+		}
+		inputFile.close();
+	}
 }
 
 void Tablero::imprimirDados(WINDOW* win, int num_random1, int num_random2) {

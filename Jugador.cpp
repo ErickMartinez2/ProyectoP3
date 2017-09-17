@@ -53,6 +53,14 @@ void Jugador::setPropiedades(vector<Casilla*> ppropiedades) {
 	propiedades = ppropiedades;
 }
 
+vector<Tarjeta*> Jugador::getTarjetas() {
+	return tarjetas;
+}
+
+void Jugador::setTarjetas(vector<Tarjeta*> ptarjetas) {
+	tarjetas = ptarjetas;
+}
+
 bool Jugador::getCarcel() {
 	return carcel;
 }

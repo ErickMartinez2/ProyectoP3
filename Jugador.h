@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Casilla.h"
+#include "Tarjeta.h"
 using namespace std;
 
 class Jugador {
@@ -14,6 +15,7 @@ class Jugador {
 		vector<Casilla*> propiedades;
 		bool carcel;
 		int turno_carcel;
+		vector<Tarjeta*> tarjetas;
 	public:
 		Jugador();
 		Jugador(string, char, int, int, bool, int);
@@ -27,6 +29,8 @@ class Jugador {
 		void setDinero(int);
 		vector<Casilla*> getPropiedades();
 		void setPropiedades(vector<Casilla*>);
+		vector<Tarjeta*> getTarjetas();
+		void setTarjetas(vector<Tarjeta*>);
 		bool getCarcel();
 		void setCarcel(bool);
 		int getTurnoCarcel();

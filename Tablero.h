@@ -27,6 +27,9 @@
 #include "Casilla_Rosada.h"
 #include "Casilla_Utilidad.h"
 #include "Casilla_Verde.h"
+#include "Tarjeta.h"
+#include "ArcaComunal.h"
+#include "Casualidad.h"
 using namespace std;
 
 class Tablero {
@@ -34,6 +37,7 @@ class Tablero {
 		vector<Jugador*> jugadores;
 		vector<string> posiciones;
 		vector<Casilla*> casillas;
+		vector<Tarjeta*> tarjetas;
 	public:
 		Tablero();
 		int play();
@@ -41,6 +45,7 @@ class Tablero {
 		void imprimirTablero();
 		void nuevo_juego(WINDOW*);
 		void init(string);
+		void init2(string);
 		void imprimirCasilla(WINDOW*, int);
 		void imprimirDados(WINDOW*, int, int);
 };
