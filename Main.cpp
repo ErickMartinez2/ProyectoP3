@@ -13,5 +13,5 @@ int main() {
 	tablero -> init2("Tarjetas.txt");
 	int num = tablero -> play();
 	delete tablero;
-	return 0;
+	return num;
 }

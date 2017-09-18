@@ -15,7 +15,8 @@ class Jugador {
 		vector<Casilla*> propiedades;
 		bool carcel;
 		int turno_carcel;
-		vector<Tarjeta*> tarjetas;
+		bool casualidad_carcel;
+		bool arcacomunal_carcel;
 	public:
 		Jugador();
 		Jugador(string, char, int, int, bool, int);
@@ -29,10 +30,12 @@ class Jugador {
 		void setDinero(int);
 		vector<Casilla*> getPropiedades();
 		void setPropiedades(vector<Casilla*>);
-		vector<Tarjeta*> getTarjetas();
-		void setTarjetas(vector<Tarjeta*>);
 		bool getCarcel();
 		void setCarcel(bool);
+		bool getCasualidadCarcel();
+		void setCasualidadCarcel(bool);
+		bool getArcaComunalCarcel();
+		void setArcaComunalCarcel(bool);
 		int getTurnoCarcel();
 		void setTurnoCarcel(int);
 };

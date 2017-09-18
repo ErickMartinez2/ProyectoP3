@@ -1677,13 +1677,8 @@ void Tablero::nuevo_juego(WINDOW* win) {
 													   }
 												   }
 											   } else {
-												   if (casillas[jugadores[turno] -> getPosicion()] -> getDisponible()) {
-													   int opcion2 = 0;
-													   int seleccion2 = 0;
-													   bool salir2 = true;
-													   wattron(win, COLOR_PAIR(1));
-													   string menu2[2] = {" Comprar Propiedad ", "     No Comprar    "};
-													   while (salir2) {
+												   if (typeid(*casillas[jugadores[turno] -> getPosicion()]) == typeid(Casilla_Comodin)) {
+													   if (casillas[jugadores[turno] -> getPosicion()] -> getNombre() == "CASUALIDAD") {
 														   wattron(win2, COLOR_PAIR(1));
 														   werase(win2);
 														   box(win2, 0, 0);
@@ -1706,131 +1701,15 @@ void Tablero::nuevo_juego(WINDOW* win) {
 														   wattron(win, COLOR_PAIR(5));
 														   mvwprintw(win, 12, 18, "Casilla Actual");
 														   wattron(win, COLOR_PAIR(5));
-														   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+														   mvwprintw(win, 18, 55, "  Menu Comodin  ");
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 20, 55, " Ver Casualidad ");
 														   refresh();
 														   wrefresh(win);
 														   wrefresh(win2);
-														   wattron(win, COLOR_PAIR(1));
-														   for (int i = 0; i < 2; i++) {
-															   if (i == seleccion2) {
-																   wattron(win, A_REVERSE);
-																   mvwprintw(win, i + 19, 55, menu2[i].c_str());
-																   wattroff(win, A_REVERSE);
-															   } else {
-																   mvwprintw(win, i + 19, 55, menu2[i].c_str());
-															   }
-														   }
-														   wmove(win, 32, 89);
-														   opcion2 = wgetch(win);
-														   switch (opcion2) {
-															   case KEY_UP:	
-																   seleccion2--;
-																   if (seleccion2 < 0) {
-																	   seleccion2 = 0;
-																   }
-																   break;
-															   case KEY_DOWN:
-																   seleccion2++;
-																   if (seleccion2 > 1) {
-																	   seleccion2 = 1;
-																   }
-																   break;
-															   default:
-																   break;
-														   }
-														   if (opcion2 == 10) {
-															   switch (seleccion2) {
-																   case 0:
-																	   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio() >= 0) {
-																		   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
-																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio());
-																		   vector<Casilla*> casillas_nuevas = jugadores[turno] -> getPropiedades();
-																		   casillas_nuevas.push_back(casillas[jugadores[turno] -> getPosicion()]);
-																		   jugadores[turno] -> setPropiedades(casillas_nuevas);
-
-																		   wattron(win2, COLOR_PAIR(1));
-																		   werase(win2);
-																		   box(win2, 0, 0);
-																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-																		   werase(win);
-																		   box(win, 0 , 0);
-																		   refresh();
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
-																		   mvwprintw(win, 2, 51, "%d", turno + 1);
-																		   wattron(win, COLOR_PAIR(1));
-																		   mvwprintw(win, 5, 20, "Nombre: ");		
-																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-																		   mvwprintw(win, 7, 20, "Ficha: ");
-																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-																		   mvwprintw(win, 5, 50, "Dinero: ");
-																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-																		   mvwprintw(win, 7, 50, "Posicion: ");
-																		   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 12, 18, "Casilla Actual");
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 18, 55, "  Menu Propiedad   ");
-																		   wattron(win, COLOR_PAIR(1));
-																		   mvwprintw(win, 20, 55, " Compra Realizada! ");
-																		   refresh();
-																		   wrefresh(win);
-																		   wrefresh(win2);
-																		   getch();
-																		   salir2 = false;
-																	   } else {
-																		   wattron(win2, COLOR_PAIR(1));
-																		   werase(win2);
-																		   box(win2, 0, 0);
-																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-																		   werase(win);
-																		   box(win, 0 , 0);
-																		   refresh();
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
-																		   mvwprintw(win, 2, 51, "%d", turno + 1);
-																		   wattron(win, COLOR_PAIR(1));
-																		   mvwprintw(win, 5, 20, "Nombre: ");		
-																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-																		   mvwprintw(win, 7, 20, "Ficha: ");
-																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-																		   mvwprintw(win, 5, 50, "Dinero: ");
-																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-																		   mvwprintw(win, 7, 50, "Posicion: ");
-																		   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 12, 18, "Casilla Actual");
-																		   wattron(win, COLOR_PAIR(5));
-																		   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-																		   wattron(win, COLOR_PAIR(1));
-																		   mvwprintw(win, 20, 55, " No Tienes Dinero! ");
-																		   refresh();
-																		   wrefresh(win);
-																		   wrefresh(win2);
-																		   getch();
-																		   salir2 = false;
-																	   }
-																	   break;
-																   case 1:
-																	   salir2 = false;
-																	   break;
-															   }
-														   }
-													   }
-												   } else {
-													   bool dueno_casilla = false;
-													   for (int i = 0; i < jugadores.size(); i++) {
-														   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
-														   for (int j = 0; j < casillas_nuevas.size(); j++) {
-															   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
-																   if (jugadores[turno] -> getFicha() == jugadores[i] -> getFicha()) {
-																	   dueno_casilla = true;
-																   }
-															   }
-														   }
-
-													   }
-													   if (!dueno_casilla) {
+														   getch();
+														   srand(time(NULL));
+														   int num_casualidad = rand() % 15 + 0;
 														   wattron(win2, COLOR_PAIR(1));
 														   werase(win2);
 														   box(win2, 0, 0);
@@ -1851,59 +1730,700 @@ void Tablero::nuevo_juego(WINDOW* win) {
 														   mvwprintw(win, 7, 50, "Posicion: ");
 														   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
 														   wattron(win, COLOR_PAIR(5));
-														   mvwprintw(win, 12, 17, "Casilla Actual");
+														   mvwprintw(win, 12, 18, "Casilla Actual");
 														   wattron(win, COLOR_PAIR(5));
-														   mvwprintw(win, 18, 55, "     Menu Propiedad   ");
+														   mvwprintw(win, 18, 55, "  Menu Comodin  ");
 														   wattron(win, COLOR_PAIR(1));
-														   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
-														   mvwprintw(win, 21, 55, "   Debes pagar $");
-														   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+														   mvwprintw(win, 20, 50, "%s", tarjetas[num_casualidad] -> getContenido().c_str());
 														   refresh();
 														   wrefresh(win);
 														   wrefresh(win2);
 														   getch();
-														   int num_jugador;
-														   for (int i = 0; i < jugadores.size(); i++) {
-															   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
-															   for (int j = 0; j < casillas_nuevas.size(); j++) {
-																   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
-																	   num_jugador = i;
-																   }
-															   }
+														   switch (num_casualidad) {
+															   case 0:{
+																		  if (jugadores[turno] -> getPosicion() > 11) {
+																			  wattron(win, COLOR_PAIR(1));
+																			  wattron(win2, COLOR_PAIR(1));
+																			  werase(win2);
+																			  box(win2, 0, 0);
+																			  imprimirCasilla(win2, 0);
+																			  werase(win);
+																			  box(win, 0 , 0);
+																			  refresh();
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			  mvwprintw(win, 2, 51, "%d", turno + 1);
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 5, 20, "Nombre: ");		
+																			  mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			  mvwprintw(win, 7, 20, "Ficha: ");
+																			  mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			  mvwprintw(win, 5, 50, "Dinero: ");
+																			  mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			  mvwprintw(win, 7, 50, "Posicion: ");
+																			  mvwprintw(win, 7, 60, "%d", 0);
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 12, 18, "Casilla Actual");
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 18, 55, "       Menu GO      ");
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 20, 55, " Has Pasado Por GO! ");
+																			  mvwprintw(win, 21, 55, "     Cobra $200!    ");
+																			  refresh();
+																			  wrefresh(win);
+																			  wrefresh(win2);
+																			  getch();
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			  mvwprintw(win, 2, 51, "%d", turno + 1);
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 5, 20, "Nombre: ");		
+																			  mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			  mvwprintw(win, 7, 20, "Ficha: ");
+																			  mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			  mvwprintw(win, 5, 50, "Dinero: ");
+																			  mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			  mvwprintw(win, 7, 50, "Posicion: ");
+																			  mvwprintw(win, 7, 60, "%d", 0);
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 12, 18, "Casilla Actual");
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 18, 55, "       Menu GO       ");
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 20, 55, " Deposito Realizado! ");
+																			  mvwprintw(win, 21, 55, "                   ");
+																			  refresh();
+																			  wrefresh(win);
+																			  wrefresh(win2);
+																			  getch();
+																		  }
+																		  string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp3 = "";
+																		  for (int i = 0; i < caracteresp2.size(); i++) {
+																			  if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteresp3 += caracteresp2[i];
+																			  }
+																		  }
+																		  int num_faltantep2 = 4 - caracteresp3.size();
+																		  for (int i = 0; i < num_faltantep2; i++) {
+																			  caracteresp3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		  jugadores[turno] -> setPosicion(11);
+																		  string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp5 = "";
+																		  for (int i = 0; i < caracteresp4.size(); i++) {
+																			  if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				  caracteresp5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteresp5 += jugadores[turno] -> getFicha();
+																		  int num_faltantep3 = 4 - caracteresp5.size();
+																		  for (int i = 0; i < num_faltantep3; i++) {
+																			  caracteresp5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 1:{
+																		  string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp3 = "";
+																		  for (int i = 0; i < caracteresp2.size(); i++) {
+																			  if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteresp3 += caracteresp2[i];
+																			  }
+																		  }
+																		  int num_faltantep2 = 4 - caracteresp3.size();
+																		  for (int i = 0; i < num_faltantep2; i++) {
+																			  caracteresp3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		  jugadores[turno] -> setPosicion(39);
+																		  string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp5 = "";
+																		  for (int i = 0; i < caracteresp4.size(); i++) {
+																			  if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				  caracteresp5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteresp5 += jugadores[turno] -> getFicha();
+																		  int num_faltantep3 = 4 - caracteresp5.size();
+																		  for (int i = 0; i < num_faltantep3; i++) {
+																			  caracteresp5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 2:{
+
+																	  }break;
+															   case 3:{
+																		  jugadores[turno] -> setCarcel(true);
+																		  string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres3 = "";
+																		  for (int i = 0; i < caracteres2.size(); i++) {
+																			  if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteres3 += caracteres2[i];
+																			  }
+																		  }
+																		  int num_faltante2 = 4 - caracteres3.size();
+																		  for (int i = 0; i < num_faltante2; i++) {
+																			  caracteres3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+																		  jugadores[turno] -> setPosicion(10);
+																		  string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres5 = "";
+																		  for (int i = 0; i < caracteres4.size(); i++) {
+																			  if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+																				  caracteres5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteres5 += jugadores[turno] -> getFicha();
+																		  int num_faltante3 = 4 - caracteres5.size();
+																		  for (int i = 0; i < num_faltante3; i++) {
+																			  caracteres5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																		  wattron(win, COLOR_PAIR(5));
+																		  mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		  mvwprintw(win, 2, 51, "%d", turno + 1);
+																		  wattron(win, COLOR_PAIR(1));
+																		  mvwprintw(win, 5, 20, "Nombre: ");		
+																		  mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		  mvwprintw(win, 7, 20, "Ficha: ");
+																		  mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		  mvwprintw(win, 5, 50, "Dinero: ");
+																		  mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		  mvwprintw(win, 7, 50, "Posicion: ");
+																		  mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																		  wattron(win, COLOR_PAIR(5));
+																		  mvwprintw(win, 12, 18, "Casilla Actual");
+																		  wattron(win, COLOR_PAIR(5));
+																		  mvwprintw(win, 18, 50, "       Menu Carcel       ");
+																		  wattron(win, COLOR_PAIR(1));
+																		  mvwprintw(win, 20, 50, " Has Caido en la Carcel! ");
+																		  refresh();
+																		  wrefresh(win);
+																		  wrefresh(win2);
+																		  getch();
+																	  }break;
+															   case 4:{
+																		  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 150);
+																	  }break;
+															   case 5:{
+																		  for (int i = 0; i < jugadores.size(); i++) {
+																			  if (jugadores[i] -> getFicha() != jugadores[turno] -> getFicha()) {
+																				  jugadores[i] -> setDinero(jugadores[i] -> getDinero() + 50);
+																			  }
+																		  }
+																		  if (jugadores[turno] -> getDinero() - (50 * jugadores.size() - 1) >= 0) {
+																			  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - (50 * jugadores.size() - 1));
+																		  }
+																	  }break;
+															   case 6:{
+																		  string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres3 = "";
+																		  for (int i = 0; i < caracteres2.size(); i++) {
+																			  if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteres3 += caracteres2[i];
+																			  }
+																		  }
+																		  int num_faltante2 = 4 - caracteres3.size();
+																		  for (int i = 0; i < num_faltante2; i++) {
+																			  caracteres3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+																		  if (jugadores[turno] -> getPosicion() == 7) {
+																			  jugadores[turno] -> setPosicion(5);
+																		  } else {
+																			  if (jugadores[turno] -> getPosicion() == 22) {
+																				  jugadores[turno] -> setPosicion(25);
+																			  } else {
+																				  if (jugadores[turno] -> getPosicion() == 36) {
+																					  jugadores[turno] -> setPosicion(35);
+																				  }
+																			  }
+																		  }
+																		  string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres5 = "";
+																		  for (int i = 0; i < caracteres4.size(); i++) {
+																			  if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+																				  caracteres5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteres5 += jugadores[turno] -> getFicha();
+																		  int num_faltante3 = 4 - caracteres5.size();
+																		  for (int i = 0; i < num_faltante3; i++) {
+																			  caracteres5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 7:{
+																		  if (jugadores[turno] -> getPosicion() > 5) {
+																			  wattron(win, COLOR_PAIR(1));
+																			  wattron(win2, COLOR_PAIR(1));
+																			  werase(win2);
+																			  box(win2, 0, 0);
+																			  imprimirCasilla(win2, 0);
+																			  werase(win);
+																			  box(win, 0 , 0);
+																			  refresh();
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			  mvwprintw(win, 2, 51, "%d", turno + 1);
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 5, 20, "Nombre: ");		
+																			  mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			  mvwprintw(win, 7, 20, "Ficha: ");
+																			  mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			  mvwprintw(win, 5, 50, "Dinero: ");
+																			  mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			  mvwprintw(win, 7, 50, "Posicion: ");
+																			  mvwprintw(win, 7, 60, "%d", 0);
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 12, 18, "Casilla Actual");
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 18, 55, "       Menu GO      ");
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 20, 55, " Has Pasado Por GO! ");
+																			  mvwprintw(win, 21, 55, "     Cobra $200!    ");
+																			  refresh();
+																			  wrefresh(win);
+																			  wrefresh(win2);
+																			  getch();
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			  mvwprintw(win, 2, 51, "%d", turno + 1);
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 5, 20, "Nombre: ");		
+																			  mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			  mvwprintw(win, 7, 20, "Ficha: ");
+																			  mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			  mvwprintw(win, 5, 50, "Dinero: ");
+																			  mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			  mvwprintw(win, 7, 50, "Posicion: ");
+																			  mvwprintw(win, 7, 60, "%d", 0);
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 12, 18, "Casilla Actual");
+																			  wattron(win, COLOR_PAIR(5));
+																			  mvwprintw(win, 18, 55, "       Menu GO       ");
+																			  wattron(win, COLOR_PAIR(1));
+																			  mvwprintw(win, 20, 55, " Deposito Realizado! ");
+																			  mvwprintw(win, 21, 55, "                   ");
+																			  refresh();
+																			  wrefresh(win);
+																			  wrefresh(win2);
+																			  getch();
+																		  }
+																		  string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp3 = "";
+																		  for (int i = 0; i < caracteresp2.size(); i++) {
+																			  if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteresp3 += caracteresp2[i];
+																			  }
+																		  }
+																		  int num_faltantep2 = 4 - caracteresp3.size();
+																		  for (int i = 0; i < num_faltantep2; i++) {
+																			  caracteresp3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		  jugadores[turno] -> setPosicion(5);
+																		  string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteresp5 = "";
+																		  for (int i = 0; i < caracteresp4.size(); i++) {
+																			  if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				  caracteresp5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteresp5 += jugadores[turno] -> getFicha();
+																		  int num_faltantep3 = 4 - caracteresp5.size();
+																		  for (int i = 0; i < num_faltantep3; i++) {
+																			  caracteresp5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 8:{
+																		  string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres3 = "";
+																		  for (int i = 0; i < caracteres2.size(); i++) {
+																			  if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteres3 += caracteres2[i];
+																			  }
+																		  }
+																		  int num_faltante2 = 4 - caracteres3.size();
+																		  for (int i = 0; i < num_faltante2; i++) {
+																			  caracteres3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+																		  if (jugadores[turno] -> getPosicion() == 7) {
+																			  jugadores[turno] -> setPosicion(5);
+																		  } else {
+																			  if (jugadores[turno] -> getPosicion() == 22) {
+																				  jugadores[turno] -> setPosicion(25);
+																			  } else {
+																				  if (jugadores[turno] -> getPosicion() == 36) {
+																					  jugadores[turno] -> setPosicion(35);
+																				  }
+																			  }
+																		  }
+																		  string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres5 = "";
+																		  for (int i = 0; i < caracteres4.size(); i++) {
+																			  if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+																				  caracteres5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteres5 += jugadores[turno] -> getFicha();
+																		  int num_faltante3 = 4 - caracteres5.size();
+																		  for (int i = 0; i < num_faltante3; i++) {
+																			  caracteres5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 9:{
+																		  string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres3 = "";
+																		  for (int i = 0; i < caracteres2.size(); i++) {
+																			  if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+																				  caracteres3 += caracteres2[i];
+																			  }
+																		  }
+																		  int num_faltante2 = 4 - caracteres3.size();
+																		  for (int i = 0; i < num_faltante2; i++) {
+																			  caracteres3 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+																		  int nueva_posicion = jugadores[turno] -> getPosicion() - 3;
+																		  if (nueva_posicion < 0) {
+																			  nueva_posicion += 40;
+																		  } else {
+																			  if (nueva_posicion > 39) {
+																				  nueva_posicion -= 40;
+																			  }
+																		  }
+																		  jugadores[turno] -> setPosicion(nueva_posicion);
+																		  string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+																		  string caracteres5 = "";
+																		  for (int i = 0; i < caracteres4.size(); i++) {
+																			  if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+																				  caracteres5 += caracteres4[i];
+																			  }
+																		  }
+																		  caracteres5 += jugadores[turno] -> getFicha();
+																		  int num_faltante3 = 4 - caracteres5.size();
+																		  for (int i = 0; i < num_faltante3; i++) {
+																			  caracteres5 += " ";
+																		  }
+																		  posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		  posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+																		  imprimirTablero();
+																		  wattron(win, COLOR_PAIR(1));
+																		  wattron(win2, COLOR_PAIR(1));
+																		  werase(win2);
+																		  box(win2, 0, 0);
+																		  imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		  werase(win);
+																		  box(win, 0 , 0);
+																		  refresh();
+																	  }break;
+															   case 10:{
+																		   if (jugadores[turno] -> getPosicion() > 24) {
+																			   wattron(win, COLOR_PAIR(1));
+																			   wattron(win2, COLOR_PAIR(1));
+																			   werase(win2);
+																			   box(win2, 0, 0);
+																			   imprimirCasilla(win2, 0);
+																			   werase(win);
+																			   box(win, 0 , 0);
+																			   refresh();
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			   mvwprintw(win, 2, 51, "%d", turno + 1);
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 5, 20, "Nombre: ");		
+																			   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			   mvwprintw(win, 7, 20, "Ficha: ");
+																			   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			   mvwprintw(win, 5, 50, "Dinero: ");
+																			   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			   mvwprintw(win, 7, 50, "Posicion: ");
+																			   mvwprintw(win, 7, 60, "%d", 0);
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 12, 18, "Casilla Actual");
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 18, 55, "       Menu GO      ");
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 20, 55, " Has Pasado Por GO! ");
+																			   mvwprintw(win, 21, 55, "     Cobra $200!    ");
+																			   refresh();
+																			   wrefresh(win);
+																			   wrefresh(win2);
+																			   getch();
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			   mvwprintw(win, 2, 51, "%d", turno + 1);
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 5, 20, "Nombre: ");		
+																			   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			   mvwprintw(win, 7, 20, "Ficha: ");
+																			   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			   mvwprintw(win, 5, 50, "Dinero: ");
+																			   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			   mvwprintw(win, 7, 50, "Posicion: ");
+																			   mvwprintw(win, 7, 60, "%d", 0);
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 12, 18, "Casilla Actual");
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 18, 55, "       Menu GO       ");
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 20, 55, " Deposito Realizado! ");
+																			   mvwprintw(win, 21, 55, "                   ");
+																			   refresh();
+																			   wrefresh(win);
+																			   wrefresh(win2);
+																			   getch();
+																		   }
+																		   string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp3 = "";
+																		   for (int i = 0; i < caracteresp2.size(); i++) {
+																			   if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				   caracteresp3 += caracteresp2[i];
+																			   }
+																		   }
+																		   int num_faltantep2 = 4 - caracteresp3.size();
+																		   for (int i = 0; i < num_faltantep2; i++) {
+																			   caracteresp3 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		   jugadores[turno] -> setPosicion(24);
+																		   string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp5 = "";
+																		   for (int i = 0; i < caracteresp4.size(); i++) {
+																			   if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				   caracteresp5 += caracteres4[i];
+																			   }
+																		   }
+																		   caracteresp5 += jugadores[turno] -> getFicha();
+																		   int num_faltantep3 = 4 - caracteresp5.size();
+																		   for (int i = 0; i < num_faltantep3; i++) {
+																			   caracteresp5 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		   imprimirTablero();
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																	   }break;
+															   case 11:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 50);
+																	   }break;
+															   case 12:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 15);
+																	   }break;
+															   case 13:{
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, 0);
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		   mvwprintw(win, 2, 51, "%d", turno + 1);
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 5, 20, "Nombre: ");		
+																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		   mvwprintw(win, 7, 20, "Ficha: ");
+																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		   mvwprintw(win, 5, 50, "Dinero: ");
+																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		   mvwprintw(win, 7, 50, "Posicion: ");
+																		   mvwprintw(win, 7, 60, "%d", 0);
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 12, 18, "Casilla Actual");
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 18, 55, "       Menu GO      ");
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 20, 55, " Has Pasado Por GO! ");
+																		   mvwprintw(win, 21, 55, "     Cobra $200!    ");
+																		   refresh();
+																		   wrefresh(win);
+																		   wrefresh(win2);
+																		   getch();
+																		   string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp3 = "";
+																		   for (int i = 0; i < caracteresp2.size(); i++) {
+																			   if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				   caracteresp3 += caracteresp2[i];
+																			   }
+																		   }
+																		   int num_faltantep2 = 4 - caracteresp3.size();
+																		   for (int i = 0; i < num_faltantep2; i++) {
+																			   caracteresp3 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		   jugadores[turno] -> setPosicion(0);
+																		   string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp5 = "";
+																		   for (int i = 0; i < caracteresp4.size(); i++) {
+																			   if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				   caracteresp5 += caracteres4[i];
+																			   }
+																		   }
+																		   caracteresp5 += jugadores[turno] -> getFicha();
+																		   int num_faltantep3 = 4 - caracteresp5.size();
+																		   for (int i = 0; i < num_faltantep3; i++) {
+																			   caracteresp5 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		   imprimirTablero();
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		   mvwprintw(win, 2, 51, "%d", turno + 1);
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 5, 20, "Nombre: ");		
+																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		   mvwprintw(win, 7, 20, "Ficha: ");
+																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		   mvwprintw(win, 5, 50, "Dinero: ");
+																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		   mvwprintw(win, 7, 50, "Posicion: ");
+																		   mvwprintw(win, 7, 60, "%d", 0);
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 12, 18, "Casilla Actual");
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 18, 55, "       Menu GO       ");
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 20, 55, " Deposito Realizado! ");
+																		   mvwprintw(win, 21, 55, "                   ");
+																		   refresh();
+																		   wrefresh(win);
+																		   wrefresh(win2);
+																		   getch();	  
+																	   }break;
+															   case 14:{
+																		   jugadores[turno] -> setCasualidadCarcel(true);
+																	   }break;
 														   }
-														   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
-															   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-															   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-															   wattron(win2, COLOR_PAIR(1));
-															   werase(win2);
-															   box(win2, 0, 0);
-															   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-															   werase(win);
-															   box(win, 0 , 0);
-															   refresh();
-															   wattron(win, COLOR_PAIR(5));
-															   mvwprintw(win, 2, 33, "Turno del Jugador ");
-															   mvwprintw(win, 2, 51, "%d", turno + 1);
-															   wattron(win, COLOR_PAIR(1));
-															   mvwprintw(win, 5, 20, "Nombre: ");		
-															   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-															   mvwprintw(win, 7, 20, "Ficha: ");
-															   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-															   mvwprintw(win, 5, 50, "Dinero: ");
-															   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-															   mvwprintw(win, 7, 50, "Posicion: ");
-															   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-															   wattron(win, COLOR_PAIR(5));
-															   mvwprintw(win, 12, 18, "Casilla Actual");
-															   wattron(win, COLOR_PAIR(5));
-															   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
-															   wattron(win, COLOR_PAIR(1));
-															   mvwprintw(win, 20, 55, "   Pago Realizado! ");
-															   refresh();
-															   wrefresh(win);
-															   wrefresh(win2);
-															   getch();
-														   }
+														   wattron(win2, COLOR_PAIR(1));
+														   werase(win2);
+														   box(win2, 0, 0);
+														   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+														   werase(win);
+														   box(win, 0 , 0);
+														   refresh();
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 2, 33, "Turno del Jugador ");
+														   mvwprintw(win, 2, 51, "%d", turno + 1);
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 5, 20, "Nombre: ");		
+														   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+														   mvwprintw(win, 7, 20, "Ficha: ");
+														   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+														   mvwprintw(win, 5, 50, "Dinero: ");
+														   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+														   mvwprintw(win, 7, 50, "Posicion: ");
+														   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 12, 18, "Casilla Actual");
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 18, 55, "     Menu Comodin     ");
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 20, 55, " Casualidad Terminada ");
+														   refresh();
+														   wrefresh(win);
+														   wrefresh(win2);
+														   getch();
 													   } else {
 														   wattron(win2, COLOR_PAIR(1));
 														   werase(win2);
@@ -1927,15 +2447,543 @@ void Tablero::nuevo_juego(WINDOW* win) {
 														   wattron(win, COLOR_PAIR(5));
 														   mvwprintw(win, 12, 18, "Casilla Actual");
 														   wattron(win, COLOR_PAIR(5));
-														   mvwprintw(win, 18, 55, " Menu Propiedad ");
+														   mvwprintw(win, 18, 55, "   Menu Comodin   ");
 														   wattron(win, COLOR_PAIR(1));
-														   mvwprintw(win, 20, 55, " Propiedad Suya ");
+														   mvwprintw(win, 20, 55, " Ver Arca Comunal ");
+														   refresh();
+														   wrefresh(win);
+														   wrefresh(win2);
+														   getch();
+														   srand(time(NULL));
+														   int num_arcacomunal = rand() % 14 + 15;
+														   wattron(win2, COLOR_PAIR(1));
+														   werase(win2);
+														   box(win2, 0, 0);
+														   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+														   werase(win);
+														   box(win, 0 , 0);
+														   refresh();
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 2, 33, "Turno del Jugador ");
+														   mvwprintw(win, 2, 51, "%d", turno + 1);
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 5, 20, "Nombre: ");		
+														   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+														   mvwprintw(win, 7, 20, "Ficha: ");
+														   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+														   mvwprintw(win, 5, 50, "Dinero: ");
+														   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+														   mvwprintw(win, 7, 50, "Posicion: ");
+														   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 12, 18, "Casilla Actual");
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 18, 55, "   Menu Comodin   ");
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 20, 50, "%s", tarjetas[num_arcacomunal] -> getContenido().c_str());
+														   refresh();
+														   wrefresh(win);
+														   wrefresh(win2);
+														   getch();
+														   switch (num_arcacomunal) {
+															   case 15:{
+																		   for (int i = 0; i < jugadores.size(); i++) {
+																			   if (jugadores[i] -> getFicha() != jugadores[turno] -> getFicha()) {
+																				   if (jugadores[i] -> getDinero() - 50 >= 0) {
+																					   jugadores[i] -> setDinero(jugadores[i] -> getDinero() - 50);
+																				   }
+																			   }
+																		   }
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + (jugadores.size() - 1) * 50);
+																	   }break;
+															   case 16:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																	   }break;
+															   case 17:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 10);
+																	   }break;
+															   case 18:{
+																		   if (jugadores[turno] -> getDinero() - 150 >= 0) {
+																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 150);
+																		   }
+																	   }break;
+															   case 19:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 100);
+																	   }break;
+															   case 20:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 25);
+																	   }break;
+															   case 21:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 100);
+																	   }break;
+															   case 22:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 45);
+																	   }break;
+															   case 23:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 20);
+																	   }break;
+															   case 24:{
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 100);
+																	   }break;
+															   case 25:{
+																		   jugadores[turno] -> setCarcel(true);
+																		   string caracteres2 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteres3 = "";
+																		   for (int i = 0; i < caracteres2.size(); i++) {
+																			   if (caracteres2[i] != jugadores[turno] -> getFicha()) {
+																				   caracteres3 += caracteres2[i];
+																			   }
+																		   }
+																		   int num_faltante2 = 4 - caracteres3.size();
+																		   for (int i = 0; i < num_faltante2; i++) {
+																			   caracteres3 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres3);
+																		   jugadores[turno] -> setPosicion(10);
+																		   string caracteres4 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteres5 = "";
+																		   for (int i = 0; i < caracteres4.size(); i++) {
+																			   if ((caracteres4[i] == '+') || (caracteres4[i] == '#') || (caracteres4[i] == '!') || (caracteres4[i] == '*')) {
+																				   caracteres5 += caracteres4[i];
+																			   }
+																		   }
+																		   caracteres5 += jugadores[turno] -> getFicha();
+																		   int num_faltante3 = 4 - caracteres5.size();
+																		   for (int i = 0; i < num_faltante3; i++) {
+																			   caracteres5 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteres5);
+																		   imprimirTablero();
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		   mvwprintw(win, 2, 51, "%d", turno + 1);
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 5, 20, "Nombre: ");		
+																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		   mvwprintw(win, 7, 20, "Ficha: ");
+																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		   mvwprintw(win, 5, 50, "Dinero: ");
+																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		   mvwprintw(win, 7, 50, "Posicion: ");
+																		   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 12, 18, "Casilla Actual");
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 18, 50, "       Menu Carcel       ");
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 20, 50, " Has Caido en la Carcel! ");
+																		   refresh();
+																		   wrefresh(win);
+																		   wrefresh(win2);
+																		   getch();
+																	   }break;
+															   case 26:{
+																		   if (jugadores[turno] -> getDinero() - 50 >= 0) {
+																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 50);
+																		   }
+																	   }break;
+															   case 27:{
+
+																	   }break;
+															   case 28:{
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, 0);
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		   mvwprintw(win, 2, 51, "%d", turno + 1);
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 5, 20, "Nombre: ");		
+																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		   mvwprintw(win, 7, 20, "Ficha: ");
+																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		   mvwprintw(win, 5, 50, "Dinero: ");
+																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		   mvwprintw(win, 7, 50, "Posicion: ");
+																		   mvwprintw(win, 7, 60, "%d", 0);
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 12, 18, "Casilla Actual");
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 18, 55, "       Menu GO      ");
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 20, 55, " Has Pasado Por GO! ");
+																		   mvwprintw(win, 21, 55, "     Cobra $200!    ");
+																		   refresh();
+																		   wrefresh(win);
+																		   wrefresh(win2);
+																		   getch();
+																		   string caracteresp2 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp3 = "";
+																		   for (int i = 0; i < caracteresp2.size(); i++) {
+																			   if (caracteresp2[i] != jugadores[turno] -> getFicha()) {
+																				   caracteresp3 += caracteresp2[i];
+																			   }
+																		   }
+																		   int num_faltantep2 = 4 - caracteresp3.size();
+																		   for (int i = 0; i < num_faltantep2; i++) {
+																			   caracteresp3 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp3);
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() + 200);
+																		   jugadores[turno] -> setPosicion(0);
+																		   string caracteresp4 = posiciones[jugadores[turno] -> getPosicion()];
+																		   string caracteresp5 = "";
+																		   for (int i = 0; i < caracteresp4.size(); i++) {
+																			   if ((caracteresp4[i] == '+') || (caracteresp4[i] == '#') || (caracteresp4[i] == '!') || (caracteresp4[i] == '*')) {
+																				   caracteresp5 += caracteres4[i];
+																			   }
+																		   }
+																		   caracteresp5 += jugadores[turno] -> getFicha();
+																		   int num_faltantep3 = 4 - caracteresp5.size();
+																		   for (int i = 0; i < num_faltantep3; i++) {
+																			   caracteresp5 += " ";
+																		   }
+																		   posiciones.erase(posiciones.begin() + jugadores[turno] -> getPosicion());
+																		   posiciones.insert(posiciones.begin() + jugadores[turno] -> getPosicion(), caracteresp5);
+																		   imprimirTablero();
+																		   wattron(win, COLOR_PAIR(1));
+																		   wattron(win2, COLOR_PAIR(1));
+																		   werase(win2);
+																		   box(win2, 0, 0);
+																		   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																		   werase(win);
+																		   box(win, 0 , 0);
+																		   refresh();
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																		   mvwprintw(win, 2, 51, "%d", turno + 1);
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 5, 20, "Nombre: ");		
+																		   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																		   mvwprintw(win, 7, 20, "Ficha: ");
+																		   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																		   mvwprintw(win, 5, 50, "Dinero: ");
+																		   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																		   mvwprintw(win, 7, 50, "Posicion: ");
+																		   mvwprintw(win, 7, 60, "%d", 0);
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 12, 18, "Casilla Actual");
+																		   wattron(win, COLOR_PAIR(5));
+																		   mvwprintw(win, 18, 55, "       Menu GO       ");
+																		   wattron(win, COLOR_PAIR(1));
+																		   mvwprintw(win, 20, 55, " Deposito Realizado! ");
+																		   mvwprintw(win, 21, 55, "                   ");
+																		   refresh();
+																		   wrefresh(win);
+																		   wrefresh(win2);
+																		   getch();	  
+																	   }break;
+															   case 29:{
+																		   jugadores[turno] -> setArcaComunalCarcel(true);
+																	   }break;
+														   }
+														   wattron(win2, COLOR_PAIR(1));
+														   werase(win2);
+														   box(win2, 0, 0);
+														   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+														   werase(win);
+														   box(win, 0 , 0);
+														   refresh();
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 2, 33, "Turno del Jugador ");
+														   mvwprintw(win, 2, 51, "%d", turno + 1);
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 5, 20, "Nombre: ");		
+														   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+														   mvwprintw(win, 7, 20, "Ficha: ");
+														   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+														   mvwprintw(win, 5, 50, "Dinero: ");
+														   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+														   mvwprintw(win, 7, 50, "Posicion: ");
+														   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 12, 18, "Casilla Actual");
+														   wattron(win, COLOR_PAIR(5));
+														   mvwprintw(win, 18, 55, "      Menu Comodin      ");
+														   wattron(win, COLOR_PAIR(1));
+														   mvwprintw(win, 20, 55, " Arca Comunal Terminada ");
 														   refresh();
 														   wrefresh(win);
 														   wrefresh(win2);
 														   getch();
 													   }
-												   } 
+												   } else {
+													   if (casillas[jugadores[turno] -> getPosicion()] -> getDisponible()) {
+														   int opcion2 = 0;
+														   int seleccion2 = 0;
+														   bool salir2 = true;
+														   wattron(win, COLOR_PAIR(1));
+														   string menu2[2] = {" Comprar Propiedad ", "     No Comprar    "};
+														   while (salir2) {
+															   wattron(win2, COLOR_PAIR(1));
+															   werase(win2);
+															   box(win2, 0, 0);
+															   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+															   werase(win);
+															   box(win, 0 , 0);
+															   refresh();
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 2, 33, "Turno del Jugador ");
+															   mvwprintw(win, 2, 51, "%d", turno + 1);
+															   wattron(win, COLOR_PAIR(1));
+															   mvwprintw(win, 5, 20, "Nombre: ");		
+															   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+															   mvwprintw(win, 7, 20, "Ficha: ");
+															   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+															   mvwprintw(win, 5, 50, "Dinero: ");
+															   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+															   mvwprintw(win, 7, 50, "Posicion: ");
+															   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 12, 18, "Casilla Actual");
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+															   refresh();
+															   wrefresh(win);
+															   wrefresh(win2);
+															   wattron(win, COLOR_PAIR(1));
+															   for (int i = 0; i < 2; i++) {
+																   if (i == seleccion2) {
+																	   wattron(win, A_REVERSE);
+																	   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+																	   wattroff(win, A_REVERSE);
+																   } else {
+																	   mvwprintw(win, i + 19, 55, menu2[i].c_str());
+																   }
+															   }
+															   wmove(win, 32, 89);
+															   opcion2 = wgetch(win);
+															   switch (opcion2) {
+																   case KEY_UP:	
+																	   seleccion2--;
+																	   if (seleccion2 < 0) {
+																		   seleccion2 = 0;
+																	   }
+																	   break;
+																   case KEY_DOWN:
+																	   seleccion2++;
+																	   if (seleccion2 > 1) {
+																		   seleccion2 = 1;
+																	   }
+																	   break;
+																   default:
+																	   break;
+															   }
+															   if (opcion2 == 10) {
+																   switch (seleccion2) {
+																	   case 0:
+																		   if (jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio() >= 0) {
+																			   casillas[jugadores[turno] -> getPosicion()] -> setDisponible(false);
+																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[jugadores[turno] -> getPosicion()] -> getPrecio());
+																			   vector<Casilla*> casillas_nuevas = jugadores[turno] -> getPropiedades();
+																			   casillas_nuevas.push_back(casillas[jugadores[turno] -> getPosicion()]);
+																			   jugadores[turno] -> setPropiedades(casillas_nuevas);
+
+																			   wattron(win2, COLOR_PAIR(1));
+																			   werase(win2);
+																			   box(win2, 0, 0);
+																			   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																			   werase(win);
+																			   box(win, 0 , 0);
+																			   refresh();
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			   mvwprintw(win, 2, 51, "%d", turno + 1);
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 5, 20, "Nombre: ");		
+																			   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			   mvwprintw(win, 7, 20, "Ficha: ");
+																			   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			   mvwprintw(win, 5, 50, "Dinero: ");
+																			   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			   mvwprintw(win, 7, 50, "Posicion: ");
+																			   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 12, 18, "Casilla Actual");
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 18, 55, "  Menu Propiedad   ");
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 20, 55, " Compra Realizada! ");
+																			   refresh();
+																			   wrefresh(win);
+																			   wrefresh(win2);
+																			   getch();
+																			   salir2 = false;
+																		   } else {
+																			   wattron(win2, COLOR_PAIR(1));
+																			   werase(win2);
+																			   box(win2, 0, 0);
+																			   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																			   werase(win);
+																			   box(win, 0 , 0);
+																			   refresh();
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																			   mvwprintw(win, 2, 51, "%d", turno + 1);
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 5, 20, "Nombre: ");		
+																			   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																			   mvwprintw(win, 7, 20, "Ficha: ");
+																			   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																			   mvwprintw(win, 5, 50, "Dinero: ");
+																			   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																			   mvwprintw(win, 7, 50, "Posicion: ");
+																			   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 12, 18, "Casilla Actual");
+																			   wattron(win, COLOR_PAIR(5));
+																			   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+																			   wattron(win, COLOR_PAIR(1));
+																			   mvwprintw(win, 20, 55, " No Tienes Dinero! ");
+																			   refresh();
+																			   wrefresh(win);
+																			   wrefresh(win2);
+																			   getch();
+																			   salir2 = false;
+																		   }
+																		   break;
+																	   case 1:
+																		   salir2 = false;
+																		   break;
+																   }
+															   }
+														   }
+													   } else {
+														   bool dueno_casilla = false;
+														   for (int i = 0; i < jugadores.size(); i++) {
+															   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+															   for (int j = 0; j < casillas_nuevas.size(); j++) {
+																   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+																	   if (jugadores[turno] -> getFicha() == jugadores[i] -> getFicha()) {
+																		   dueno_casilla = true;
+																	   }
+																   }
+															   }
+
+														   }
+														   if (!dueno_casilla) {
+															   wattron(win2, COLOR_PAIR(1));
+															   werase(win2);
+															   box(win2, 0, 0);
+															   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+															   werase(win);
+															   box(win, 0 , 0);
+															   refresh();
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 2, 33, "Turno del Jugador ");
+															   mvwprintw(win, 2, 51, "%d", turno + 1);
+															   wattron(win, COLOR_PAIR(1));
+															   mvwprintw(win, 5, 20, "Nombre: ");		
+															   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+															   mvwprintw(win, 7, 20, "Ficha: ");
+															   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+															   mvwprintw(win, 5, 50, "Dinero: ");
+															   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+															   mvwprintw(win, 7, 50, "Posicion: ");
+															   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 12, 17, "Casilla Actual");
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 18, 55, "     Menu Propiedad   ");
+															   wattron(win, COLOR_PAIR(1));
+															   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
+															   mvwprintw(win, 21, 55, "   Debes pagar $");
+															   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+															   refresh();
+															   wrefresh(win);
+															   wrefresh(win2);
+															   getch();
+															   int num_jugador;
+															   for (int i = 0; i < jugadores.size(); i++) {
+																   vector<Casilla*> casillas_nuevas = jugadores[i] -> getPropiedades();
+																   for (int j = 0; j < casillas_nuevas.size(); j++) {
+																	   if (casillas_nuevas[j] -> getNombre() == casillas[jugadores[turno] -> getPosicion()] -> getNombre()) {
+																		   num_jugador = i;
+																	   }
+																   }
+															   }
+															   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
+																   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+																   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+																   wattron(win2, COLOR_PAIR(1));
+																   werase(win2);
+																   box(win2, 0, 0);
+																   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+																   werase(win);
+																   box(win, 0 , 0);
+																   refresh();
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 2, 33, "Turno del Jugador ");
+																   mvwprintw(win, 2, 51, "%d", turno + 1);
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 5, 20, "Nombre: ");		
+																   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+																   mvwprintw(win, 7, 20, "Ficha: ");
+																   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+																   mvwprintw(win, 5, 50, "Dinero: ");
+																   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+																   mvwprintw(win, 7, 50, "Posicion: ");
+																   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 12, 18, "Casilla Actual");
+																   wattron(win, COLOR_PAIR(5));
+																   mvwprintw(win, 18, 55, "   Menu Propiedad  ");
+																   wattron(win, COLOR_PAIR(1));
+																   mvwprintw(win, 20, 55, "   Pago Realizado! ");
+																   refresh();
+																   wrefresh(win);
+																   wrefresh(win2);
+																   getch();
+															   }
+														   } else {
+															   wattron(win2, COLOR_PAIR(1));
+															   werase(win2);
+															   box(win2, 0, 0);
+															   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+															   werase(win);
+															   box(win, 0 , 0);
+															   refresh();
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 2, 33, "Turno del Jugador ");
+															   mvwprintw(win, 2, 51, "%d", turno + 1);
+															   wattron(win, COLOR_PAIR(1));
+															   mvwprintw(win, 5, 20, "Nombre: ");		
+															   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+															   mvwprintw(win, 7, 20, "Ficha: ");
+															   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+															   mvwprintw(win, 5, 50, "Dinero: ");
+															   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+															   mvwprintw(win, 7, 50, "Posicion: ");
+															   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 12, 18, "Casilla Actual");
+															   wattron(win, COLOR_PAIR(5));
+															   mvwprintw(win, 18, 55, " Menu Propiedad ");
+															   wattron(win, COLOR_PAIR(1));
+															   mvwprintw(win, 20, 55, " Propiedad Suya ");
+															   refresh();
+															   wrefresh(win);
+															   wrefresh(win2);
+															   getch();
+														   }
+													   } 
+												   }
 											   }
 										   }
 									   }
@@ -2093,8 +3141,8 @@ void Tablero::nuevo_juego(WINDOW* win) {
 										   for (int i = 0; i < casillas.size(); i++) {
 											   if (casillas[i] -> getNombre() == propiedades[seleccion2] -> getNombre()) {
 												   num_casilla = i;
-												  }
-											}
+											   }
+										   }
 										   imprimirCasilla(win3, num_casilla);
 										   wattron(win, COLOR_PAIR(5));
 										   mvwprintw(win, 2, 33, "Turno del Jugador ");
@@ -2175,19 +3223,35 @@ void Tablero::init2(string file) {
 		int numero;
 		string contenido;
 		bool casualidad = true;
+		bool Final = false;
 		while (!inputFile.eof()) {
-			inputFile >> numero;
-			inputFile >> contenido;
-			Tarjeta* tarjeta;
-			if (casualidad) {
-				tarjeta = new Casualidad(numero, contenido);
-				if (numero == 15) {
-					casualidad = false;
+			if (!Final) {
+				inputFile >> numero;
+				inputFile >> contenido;
+				string contenido1 = "";
+				for (int i = 0; i < contenido.size(); i++) {
+					if (contenido[i] != '_') {
+						contenido1 += contenido[i];
+					} else {
+						contenido1 += ' ';
+					}
+				}
+				if (casualidad) {
+					Tarjeta* tarjeta_nueva = new Casualidad(numero, contenido1);
+					tarjetas.push_back(tarjeta_nueva);
+					if (numero == 15) {
+						casualidad = false;
+					}
+				} else {
+					Tarjeta* tarjeta_nueva = new ArcaComunal(numero, contenido1);
+					tarjetas.push_back(tarjeta_nueva);
+					if (numero == 15) {
+						Final = true;
+					}
 				}
 			} else {
-				tarjeta = new ArcaComunal(numero, contenido);
+				inputFile >> contenido;
 			}
-			tarjetas.push_back(tarjeta);
 		}
 		inputFile.close();
 	}
