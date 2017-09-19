@@ -8,7 +8,15 @@ using namespace std;
 class Casilla_Ferrocarril: public Casilla {
 	public:
 		Casilla_Ferrocarril();
-		Casilla_Ferrocarril(string, int, int, int, int, int, bool);	
+		Casilla_Ferrocarril(string, int, int, int, int, int, bool);
+		virtual string getNombre();
+		virtual void setNombre(string);
+		virtual int getAlquiler();
+		virtual void setAlquiler(int);
+		virtual int getPrecio();
+		virtual void setPrecio(int);
+		virtual bool getDisponible();
+		virtual void setDisponible(bool);
 };
 
 #endif

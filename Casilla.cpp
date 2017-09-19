@@ -33,14 +33,6 @@ Casilla::Casilla(string pnombre, int palquiler, bool pdisponible) {
 	disponible = pdisponible;
 }
 
-string Casilla::getNombre() {
-	return nombre;
-}
-
-void Casilla::setNombre(string pnombre) {
-	nombre = pnombre;
-}
-
 int Casilla::getAlquiler() {
 	return alquiler;
 }

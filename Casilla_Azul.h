@@ -9,6 +9,16 @@ class Casilla_Azul: public Casilla {
 	public:
 		Casilla_Azul();
 		Casilla_Azul(string, int, int, int, bool);	
+		virtual string getNombre();
+		virtual void setNombre(string);
+		virtual int getAlquiler();
+		virtual void setAlquiler(int);
+		virtual int getPrecio();
+		virtual void setPrecio(int);
+		virtual bool getDisponible();
+		virtual void setDisponible(bool);
+		virtual vector<Casa*> getCasas();
+		virtual void setCasas(vector<Casa*>);
 };
 
 #endif

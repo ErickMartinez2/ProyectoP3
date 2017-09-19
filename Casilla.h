@@ -7,7 +7,7 @@
 using namespace std;
 
 class Casilla {
-	private:
+	protected:
 		string nombre;
 		int alquiler;
 		int alquiler2;
@@ -24,26 +24,26 @@ class Casilla {
 		Casilla(string, int, int, int, int, int, bool);
 		Casilla(string, bool);
 		Casilla(string, int, bool);
-		string getNombre();
-		void setNombre(string);
-		int getAlquiler();
-		void setAlquiler(int);
+		virtual string getNombre() = 0;
+		virtual void setNombre(string) = 0;
+		virtual int getAlquiler();
+		virtual void setAlquiler(int);
 		int getAlquiler2();
 		void setAlquiler2(int);
 		int getAlquiler3();
 		void setAlquiler3(int);
 		int getAlquiler4();
 		void setAlquiler4(int);
-		vector<Casa*> getCasas();
-		void setCasas(vector<Casa*>);
-		Hotel* getHotel();
-		void setHotel(Hotel*);
+		virtual vector<Casa*> getCasas();
+		virtual void setCasas(vector<Casa*>);
+		virtual Hotel* getHotel();
+		virtual void setHotel(Hotel*);
 		int getPrecio_Casa();
 		void setPrecio_Casa(int);
-		int getPrecio();
+		virtual int getPrecio();
 		virtual void setPrecio(int);
-		bool getDisponible();
-		void setDisponible(bool);
+		virtual bool getDisponible();
+		virtual void setDisponible(bool);
 };
 
 #endif

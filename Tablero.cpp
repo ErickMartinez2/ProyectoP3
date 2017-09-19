@@ -277,7 +277,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 			int opcion = 0;
 			int seleccion = 0;
 			bool salir = true;
-			string menu[3] = {"        Tirar Dados         ", "     Usar Carta Especial    ", "     Pagar Multa de $50     "};
+			string menu[3] = {"        Tirar Dados         ", "    Usar Tarjeta Especial   ", "     Pagar Multa de $50     "};
 			while (salir) {
 				wattron(win, COLOR_PAIR(1));
 				wattron(win2, COLOR_PAIR(1));
@@ -440,6 +440,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   werase(win);
 									   box(win, 0 , 0);
 									   refresh();
+										turno++;
+										   if (turno == jugadores.size()) {
+											   turno = 0;
+										   }
+										   salir = false;
 								   } else {
 									   if (jugadores[turno] -> getTurnoCarcel() == 3) {
 										   wattron(win, COLOR_PAIR(1));
@@ -586,10 +591,90 @@ void Tablero::nuevo_juego(WINDOW* win) {
 										   if (turno == jugadores.size()) {
 											   turno = 0;
 										   }
+										   salir = false;
 									   }
 								   }
 							   }break;
 						case 1:{
+								  if (jugadores[turno] -> getCasualidadCarcel()) {
+									   jugadores[turno] -> setCarcel(false);
+									   jugadores[turno] -> setTurnoCarcel(0);
+									   wattron(win, COLOR_PAIR(1));
+									   wattron(win2, COLOR_PAIR(1));
+									   werase(win2);
+									   box(win2, 0, 0);
+									   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+									   werase(win);
+									   box(win, 0 , 0);
+									   refresh();
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 2, 33, "Turno del Jugador ");
+									   mvwprintw(win, 2, 51, "%d", turno + 1);
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 5, 20, "Nombre: ");		
+									   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+									   mvwprintw(win, 7, 20, "Ficha: ");
+									   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+									   mvwprintw(win, 5, 50, "Dinero: ");
+									   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+									   mvwprintw(win, 7, 50, "Posicion: ");
+									   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 12, 18, "Casilla Actual");
+									   refresh();
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 18, 50, " Menu del Jugador en Carcel ");
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 20, 50, " Tarjeta Especial Utilizada ");
+									   mvwprintw(win, 21, 50, " Puedes Salir de la Carcel! ");
+									   refresh();
+									   wrefresh(win);
+									   wrefresh(win2);
+									   getch();
+									   salir = false;
+									  } else {
+										  if (jugadores[turno] -> getArcaComunalCarcel()) {
+										jugadores[turno] -> setCarcel(false);
+									   jugadores[turno] -> setTurnoCarcel(0);
+									   wattron(win, COLOR_PAIR(1));
+									   wattron(win2, COLOR_PAIR(1));
+									   werase(win2);
+									   box(win2, 0, 0);
+									   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+									   werase(win);
+									   box(win, 0 , 0);
+									   refresh();
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 2, 33, "Turno del Jugador ");
+									   mvwprintw(win, 2, 51, "%d", turno + 1);
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 5, 20, "Nombre: ");		
+									   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+									   mvwprintw(win, 7, 20, "Ficha: ");
+									   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+									   mvwprintw(win, 5, 50, "Dinero: ");
+									   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+									   mvwprintw(win, 7, 50, "Posicion: ");
+									   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 12, 18, "Casilla Actual");
+									   refresh();
+									   wattron(win, COLOR_PAIR(5));
+									   mvwprintw(win, 18, 50, " Menu del Jugador en Carcel ");
+									   wattron(win, COLOR_PAIR(1));
+									   mvwprintw(win, 20, 50, " Tarjeta Especial Utilizada ");
+									   mvwprintw(win, 21, 50, " Puedes Salir de la Carcel! ");
+									   refresh();
+									   wrefresh(win);
+									   wrefresh(win2);
+									   getch();
+									   salir = false;
+											 } else {
+													mvwprintw(win, 25, 55, " No Tienes Tarjetas Especiales! ");
+													wrefresh(win);
+													getch();
+												}
+										 }
 							   }break;
 						case 2:{
 								   if (jugadores[turno] -> getDinero() - 50 >= 0) {
@@ -631,7 +716,6 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   salir = false;
 								   }
 							   }break;
-
 					}
 				}
 			}
@@ -3112,6 +3196,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 										   wrefresh(win);
 										   wrefresh(win2);
 										   getch();
+										turno++;
+									   if (turno == jugadores.size()) {
+										   turno = 0;
+									   }
+									   contador_velocidad = 0;
 									   }
 								   } else {
 									   turno++;
@@ -3185,9 +3274,13 @@ void Tablero::nuevo_juego(WINDOW* win) {
 											   salir2 = false;
 										   }
 									   }
-								   }
-								   salir = false;
-							   }break;
+									   salir = false;
+								   } else {
+										mvwprintw(win, 25, 55, "No Tienes Propiedades!");
+										wrefresh(win);
+										getch();
+									  }
+								   }break;
 						case 2: {
 									salir = false;
 									ganador = true;
@@ -3220,32 +3313,23 @@ void Tablero::nuevo_juego(WINDOW* win) {
 void Tablero::init2(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
-		int numero;
 		string contenido;
 		bool casualidad = true;
 		bool Final = false;
 		while (!inputFile.eof()) {
 			if (!Final) {
-				inputFile >> numero;
-				inputFile >> contenido;
-				string contenido1 = "";
-				for (int i = 0; i < contenido.size(); i++) {
-					if (contenido[i] != '_') {
-						contenido1 += contenido[i];
-					} else {
-						contenido1 += ' ';
-					}
-				}
 				if (casualidad) {
-					Tarjeta* tarjeta_nueva = new Casualidad(numero, contenido1);
-					tarjetas.push_back(tarjeta_nueva);
-					if (numero == 15) {
+					Casualidad* tarjeta_casualidad = new Casualidad();
+					inputFile >> *tarjeta_casualidad;
+					tarjetas.push_back(tarjeta_casualidad);
+					if (tarjeta_casualidad -> getNumero() == 15) {
 						casualidad = false;
 					}
 				} else {
-					Tarjeta* tarjeta_nueva = new ArcaComunal(numero, contenido1);
-					tarjetas.push_back(tarjeta_nueva);
-					if (numero == 15) {
+					ArcaComunal* tarjeta_arcacomunal = new ArcaComunal();
+					inputFile >> *tarjeta_arcacomunal;
+					tarjetas.push_back(tarjeta_arcacomunal);
+					if (tarjeta_arcacomunal -> getNumero() == 15) {
 						Final = true;
 					}
 				}

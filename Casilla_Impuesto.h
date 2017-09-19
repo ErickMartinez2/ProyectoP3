@@ -8,7 +8,11 @@ using namespace std;
 class Casilla_Impuesto: public Casilla {
 	public:
 		Casilla_Impuesto();
-		Casilla_Impuesto(string, int, bool);	
+		Casilla_Impuesto(string, int, bool);
+		virtual string getNombre();
+		virtual void setNombre(string);
+		virtual int getAlquiler();
+		virtual void setAlquiler(int);
 };
 
 #endif
