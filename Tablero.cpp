@@ -6,21 +6,22 @@ using namespace std;
 int Tablero::play() {
 	initscr();
 	start_color();
-	for (int i = 0; i < 40; i++) {
-		char posicion[] = "    ";
-		posiciones.push_back(posicion);
-	}
-	imprimirTablero();
 	WINDOW * win = newwin(33, 90, 8, 50);
-	box(win, 0, 0);
-	refresh();
 	keypad(win, true);
 	int opcion = 0;
 	int seleccion = 0;
 	bool salir = true;
-	wattron(win, COLOR_PAIR(1));
 	string menu[3] = {"   Nuevo Partida   ", " Continuar Partida ", "       Salir       "};
 	while (salir) {
+		posiciones.clear();
+		for (int i = 0; i < 40; i++) {
+			char posicion[] = "    ";
+			posiciones.push_back(posicion);
+		}
+		jugadores.clear();
+		imprimirTablero();
+		box(win, 0, 0);
+		refresh();
 		wattron(win, COLOR_PAIR(2));
 		mvwprintw(win, 12, 35, "   MENU MONOPOLY   ");
 		wrefresh(win);
@@ -440,11 +441,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   werase(win);
 									   box(win, 0 , 0);
 									   refresh();
-										turno++;
-										   if (turno == jugadores.size()) {
-											   turno = 0;
-										   }
-										   salir = false;
+									   turno++;
+									   if (turno == jugadores.size()) {
+										   turno = 0;
+									   }
+									   salir = false;
 								   } else {
 									   if (jugadores[turno] -> getTurnoCarcel() == 3) {
 										   wattron(win, COLOR_PAIR(1));
@@ -553,6 +554,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 											   box(win, 0 , 0);
 											   refresh();
 											   salir = false;
+										   } else {
+											   Terminar(win, turno);
+											   salir = false;
+											   ganador = true;
 										   }
 									   } else {
 										   wattron(win, COLOR_PAIR(1));
@@ -596,7 +601,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 								   }
 							   }break;
 						case 1:{
-								  if (jugadores[turno] -> getCasualidadCarcel()) {
+								   if (jugadores[turno] -> getCasualidadCarcel()) {
 									   jugadores[turno] -> setCarcel(false);
 									   jugadores[turno] -> setTurnoCarcel(0);
 									   wattron(win, COLOR_PAIR(1));
@@ -632,49 +637,50 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   wrefresh(win2);
 									   getch();
 									   salir = false;
-									  } else {
-										  if (jugadores[turno] -> getArcaComunalCarcel()) {
-										jugadores[turno] -> setCarcel(false);
-									   jugadores[turno] -> setTurnoCarcel(0);
-									   wattron(win, COLOR_PAIR(1));
-									   wattron(win2, COLOR_PAIR(1));
-									   werase(win2);
-									   box(win2, 0, 0);
-									   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
-									   werase(win);
-									   box(win, 0 , 0);
-									   refresh();
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 2, 33, "Turno del Jugador ");
-									   mvwprintw(win, 2, 51, "%d", turno + 1);
-									   wattron(win, COLOR_PAIR(1));
-									   mvwprintw(win, 5, 20, "Nombre: ");		
-									   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
-									   mvwprintw(win, 7, 20, "Ficha: ");
-									   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
-									   mvwprintw(win, 5, 50, "Dinero: ");
-									   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
-									   mvwprintw(win, 7, 50, "Posicion: ");
-									   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 12, 18, "Casilla Actual");
-									   refresh();
-									   wattron(win, COLOR_PAIR(5));
-									   mvwprintw(win, 18, 50, " Menu del Jugador en Carcel ");
-									   wattron(win, COLOR_PAIR(1));
-									   mvwprintw(win, 20, 50, " Tarjeta Especial Utilizada ");
-									   mvwprintw(win, 21, 50, " Puedes Salir de la Carcel! ");
-									   refresh();
-									   wrefresh(win);
-									   wrefresh(win2);
-									   getch();
-									   salir = false;
-											 } else {
-													mvwprintw(win, 25, 55, " No Tienes Tarjetas Especiales! ");
-													wrefresh(win);
-													getch();
-												}
-										 }
+								   } else {
+									   if (jugadores[turno] -> getArcaComunalCarcel()) {
+										   jugadores[turno] -> setCarcel(false);
+										   jugadores[turno] -> setTurnoCarcel(0);
+										   wattron(win, COLOR_PAIR(1));
+										   wattron(win2, COLOR_PAIR(1));
+										   werase(win2);
+										   box(win2, 0, 0);
+										   imprimirCasilla(win2, jugadores[turno] -> getPosicion());
+										   werase(win);
+										   box(win, 0 , 0);
+										   refresh();
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 2, 33, "Turno del Jugador ");
+										   mvwprintw(win, 2, 51, "%d", turno + 1);
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 5, 20, "Nombre: ");		
+										   mvwprintw(win, 5, 28, "%s", (jugadores[turno] -> getNombre()).c_str());
+										   mvwprintw(win, 7, 20, "Ficha: ");
+										   mvwprintw(win, 7, 27, "%c", jugadores[turno] -> getFicha());
+										   mvwprintw(win, 5, 50, "Dinero: ");
+										   mvwprintw(win, 5, 58, "%d", jugadores[turno] -> getDinero());
+										   mvwprintw(win, 7, 50, "Posicion: ");
+										   mvwprintw(win, 7, 60, "%d", jugadores[turno] -> getPosicion());
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 12, 18, "Casilla Actual");
+										   refresh();
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 18, 50, " Menu del Jugador en Carcel ");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 20, 50, " Tarjeta Especial Utilizada ");
+										   mvwprintw(win, 21, 50, " Puedes Salir de la Carcel! ");
+										   refresh();
+										   wrefresh(win);
+										   wrefresh(win2);
+										   getch();
+										   salir = false;
+									   } else {
+										   mvwprintw(win, 25, 50, " No Tienes Tarjetas Especiales! ");
+										   wrefresh(win);
+										   wmove(win, 32, 89);
+										   getch();
+									   }
+								   }
 							   }break;
 						case 2:{
 								   if (jugadores[turno] -> getDinero() - 50 >= 0) {
@@ -714,6 +720,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   wrefresh(win2);
 									   getch();
 									   salir = false;
+								   } else {
+									   Terminar(win, turno);
+									   salir = false;
+									   ganador = true;
 								   }
 							   }break;
 					}
@@ -723,7 +733,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 			int opcion = 0;
 			int seleccion = 0;
 			bool salir = true;
-			string menu[3] = {"     Tirar Dados     ", " Ver Mis Propiedades ", "      Rendirse       "};
+			string menu[4] = {"     Tirar Dados     ", " Ver Mis Propiedades ", "      Rendirse       ", "   Guardar Partida   "};
 			while (salir) {
 				wattron(win, COLOR_PAIR(1));
 				wattron(win2, COLOR_PAIR(1));
@@ -753,7 +763,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 				wrefresh(win);
 				wrefresh(win2);
 				wattron(win, COLOR_PAIR(1));
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 4; i++) {
 					if (i == seleccion) {
 						wattron(win, A_REVERSE);
 						mvwprintw(win, i + 19, 55, menu[i].c_str());
@@ -773,8 +783,8 @@ void Tablero::nuevo_juego(WINDOW* win) {
 						break;
 					case KEY_DOWN:
 						seleccion++;
-						if (seleccion > 2) {
-							seleccion = 2;
+						if (seleccion > 3) {
+							seleccion = 3;
 						}
 						break;
 					default:
@@ -1143,6 +1153,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 												   wrefresh(win);
 												   wrefresh(win2);
 												   getch();
+											   } else {
+												   Terminar(win, turno);
+												   salir = false;
+												   ganador = true;
 											   }
 										   } else {
 											   wattron(win, COLOR_PAIR(5));
@@ -1191,6 +1205,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 												   wrefresh(win);
 												   wrefresh(win2);
 												   getch();
+											   } else {
+												   Terminar(win, turno);
+												   salir = false;
+												   ganador = true;
 											   }
 										   }
 									   } else {
@@ -1474,6 +1492,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 														   wrefresh(win);
 														   wrefresh(win2);
 														   getch();
+													   } else {
+														   Terminar(win, turno);
+														   salir = false;
+														   ganador = true;
 													   }
 												   }
 											   }
@@ -1727,6 +1749,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 															   wrefresh(win);
 															   wrefresh(win2);
 															   getch();
+														   } else {
+															   Terminar(win, turno);
+															   salir = false;
+															   ganador = true;
 														   }
 													   } else {
 														   wattron(win2, COLOR_PAIR(1));
@@ -2036,6 +2062,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																		  }
 																		  if (jugadores[turno] -> getDinero() - (50 * jugadores.size() - 1) >= 0) {
 																			  jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - (50 * jugadores.size() - 1));
+																		  } else {
+																			  Terminar(win, turno);
+																			  salir = false;
+																			  ganador = true;
 																		  }
 																	  }break;
 															   case 6:{
@@ -2575,6 +2605,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																			   if (jugadores[i] -> getFicha() != jugadores[turno] -> getFicha()) {
 																				   if (jugadores[i] -> getDinero() - 50 >= 0) {
 																					   jugadores[i] -> setDinero(jugadores[i] -> getDinero() - 50);
+																				   } else {
+																					   Terminar(win, i);
+																					   salir = false;
+																					   ganador = true;
 																				   }
 																			   }
 																		   }
@@ -2589,6 +2623,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 															   case 18:{
 																		   if (jugadores[turno] -> getDinero() - 150 >= 0) {
 																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 150);
+																		   } else {
+																			   Terminar(win, turno);
+																			   salir = false;
+																			   ganador = true;
 																		   }
 																	   }break;
 															   case 19:{
@@ -2674,6 +2712,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 															   case 26:{
 																		   if (jugadores[turno] -> getDinero() - 50 >= 0) {
 																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - 50);
+																		   } else {
+																			   Terminar(win, turno);
+																			   salir = false;
+																			   ganador = true;
 																		   }
 																	   }break;
 															   case 27:{
@@ -3034,6 +3076,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																   wrefresh(win);
 																   wrefresh(win2);
 																   getch();
+															   } else {
+																   Terminar(win, turno);
+																   salir = false;
+																   ganador = true;
 															   }
 														   } else {
 															   wattron(win2, COLOR_PAIR(1));
@@ -3196,11 +3242,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 										   wrefresh(win);
 										   wrefresh(win2);
 										   getch();
-										turno++;
-									   if (turno == jugadores.size()) {
-										   turno = 0;
-									   }
-									   contador_velocidad = 0;
+										   turno++;
+										   if (turno == jugadores.size()) {
+											   turno = 0;
+										   }
+										   contador_velocidad = 0;
 									   }
 								   } else {
 									   turno++;
@@ -3276,15 +3322,25 @@ void Tablero::nuevo_juego(WINDOW* win) {
 									   }
 									   salir = false;
 								   } else {
-										mvwprintw(win, 25, 55, "No Tienes Propiedades!");
-										wrefresh(win);
-										getch();
-									  }
-								   }break;
+									   mvwprintw(win, 25, 55, "No Tienes Propiedades!");
+									   wrefresh(win);
+									   wmove(win, 32, 89);
+									   getch();
+								   }
+							   }break;
 						case 2: {
+									Terminar(win, turno);
 									salir = false;
 									ganador = true;
 								}break;
+						case 3:{
+								  ofstream outputFile("Jugadores.txt");
+   								   for (int i = 0; i < jugadores.size(); i++) {
+									   outputFile >> *jugadores[i];
+									 }
+								   salir = false;
+								   ganador = true;
+								  }break;
 					}
 				}
 			}
@@ -3308,6 +3364,47 @@ void Tablero::nuevo_juego(WINDOW* win) {
 		delete tarjetas[i];
 	}
 	tarjetas.clear();
+}
+
+void Tablero::Terminar(WINDOW* win, int perdedor) {
+	int ganador;
+	int mayor_riqueza = 0;
+	for (int i = 0; i < jugadores.size(); i++) {
+		if (i != perdedor) {
+			int acumulador = 0;
+			acumulador += jugadores[i] -> getDinero();
+			vector<Casilla*> miscasillas = jugadores[i] -> getPropiedades();
+			for (int j = 0; j < miscasillas.size(); j++) {
+				if (typeid(*miscasillas[j]) == typeid(Casilla_Utilidad)) {
+					acumulador += miscasillas[j] -> getAlquiler();
+				} else {
+					acumulador += miscasillas[j] -> getPrecio();
+				}
+			}
+			if (acumulador > mayor_riqueza) {
+				mayor_riqueza = acumulador;
+				ganador = i;
+			}
+		}
+	}
+	imprimirTablero();
+	wattron(win, COLOR_PAIR(1));
+	werase(win);
+	box(win, 0 , 0);
+	refresh();
+	wattron(win, COLOR_PAIR(2));
+	mvwprintw(win, 12, 35, "   MENU MONOPOLY   ");
+	wrefresh(win);
+	wattron(win, COLOR_PAIR(1));
+	mvwprintw(win, 14, 34, "El Juego Ha Terminado!");
+	mvwprintw(win, 15, 36, "Ganador: ");
+	mvwprintw(win, 15, 45, "%s", jugadores[ganador] -> getNombre().c_str());
+	mvwprintw(win, 16, 33, "Con Una Riqueza De $");
+	mvwprintw(win, 16, 53, "%d", mayor_riqueza);
+	wmove(win, 32, 89);
+	refresh();
+	wrefresh(win);
+	getch();
 }
 
 void Tablero::init2(string file) {

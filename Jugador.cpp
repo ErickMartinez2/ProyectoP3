@@ -87,3 +87,14 @@ void Jugador::setTurnoCarcel(int pturno_carcel) {
 	turno_carcel = pturno_carcel;
 }
 
+/*ostream& operator << (ostream& out, Jugador& jugador) {
+	out << jugador.getNombre();
+	out << jugador.getFicha();
+	out << jugador.getPosicion();
+	out << jugador.getDinero();
+	out << jugador.getCarcel();
+	out << jugador.getTurnoCarcel();
+	out << jugador.getCasualidadCarcel();
+	out << jugador.getArcaComunalCarcel();	
+	return out;
+}*/

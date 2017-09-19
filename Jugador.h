@@ -4,6 +4,7 @@
 #include <vector>
 #include "Casilla.h"
 #include "Tarjeta.h"
+#include <iostream>
 using namespace std;
 
 class Jugador {
@@ -38,6 +39,17 @@ class Jugador {
 		void setArcaComunalCarcel(bool);
 		int getTurnoCarcel();
 		void setTurnoCarcel(int);
+		friend ostream& operator >> (ostream& out, Jugador& jugador) {
+			out << jugador.getNombre();
+			out << jugador.getFicha();
+			out << jugador.getPosicion();
+			out << jugador.getDinero();
+			out << jugador.getCarcel();
+			out << jugador.getTurnoCarcel();
+			out << jugador.getCasualidadCarcel();
+			out << jugador.getArcaComunalCarcel();	
+			return out;
+		}
 };
 
 #endif
