@@ -12,6 +12,8 @@ int main() {
 	tablero -> init("Casillas.txt");
 	tablero -> init2("Tarjetas.txt");
 	int num = tablero -> play();
+	//WINDOW * win = newwin(33, 90, 8, 50);
+	//tablero -> continuar_juego(win);
 	delete tablero;
 	return num;
 }

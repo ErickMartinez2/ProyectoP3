@@ -4,15 +4,15 @@ Jugador::Jugador() {
 
 }
 
-Jugador::Jugador(string pnombre, char pficha, int pposicion, int pdinero, bool pcarcel, int pturno_carcel) {
+Jugador::Jugador(string pnombre, char pficha, int pposicion, int pdinero, bool pcarcel, int pturno_carcel, bool pcasualidad_carcel, bool parcacomunal_carcel) {
 	nombre = pnombre;
 	ficha = pficha;
 	posicion = pposicion;
 	dinero = pdinero;
 	carcel = pcarcel;
 	turno_carcel = pturno_carcel;
-	casualidad_carcel = false;
-	arcacomunal_carcel = false;
+	casualidad_carcel = pcasualidad_carcel;
+	arcacomunal_carcel = parcacomunal_carcel;
 }
 
 string Jugador::getNombre() {
@@ -86,15 +86,3 @@ int Jugador::getTurnoCarcel() {
 void Jugador::setTurnoCarcel(int pturno_carcel) {
 	turno_carcel = pturno_carcel;
 }
-
-/*ostream& operator << (ostream& out, Jugador& jugador) {
-	out << jugador.getNombre();
-	out << jugador.getFicha();
-	out << jugador.getPosicion();
-	out << jugador.getDinero();
-	out << jugador.getCarcel();
-	out << jugador.getTurnoCarcel();
-	out << jugador.getCasualidadCarcel();
-	out << jugador.getArcaComunalCarcel();	
-	return out;
-}*/

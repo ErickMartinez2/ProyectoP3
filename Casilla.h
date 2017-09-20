@@ -18,12 +18,13 @@ class Casilla {
 		int precio_casa;
 		int precio;
 		bool disponible;
+		int numero;
 	public:
 		Casilla();
-		Casilla(string, int, int, int, bool);
-		Casilla(string, int, int, int, int, int, bool);
-		Casilla(string, bool);
-		Casilla(string, int, bool);
+		Casilla(string, int, int, int, bool, int);
+		Casilla(string, int, int, int, int, int, bool, int);
+		Casilla(string, bool, int);
+		Casilla(string, int, bool, int);
 		virtual string getNombre() = 0;
 		virtual void setNombre(string) = 0;
 		virtual int getAlquiler();
@@ -34,6 +35,8 @@ class Casilla {
 		void setAlquiler3(int);
 		int getAlquiler4();
 		void setAlquiler4(int);
+		int getNumero();
+		void setNumero(int);
 		virtual vector<Casa*> getCasas();
 		virtual void setCasas(vector<Casa*>);
 		virtual Hotel* getHotel();

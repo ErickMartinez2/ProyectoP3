@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Casilla_Amarilla::Casilla_Amarilla(string pnombre, int palquiler, int pprecio_casa, int pprecio, bool pdisponible): Casilla(pnombre, palquiler, pprecio_casa, pprecio, pdisponible) {
+Casilla_Amarilla::Casilla_Amarilla(string pnombre, int palquiler, int pprecio_casa, int pprecio, bool pdisponible, int pnumero): Casilla(pnombre, palquiler, pprecio_casa, pprecio, pdisponible, pnumero) {
 
 }
 

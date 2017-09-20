@@ -44,6 +44,7 @@ class Tablero {
 		string Leer();
 		void imprimirTablero();
 		void nuevo_juego(WINDOW*);
+		void continuar_juego(WINDOW*);
 		void init(string);
 		void init2(string);
 		void imprimirCasilla(WINDOW*, int);

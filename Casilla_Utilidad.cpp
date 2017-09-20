@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Casilla_Utilidad::Casilla_Utilidad(string pnombre, int pprecio, bool pdisponible): Casilla(pnombre, pprecio, pdisponible) {
+Casilla_Utilidad::Casilla_Utilidad(string pnombre, int pprecio, bool pdisponible, int pnumero): Casilla(pnombre, pprecio, pdisponible, pnumero) {
 
 }
 

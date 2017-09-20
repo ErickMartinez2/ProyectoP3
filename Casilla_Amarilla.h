@@ -8,7 +8,7 @@ using namespace std;
 class Casilla_Amarilla: public Casilla {
 	public:
 		Casilla_Amarilla();
-		Casilla_Amarilla(string, int, int, int, bool);
+		Casilla_Amarilla(string, int, int, int, bool, int);
 		virtual string getNombre();
 		virtual void setNombre(string);
 		virtual int getAlquiler();

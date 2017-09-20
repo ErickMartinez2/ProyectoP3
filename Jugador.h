@@ -20,7 +20,7 @@ class Jugador {
 		bool arcacomunal_carcel;
 	public:
 		Jugador();
-		Jugador(string, char, int, int, bool, int);
+		Jugador(string, char, int, int, bool, int, bool, bool);
 		string getNombre();
 		void setNombre(string);
 		char getFicha();
@@ -41,13 +41,28 @@ class Jugador {
 		void setTurnoCarcel(int);
 		friend ostream& operator >> (ostream& out, Jugador& jugador) {
 			out << jugador.getNombre();
+			out << " ";
 			out << jugador.getFicha();
+			out << " ";
 			out << jugador.getPosicion();
+			out << " ";
 			out << jugador.getDinero();
+			out << " ";
 			out << jugador.getCarcel();
+			out << " ";
 			out << jugador.getTurnoCarcel();
+			out << " ";
 			out << jugador.getCasualidadCarcel();
+			out << " ";
 			out << jugador.getArcaComunalCarcel();	
+			vector<Casilla*> nuevas_propiedades = jugador.getPropiedades();
+			out << " ";
+			out << nuevas_propiedades.size();
+			for (int i = 0; i < nuevas_propiedades.size(); i++) {
+				out << " ";
+				out << nuevas_propiedades[i] -> getNumero();
+			}
+			out << "\n";
 			return out;
 		}
 };
