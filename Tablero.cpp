@@ -3,11 +3,16 @@
 #include <iostream>
 using namespace std;
 
+//En esta función es donde corre el juego MONOPOLY.
 int Tablero::play() {
 	initscr();
+	//Se inicializa el initscr() para poder trabajar con ncurses.
 	start_color();
+	//Se inicializa el start_color() para podes usar colores en el programa.
 	WINDOW * win = newwin(33, 90, 8, 50);
+	//Se declara la primera ventana donde se trabajara el menu.
 	keypad(win, true);
+	//El keypad sirve para poder usar las teclas en el programa.
 	int opcion = 0;
 	int seleccion = 0;
 	bool salir = true;
@@ -99,7 +104,9 @@ int Tablero::play() {
 	return 0;
 }
 
+//En esta función la partida guardada continuara con los datos guardados.
 void Tablero::continuar_juego(WINDOW* win) {
+	//Primero se cargan los datos guardados.
 	ifstream inputFile("Jugadores.txt");
 	if (inputFile.is_open()) {
 		string nombre;
@@ -158,6 +165,7 @@ void Tablero::continuar_juego(WINDOW* win) {
 		int turno = 0;
 		WINDOW * win2 = newwin(15, 30, 22, 60);
 		int contador_velocidad = 0;
+		//En esta parte se continua con el juego.
 		do {
 			if (jugadores[turno] -> getCarcel()) {
 				jugadores[turno] -> setTurnoCarcel(jugadores[turno] -> getTurnoCarcel() + 1);
@@ -1286,11 +1294,11 @@ void Tablero::continuar_juego(WINDOW* win) {
 														   mvwprintw(win, 21, 55, " Debes pagar Dados x 10 ");
 													   }
 													   wattron(win, A_REVERSE);
-													   mvwprintw(win, 23, 55, "Tirar Dados");
+													   mvwprintw(win, 23, 55, "       Tirar Dados      ");
+													   wattroff(win, A_REVERSE);
 													   refresh();
 													   wrefresh(win);
 													   wrefresh(win2);
-													   getch();
 													   int opcion_respuesta = wgetch(win);
 													   if (opcion_respuesta == 10) {
 														   wattron(win, COLOR_PAIR(1));
@@ -2916,7 +2924,114 @@ void Tablero::continuar_juego(WINDOW* win) {
 																   wattron(win, COLOR_PAIR(1));
 																   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
 																   mvwprintw(win, 21, 55, "   Debes pagar $");
-																   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+																   int nuevo_precio = 0;
+																   vector<Casilla*> propiedades = jugadores[turno] -> getPropiedades();
+																   for (int i = 0; i < 4; i++) {
+																	   if (casillas[jugadores[turno] -> getPosicion()] -> getCasas()[i] -> getDisponible()) {
+																		   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getCasas()[i] -> getPrecio();
+																	   }
+																   }
+																   if (nuevo_precio == 0) {
+																	   if (jugadores[turno] -> getPosicion() == 1 || jugadores[turno] -> getPosicion() == 2) {
+																		   int contador = 0;
+																		   for (int i = 0; i < propiedades.size(); i++) {
+																			   if (propiedades[i] -> getNumero() == 1 || propiedades[i] -> getNumero() == 2) {
+																				   contador++;
+																			   }
+																		   }
+																		   if (contador == 2) {
+																			   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																		   }
+																	   } else {
+																		   if (jugadores[turno] -> getPosicion() == 6 || jugadores[turno] -> getPosicion() == 8 || jugadores[turno] -> getPosicion() == 9) {
+																			   int contador = 0;
+																			   for (int i = 0; i < propiedades.size(); i++) {
+																				   if (propiedades[i] -> getNumero() == 6 || propiedades[i] -> getNumero() == 8 || propiedades[i] -> getNumero() == 9) {
+																					   contador++;
+																				   }
+																			   }
+																			   if (contador == 3) {
+																				   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																			   }
+																		   } else {
+																			   if (jugadores[turno] -> getPosicion() == 11 || jugadores[turno] -> getPosicion() == 13 || jugadores[turno] -> getPosicion() == 14) {
+																				   int contador = 0;
+																				   for (int i = 0; i < propiedades.size(); i++) {
+																					   if (propiedades[i] -> getNumero() == 11 || propiedades[i] -> getNumero() == 13 || propiedades[i] -> getNumero() == 14) {
+																						   contador++;
+																					   }
+																				   }
+																				   if (contador == 3) {
+																					   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																				   }
+																			   } else {
+																				   if (jugadores[turno] -> getPosicion() == 16 || jugadores[turno] -> getPosicion() == 18 || jugadores[turno] -> getPosicion() == 19) {
+																					   int contador = 0;
+																					   for (int i = 0; i < propiedades.size(); i++) {
+																						   if (propiedades[i] -> getNumero() == 16 || propiedades[i] -> getNumero() == 18 || propiedades[i] -> getNumero() == 19) {
+																							   contador++;
+																						   }
+																					   }
+																					   if (contador == 3) {
+																						   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																					   }
+																				   } else {
+																					   if (jugadores[turno] -> getPosicion() == 21 || jugadores[turno] -> getPosicion() == 23 || jugadores[turno] -> getPosicion() == 24) {
+																						   int contador = 0;
+																						   for (int i = 0; i < propiedades.size(); i++) {
+																							   if (propiedades[i] -> getNumero() == 21 || propiedades[i] -> getNumero() == 23 || propiedades[i] -> getNumero() == 24) {
+																								   contador++;
+																							   }
+																						   }
+																						   if (contador == 3) {
+																							   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																						   }
+																					   } else {
+																						   if (jugadores[turno] -> getPosicion() == 26 || jugadores[turno] -> getPosicion() == 27 || jugadores[turno] -> getPosicion() == 29) {
+																							   int contador = 0;
+																							   for (int i = 0; i < propiedades.size(); i++) {
+																								   if (propiedades[i] -> getNumero() == 26 || propiedades[i] -> getNumero() == 27 || propiedades[i] -> getNumero() == 29) {
+																									   contador++;
+																								   }
+																							   }
+																							   if (contador == 3) {
+																								   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																							   }
+																						   } else {
+																							   if (jugadores[turno] -> getPosicion() == 31 || jugadores[turno] -> getPosicion() == 32 || jugadores[turno] -> getPosicion() == 34) {
+																								   int contador = 0;
+																								   for (int i = 0; i < propiedades.size(); i++) {
+																									   if (propiedades[i] -> getNumero() == 31 || propiedades[i] -> getNumero() == 32 || propiedades[i] -> getNumero() == 34) {
+																										   contador++;
+																									   }
+																								   }
+																								   if (contador == 3) {
+																									   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																								   }
+																							   } else {
+																								   if (jugadores[turno] -> getPosicion() == 37 || jugadores[turno] -> getPosicion() == 39) {
+																									   int contador = 0;
+																									   for (int i = 0; i < propiedades.size(); i++) {
+																										   if (propiedades[i] -> getNumero() == 37 || propiedades[i] -> getNumero() == 39) {
+																											   contador++;
+																										   }
+																									   }
+																									   if (contador == 2) {
+																										   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																									   }
+																								   }
+																							   }
+																						   }
+																					   }
+																				   }
+																			   }
+																		   }
+																	   }		
+																   }
+																   if (nuevo_precio == 0) {
+																	   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler();
+																   }
+																   mvwprintw(win, 21, 71, "%d", nuevo_precio);
 																   refresh();
 																   wrefresh(win);
 																   wrefresh(win2);
@@ -2930,9 +3045,9 @@ void Tablero::continuar_juego(WINDOW* win) {
 																		   }
 																	   }
 																   }
-																   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
-																	   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-																	   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+																   if ((jugadores[turno] -> getDinero()) - nuevo_precio >= 0) {
+																	   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - nuevo_precio);
+																	   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + nuevo_precio);
 																	   wattron(win2, COLOR_PAIR(1));
 																	   werase(win2);
 																	   box(win2, 0, 0);
@@ -3183,6 +3298,24 @@ void Tablero::continuar_juego(WINDOW* win) {
 											   wattron(win, COLOR_PAIR(1));
 											   mvwprintw(win, 19, 8, "- Presione -> o <- Para Navegar");
 											   mvwprintw(win, 20, 8, "- Presione ENTER Para Salir");
+											   mvwprintw(win, 21, 8, "- Presione TAB Para Comprar Casa");
+											   wattron(win, COLOR_PAIR(5));
+											   mvwprintw(win, 24, 10, "Casas y Hoteles");
+											   wattron(win, COLOR_PAIR(1));
+											   mvwprintw(win, 26, 8, "- Casas: ");
+											   int contador_casas = 0;
+											   for (int i = 0; i < 4; i++) {
+												   if (casillas[num_casilla] -> getCasas()[i] -> getDisponible()) {
+													   contador_casas++;
+												   }
+											   }
+											   mvwprintw(win, 26, 17, "%d", contador_casas);
+											   mvwprintw(win, 27, 8, "- Hotel: ");
+											   int contador_hotel = 0;
+											   if (casillas[num_casilla] -> getHotel() -> getDisponible()) {
+												   contador_hotel++;
+											   }
+											   mvwprintw(win, 27, 17, "%d", contador_hotel);
 											   wrefresh(win);
 											   wrefresh(win3);
 											   opcion2 = wgetch(win);
@@ -3204,6 +3337,163 @@ void Tablero::continuar_juego(WINDOW* win) {
 											   }
 											   if (opcion2 == 10) {
 												   salir2 = false;
+											   }
+											   if (opcion2 == 9) {
+												   if (jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa() >= 0) {
+													   bool comprar_casa = false;
+													   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Ferrocarril)) {
+														   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Utilidad)) {
+															   if (num_casilla == 1 || num_casilla == 2) {
+																   int contador = 0;
+																   for (int i = 0; i < propiedades.size(); i++) {
+																	   if (propiedades[i] -> getNumero() == 1 || propiedades[i] -> getNumero() == 2) {
+																		   contador++;
+																	   }
+																   }
+																   if (contador == 2) {
+																	   comprar_casa = true;
+																   }
+															   } else {
+																   if (num_casilla == 6 || num_casilla == 8 || num_casilla == 9) {
+																	   int contador = 0;
+																	   for (int i = 0; i < propiedades.size(); i++) {
+																		   if (propiedades[i] -> getNumero() == 6 || propiedades[i] -> getNumero() == 8 || propiedades[i] -> getNumero() == 9) {
+																			   contador++;
+																		   }
+																	   }
+																	   if (contador == 3) {
+																		   comprar_casa = true;
+																	   }
+																   } else {
+																	   if (num_casilla == 11 || num_casilla == 13 || num_casilla == 14) {
+																		   int contador = 0;
+																		   for (int i = 0; i < propiedades.size(); i++) {
+																			   if (propiedades[i] -> getNumero() == 11 || propiedades[i] -> getNumero() == 13 || propiedades[i] -> getNumero() == 14) {
+																				   contador++;
+																			   }
+																		   }
+																		   if (contador == 3) {
+																			   comprar_casa = true;
+																		   }
+																	   } else {
+																		   if (num_casilla == 16 || num_casilla == 18 || num_casilla == 19) {
+																			   int contador = 0;
+																			   for (int i = 0; i < propiedades.size(); i++) {
+																				   if (propiedades[i] -> getNumero() == 16 || propiedades[i] -> getNumero() == 18 || propiedades[i] -> getNumero() == 19) {
+																					   contador++;
+																				   }
+																			   }
+																			   if (contador == 3) {
+																				   comprar_casa = true;
+																			   }
+																		   } else {
+																			   if (num_casilla == 21 || num_casilla == 23 || num_casilla == 24) {
+																				   int contador = 0;
+																				   for (int i = 0; i < propiedades.size(); i++) {
+																					   if (propiedades[i] -> getNumero() == 21 || propiedades[i] -> getNumero() == 23 || propiedades[i] -> getNumero() == 24) {
+																						   contador++;
+																					   }
+																				   }
+																				   if (contador == 3) {
+																					   comprar_casa = true;
+																				   }
+																			   } else {
+																				   if (num_casilla == 26 || num_casilla == 27 || num_casilla == 29) {
+																					   int contador = 0;
+																					   for (int i = 0; i < propiedades.size(); i++) {
+																						   if (propiedades[i] -> getNumero() == 26 || propiedades[i] -> getNumero() == 27 || propiedades[i] -> getNumero() == 29) {
+																							   contador++;
+																						   }
+																					   }
+																					   if (contador == 3) {
+																						   comprar_casa = true;
+																					   }
+																				   } else {
+																					   if (num_casilla == 31 || num_casilla == 32 || num_casilla == 34) {
+																						   int contador = 0;
+																						   for (int i = 0; i < propiedades.size(); i++) {
+																							   if (propiedades[i] -> getNumero() == 31 || propiedades[i] -> getNumero() == 32 || propiedades[i] -> getNumero() == 34) {
+																								   contador++;
+																							   }
+																						   }
+																						   if (contador == 3) {
+																							   comprar_casa = true;
+																						   }
+																					   } else {
+																						   if (num_casilla == 37 || num_casilla == 39) {
+																							   int contador = 0;
+																							   for (int i = 0; i < propiedades.size(); i++) {
+																								   if (propiedades[i] -> getNumero() == 37 || propiedades[i] -> getNumero() == 39) {
+																									   contador++;
+																								   }
+																							   }
+																							   if (contador == 2) {
+																								   comprar_casa = true;
+																							   }
+																						   }
+																					   }
+																				   }
+																			   }
+																		   }
+																	   }
+																   }
+															   }
+														   }
+													   } 
+													   if (comprar_casa) {
+														   if (!casillas[num_casilla] -> getCasas()[0] -> getDisponible()) {
+															   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+															   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+															   mvwprintw(win, 30, 8, "Casa Comprada!");
+															   wrefresh(win);
+															   getch();
+														   } else {
+															   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+																   casillas[num_casilla] -> getCasas()[1] -> setDisponible(true);
+																   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																   mvwprintw(win, 30, 8, "Casa Comprada!");
+																   wrefresh(win);
+																   getch();
+															   } else {
+																   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+																	   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+																	   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																	   mvwprintw(win, 30, 8, "Casa Comprada!");
+																	   wrefresh(win);
+																	   getch();
+																   } else {
+																	   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+																		   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																		   mvwprintw(win, 30, 8, "Casa Comprada!");
+																		   wrefresh(win);
+																		   getch();
+																	   } else {
+																		   if (!casillas[num_casilla] -> getHotel() -> getDisponible()) {
+																			   casillas[num_casilla] -> getHotel() -> setDisponible(true);
+																			   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																			   mvwprintw(win, 30, 8, "Hotel Comprado!");
+																			   wrefresh(win);
+																			   getch();
+																		   } else {
+																			   mvwprintw(win, 30, 8, "Ya Tienes Hotel!");
+																			   wrefresh(win);
+																			   getch();
+																		   }
+																	   }
+																   }
+															   }
+														   }
+													   } else {
+														   mvwprintw(win, 30, 8, "No Tienes Todas Las Propiedades!");
+														   wrefresh(win);
+														   getch();
+													   }
+												   } else {
+													   mvwprintw(win, 30, 8, "No Tienes Suficiente Dinero!");
+													   wrefresh(win);
+													   getch();
+												   }
 											   }
 										   }
 										   salir = false;
@@ -3234,6 +3524,7 @@ void Tablero::continuar_juego(WINDOW* win) {
 			}
 			wrefresh(win);
 		} while (!ganador);
+		//En esta parte liberamos memoria.
 		for (int i = 0; i < jugadores.size(); i++) {
 			delete jugadores[i];
 		}
@@ -3266,6 +3557,7 @@ void Tablero::continuar_juego(WINDOW* win) {
 	}
 }
 
+//En esta funcion una nueva partida comienza.
 void Tablero::nuevo_juego(WINDOW* win) {
 	wattron(win, COLOR_PAIR(2));
 	mvwprintw(win, 12, 35, "    NUEVO JUEGO    ");
@@ -3277,6 +3569,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 	int seleccion = 0;
 	bool salir = true;
 	wattron(win, COLOR_PAIR(1));
+	//Primero se crean a los jugadores.
 	string menu[3] = {"    2 Jugadores    ", "    3 Jugadores    ", "    4 Jugadores    "};
 	while (salir) {
 		for (int i = 0; i < 3; i++) {
@@ -3446,6 +3739,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 	int turno = 0;
 	WINDOW * win2 = newwin(15, 30, 22, 60);
 	int contador_velocidad = 0;
+	//En esta parte se empieza a jugar.
 	do {
 		if (jugadores[turno] -> getCarcel()) {
 			jugadores[turno] -> setTurnoCarcel(jugadores[turno] -> getTurnoCarcel() + 1);
@@ -4574,11 +4868,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 													   mvwprintw(win, 21, 55, " Debes pagar Dados x 10 ");
 												   }
 												   wattron(win, A_REVERSE);
-												   mvwprintw(win, 23, 55, "Tirar Dados");
+												   mvwprintw(win, 23, 55, "       Tirar Dados      ");
+												   wattroff(win, A_REVERSE);
 												   refresh();
 												   wrefresh(win);
 												   wrefresh(win2);
-												   getch();
 												   int opcion_respuesta = wgetch(win);
 												   if (opcion_respuesta == 10) {
 													   wattron(win, COLOR_PAIR(1));
@@ -6204,7 +6498,114 @@ void Tablero::nuevo_juego(WINDOW* win) {
 															   wattron(win, COLOR_PAIR(1));
 															   mvwprintw(win, 20, 55, " Propiedad Con Dueño! ");
 															   mvwprintw(win, 21, 55, "   Debes pagar $");
-															   mvwprintw(win, 21, 71, "%d", casillas[jugadores[turno] -> getPosicion()] -> getAlquiler());
+															   int nuevo_precio = 0;
+															   vector<Casilla*> propiedades = jugadores[turno] -> getPropiedades();
+															   for (int i = 0; i < 4; i++) {
+																   if (casillas[jugadores[turno] -> getPosicion()] -> getCasas()[i] -> getDisponible()) {
+																	   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getCasas()[i] -> getPrecio();
+																   }
+															   }
+															   if (nuevo_precio == 0) {
+																   if (jugadores[turno] -> getPosicion() == 1 || jugadores[turno] -> getPosicion() == 2) {
+																	   int contador = 0;
+																	   for (int i = 0; i < propiedades.size(); i++) {
+																		   if (propiedades[i] -> getNumero() == 1 || propiedades[i] -> getNumero() == 2) {
+																			   contador++;
+																		   }
+																	   }
+																	   if (contador == 2) {
+																		   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																	   }
+																   } else {
+																	   if (jugadores[turno] -> getPosicion() == 6 || jugadores[turno] -> getPosicion() == 8 || jugadores[turno] -> getPosicion() == 9) {
+																		   int contador = 0;
+																		   for (int i = 0; i < propiedades.size(); i++) {
+																			   if (propiedades[i] -> getNumero() == 6 || propiedades[i] -> getNumero() == 8 || propiedades[i] -> getNumero() == 9) {
+																				   contador++;
+																			   }
+																		   }
+																		   if (contador == 3) {
+																			   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																		   }
+																	   } else {
+																		   if (jugadores[turno] -> getPosicion() == 11 || jugadores[turno] -> getPosicion() == 13 || jugadores[turno] -> getPosicion() == 14) {
+																			   int contador = 0;
+																			   for (int i = 0; i < propiedades.size(); i++) {
+																				   if (propiedades[i] -> getNumero() == 11 || propiedades[i] -> getNumero() == 13 || propiedades[i] -> getNumero() == 14) {
+																					   contador++;
+																				   }
+																			   }
+																			   if (contador == 3) {
+																				   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																			   }
+																		   } else {
+																			   if (jugadores[turno] -> getPosicion() == 16 || jugadores[turno] -> getPosicion() == 18 || jugadores[turno] -> getPosicion() == 19) {
+																				   int contador = 0;
+																				   for (int i = 0; i < propiedades.size(); i++) {
+																					   if (propiedades[i] -> getNumero() == 16 || propiedades[i] -> getNumero() == 18 || propiedades[i] -> getNumero() == 19) {
+																						   contador++;
+																					   }
+																				   }
+																				   if (contador == 3) {
+																					   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																				   }
+																			   } else {
+																				   if (jugadores[turno] -> getPosicion() == 21 || jugadores[turno] -> getPosicion() == 23 || jugadores[turno] -> getPosicion() == 24) {
+																					   int contador = 0;
+																					   for (int i = 0; i < propiedades.size(); i++) {
+																						   if (propiedades[i] -> getNumero() == 21 || propiedades[i] -> getNumero() == 23 || propiedades[i] -> getNumero() == 24) {
+																							   contador++;
+																						   }
+																					   }
+																					   if (contador == 3) {
+																						   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																					   }
+																				   } else {
+																					   if (jugadores[turno] -> getPosicion() == 26 || jugadores[turno] -> getPosicion() == 27 || jugadores[turno] -> getPosicion() == 29) {
+																						   int contador = 0;
+																						   for (int i = 0; i < propiedades.size(); i++) {
+																							   if (propiedades[i] -> getNumero() == 26 || propiedades[i] -> getNumero() == 27 || propiedades[i] -> getNumero() == 29) {
+																								   contador++;
+																							   }
+																						   }
+																						   if (contador == 3) {
+																							   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																						   }
+																					   } else {
+																						   if (jugadores[turno] -> getPosicion() == 31 || jugadores[turno] -> getPosicion() == 32 || jugadores[turno] -> getPosicion() == 34) {
+																							   int contador = 0;
+																							   for (int i = 0; i < propiedades.size(); i++) {
+																								   if (propiedades[i] -> getNumero() == 31 || propiedades[i] -> getNumero() == 32 || propiedades[i] -> getNumero() == 34) {
+																									   contador++;
+																								   }
+																							   }
+																							   if (contador == 3) {
+																								   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																							   }
+																						   } else {
+																							   if (jugadores[turno] -> getPosicion() == 37 || jugadores[turno] -> getPosicion() == 39) {
+																								   int contador = 0;
+																								   for (int i = 0; i < propiedades.size(); i++) {
+																									   if (propiedades[i] -> getNumero() == 37 || propiedades[i] -> getNumero() == 39) {
+																										   contador++;
+																									   }
+																								   }
+																								   if (contador == 2) {
+																									   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler() * 2;
+																								   }
+																							   }
+																						   }
+																					   }
+																				   }
+																			   }
+																		   }
+																	   }
+																   }		
+															   }
+															   if (nuevo_precio == 0) {
+																   nuevo_precio = casillas[jugadores[turno] -> getPosicion()] -> getAlquiler();
+															   }
+															   mvwprintw(win, 21, 71, "%d", nuevo_precio);
 															   refresh();
 															   wrefresh(win);
 															   wrefresh(win2);
@@ -6218,9 +6619,9 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																	   }
 																   }
 															   }
-															   if ((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()) >= 0) {
-																   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
-																   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + (casillas[jugadores[turno] -> getPosicion()] -> getAlquiler()));
+															   if ((jugadores[turno] -> getDinero()) - nuevo_precio >= 0) {
+																   jugadores[turno] -> setDinero((jugadores[turno] -> getDinero()) - nuevo_precio);
+																   jugadores[num_jugador] -> setDinero((jugadores[num_jugador] -> getDinero()) + nuevo_precio);
 																   wattron(win2, COLOR_PAIR(1));
 																   werase(win2);
 																   box(win2, 0, 0);
@@ -6472,6 +6873,23 @@ void Tablero::nuevo_juego(WINDOW* win) {
 										   mvwprintw(win, 19, 8, "- Presione -> o <- Para Navegar");
 										   mvwprintw(win, 20, 8, "- Presione ENTER Para Salir");
 										   mvwprintw(win, 21, 8, "- Presione TAB Para Comprar Casa");
+										   wattron(win, COLOR_PAIR(5));
+										   mvwprintw(win, 24, 10, "Casas y Hoteles");
+										   wattron(win, COLOR_PAIR(1));
+										   mvwprintw(win, 26, 8, "- Casas: ");
+										   int contador_casas = 0;
+										   for (int i = 0; i < 4; i++) {
+											   if (casillas[num_casilla] -> getCasas()[i] -> getDisponible()) {
+												   contador_casas++;
+											   }
+										   }
+										   mvwprintw(win, 26, 17, "%d", contador_casas);
+										   mvwprintw(win, 27, 8, "- Hotel: ");
+										   int contador_hotel = 0;
+										   if (casillas[num_casilla] -> getHotel() -> getDisponible()) {
+											   contador_hotel++;
+										   }
+										   mvwprintw(win, 27, 17, "%d", contador_hotel);
 										   wrefresh(win);
 										   wrefresh(win3);
 										   opcion2 = wgetch(win);
@@ -6495,35 +6913,25 @@ void Tablero::nuevo_juego(WINDOW* win) {
 											   salir2 = false;
 										   }
 										   if (opcion2 == 9) {
-											   bool comprar_casa = false;
-											   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Ferrocarril)) {
-												   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Utilidad)) {
-													   if (num_casilla == 1 || num_casilla == 2) {
-														   int contador = 0;
-														   for (int i = 0; i < propiedades.size(); i++) {
-															   if (propiedades[i] -> getNumero() == 1 || propiedades[i] -> getNumero() == 2) {
-																   contador++;
-															   }
-														   }
-														   if (contador == 2) {
-															   comprar_casa = true;
-														   }
-													   } else {
-														   if (num_casilla == 6 || num_casilla == 8 || num_casilla == 9) {
+											   if (jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa() >= 0) {
+												   bool comprar_casa = false;
+												   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Ferrocarril)) {
+													   if (typeid(*casillas[num_casilla]) != typeid(Casilla_Utilidad)) {
+														   if (num_casilla == 1 || num_casilla == 2) {
 															   int contador = 0;
 															   for (int i = 0; i < propiedades.size(); i++) {
-																   if (propiedades[i] -> getNumero() == 6 || propiedades[i] -> getNumero() == 8 || propiedades[i] -> getNumero() == 9) {
+																   if (propiedades[i] -> getNumero() == 1 || propiedades[i] -> getNumero() == 2) {
 																	   contador++;
 																   }
 															   }
-															   if (contador == 3) {
+															   if (contador == 2) {
 																   comprar_casa = true;
 															   }
 														   } else {
-															   if (num_casilla == 11 || num_casilla == 13 || num_casilla == 14) {
+															   if (num_casilla == 6 || num_casilla == 8 || num_casilla == 9) {
 																   int contador = 0;
 																   for (int i = 0; i < propiedades.size(); i++) {
-																	   if (propiedades[i] -> getNumero() == 11 || propiedades[i] -> getNumero() == 13 || propiedades[i] -> getNumero() == 14) {
+																	   if (propiedades[i] -> getNumero() == 6 || propiedades[i] -> getNumero() == 8 || propiedades[i] -> getNumero() == 9) {
 																		   contador++;
 																	   }
 																   }
@@ -6531,10 +6939,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																	   comprar_casa = true;
 																   }
 															   } else {
-																   if (num_casilla == 16 || num_casilla == 18 || num_casilla == 19) {
+																   if (num_casilla == 11 || num_casilla == 13 || num_casilla == 14) {
 																	   int contador = 0;
 																	   for (int i = 0; i < propiedades.size(); i++) {
-																		   if (propiedades[i] -> getNumero() == 16 || propiedades[i] -> getNumero() == 18 || propiedades[i] -> getNumero() == 19) {
+																		   if (propiedades[i] -> getNumero() == 11 || propiedades[i] -> getNumero() == 13 || propiedades[i] -> getNumero() == 14) {
 																			   contador++;
 																		   }
 																	   }
@@ -6542,10 +6950,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																		   comprar_casa = true;
 																	   }
 																   } else {
-																	   if (num_casilla == 21 || num_casilla == 23 || num_casilla == 24) {
+																	   if (num_casilla == 16 || num_casilla == 18 || num_casilla == 19) {
 																		   int contador = 0;
 																		   for (int i = 0; i < propiedades.size(); i++) {
-																			   if (propiedades[i] -> getNumero() == 21 || propiedades[i] -> getNumero() == 23 || propiedades[i] -> getNumero() == 24) {
+																			   if (propiedades[i] -> getNumero() == 16 || propiedades[i] -> getNumero() == 18 || propiedades[i] -> getNumero() == 19) {
 																				   contador++;
 																			   }
 																		   }
@@ -6553,10 +6961,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																			   comprar_casa = true;
 																		   }
 																	   } else {
-																		   if (num_casilla == 26 || num_casilla == 27 || num_casilla == 29) {
+																		   if (num_casilla == 21 || num_casilla == 23 || num_casilla == 24) {
 																			   int contador = 0;
 																			   for (int i = 0; i < propiedades.size(); i++) {
-																				   if (propiedades[i] -> getNumero() == 26 || propiedades[i] -> getNumero() == 27 || propiedades[i] -> getNumero() == 29) {
+																				   if (propiedades[i] -> getNumero() == 21 || propiedades[i] -> getNumero() == 23 || propiedades[i] -> getNumero() == 24) {
 																					   contador++;
 																				   }
 																			   }
@@ -6564,10 +6972,10 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																				   comprar_casa = true;
 																			   }
 																		   } else {
-																			   if (num_casilla == 31 || num_casilla == 32 || num_casilla == 34) {
+																			   if (num_casilla == 26 || num_casilla == 27 || num_casilla == 29) {
 																				   int contador = 0;
 																				   for (int i = 0; i < propiedades.size(); i++) {
-																					   if (propiedades[i] -> getNumero() == 31 || propiedades[i] -> getNumero() == 32 || propiedades[i] -> getNumero() == 34) {
+																					   if (propiedades[i] -> getNumero() == 26 || propiedades[i] -> getNumero() == 27 || propiedades[i] -> getNumero() == 29) {
 																						   contador++;
 																					   }
 																				   }
@@ -6575,15 +6983,27 @@ void Tablero::nuevo_juego(WINDOW* win) {
 																					   comprar_casa = true;
 																				   }
 																			   } else {
-																				   if (num_casilla == 37 || num_casilla == 39) {
+																				   if (num_casilla == 31 || num_casilla == 32 || num_casilla == 34) {
 																					   int contador = 0;
 																					   for (int i = 0; i < propiedades.size(); i++) {
-																						   if (propiedades[i] -> getNumero() == 37 || propiedades[i] -> getNumero() == 39) {
+																						   if (propiedades[i] -> getNumero() == 31 || propiedades[i] -> getNumero() == 32 || propiedades[i] -> getNumero() == 34) {
 																							   contador++;
 																						   }
 																					   }
-																					   if (contador == 2) {
+																					   if (contador == 3) {
 																						   comprar_casa = true;
+																					   }
+																				   } else {
+																					   if (num_casilla == 37 || num_casilla == 39) {
+																						   int contador = 0;
+																						   for (int i = 0; i < propiedades.size(); i++) {
+																							   if (propiedades[i] -> getNumero() == 37 || propiedades[i] -> getNumero() == 39) {
+																								   contador++;
+																							   }
+																						   }
+																						   if (contador == 2) {
+																							   comprar_casa = true;
+																						   }
 																					   }
 																				   }
 																			   }
@@ -6593,7 +7013,60 @@ void Tablero::nuevo_juego(WINDOW* win) {
 															   }
 														   }
 													   }
+												   } 
+												   if (comprar_casa) {
+													   if (!casillas[num_casilla] -> getCasas()[0] -> getDisponible()) {
+														   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+														   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+														   mvwprintw(win, 30, 8, "Casa Comprada!");
+														   wrefresh(win);
+														   getch();
+													   } else {
+														   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+															   casillas[num_casilla] -> getCasas()[1] -> setDisponible(true);
+															   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+															   mvwprintw(win, 30, 8, "Casa Comprada!");
+															   wrefresh(win);
+															   getch();
+														   } else {
+															   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+																   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+																   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																   mvwprintw(win, 30, 8, "Casa Comprada!");
+																   wrefresh(win);
+																   getch();
+															   } else {
+																   if (!casillas[num_casilla] -> getCasas()[1] -> getDisponible()) {
+																	   casillas[num_casilla] -> getCasas()[0] -> setDisponible(true);
+																	   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																	   mvwprintw(win, 30, 8, "Casa Comprada!");
+																	   wrefresh(win);
+																	   getch();
+																   } else {
+																	   if (!casillas[num_casilla] -> getHotel() -> getDisponible()) {
+																		   casillas[num_casilla] -> getHotel() -> setDisponible(true);
+																		   jugadores[turno] -> setDinero(jugadores[turno] -> getDinero() - casillas[num_casilla] -> getPrecio_Casa());
+																		   mvwprintw(win, 30, 8, "Hotel Comprado!");
+																		   wrefresh(win);
+																		   getch();
+																	   } else {
+																		   mvwprintw(win, 30, 8, "Ya Tienes Hotel!");
+																		   wrefresh(win);
+																		   getch();
+																	   }
+																   }
+															   }
+														   }
+													   }
+												   } else {
+													   mvwprintw(win, 30, 8, "No Tienes Todas Las Propiedades!");
+													   wrefresh(win);
+													   getch();
 												   }
+											   } else {
+												   mvwprintw(win, 30, 8, "No Tienes Suficiente Dinero!");
+												   wrefresh(win);
+												   getch();
 											   }
 										   }
 									   }
@@ -6625,6 +7098,7 @@ void Tablero::nuevo_juego(WINDOW* win) {
 		}
 		wrefresh(win);
 	} while (!ganador);
+	//Por ultimo liberamos memoria.
 	for (int i = 0; i < jugadores.size(); i++) {
 		delete jugadores[i];
 	}
@@ -6644,9 +7118,11 @@ void Tablero::nuevo_juego(WINDOW* win) {
 	tarjetas.clear();
 }
 
+//En esta función se declara un ganador.
 void Tablero::Terminar(WINDOW* win, int perdedor) {
 	int ganador;
 	int mayor_riqueza = 0;
+	//En esta parte sumamos el dinero y propiedades de cada jugador para determinar a un ganador.
 	for (int i = 0; i < jugadores.size(); i++) {
 		if (i != perdedor) {
 			int acumulador = 0;
@@ -6657,6 +7133,14 @@ void Tablero::Terminar(WINDOW* win, int perdedor) {
 					acumulador += miscasillas[j] -> getAlquiler();
 				} else {
 					acumulador += miscasillas[j] -> getPrecio();
+				}
+				if (miscasillas[j] -> getCasas().size() > 0) {
+					for (int k = 0; k < miscasillas[j] -> getCasas().size(); k++) {
+						acumulador += miscasillas[j] -> getPrecio_Casa();
+					}
+				}
+				if (miscasillas[j] -> getHotel() -> getDisponible()) {
+					acumulador += miscasillas[j] -> getPrecio_Casa();
 				}
 			}
 			if (acumulador > mayor_riqueza) {
@@ -6685,6 +7169,7 @@ void Tablero::Terminar(WINDOW* win, int perdedor) {
 	getch();
 }
 
+//Esta funcion sirve para cargar los datos de las tarjetas casualidad y arca comunal.
 void Tablero::init2(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
@@ -6716,6 +7201,7 @@ void Tablero::init2(string file) {
 	}
 }
 
+//En esta función se imprimen los dados para que un jugador avance.
 void Tablero::imprimirDados(WINDOW* win, int num_random1, int num_random2) {
 	string espacio1 = "   ";
 	string espacio2 = " 0 ";
@@ -6859,6 +7345,7 @@ void Tablero::imprimirDados(WINDOW* win, int num_random1, int num_random2) {
 	}
 }
 
+//En esta funcion se imprime la casilla actual en la que esta el jugador.
 void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 	if (typeid(*casillas[posicion]) == typeid(Casilla_Morada)) {
 		wattron(win2, COLOR_PAIR(9));
@@ -7323,6 +7810,7 @@ void Tablero::imprimirCasilla(WINDOW* win2, int posicion) {
 	wmove(win2, 13, 28);
 }
 
+//En esta función se cargan los datos de todas las casillas del tablero.
 void Tablero::init(string file) {
 	ifstream inputFile(file);
 	if (inputFile.is_open()) {
@@ -7697,6 +8185,7 @@ void Tablero::init(string file) {
 	}
 }
 
+//Esta función sirve para leer datos que ingrese el usuario.
 string Tablero::Leer() {
 	char caracter;
 	stringstream ss;
@@ -7714,6 +8203,7 @@ Tablero::Tablero() {
 
 }
 
+//En esta función se imprime el tablero completo con todas sus casillas y jugadores.
 void Tablero::imprimirTablero() {
 	//Naranja
 	init_color(COLOR_CYAN, 1000, 500, 0);
